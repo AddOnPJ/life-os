@@ -40,6 +40,8 @@ try {
     # YouTube の数字（.env に YOUTUBE_API_KEY があるときだけ。失敗しても続行）
     python scripts/youtube_stats.py
     $youtubeOk = ($LASTEXITCODE -eq 0)
+    # 詳しい健康とお金の画面（secure/dashboard.html）。PC の中だけ。失敗しても続行
+    python scripts/secure_weekly.py
 
     # PC の同期が動いたことをクラウドに知らせる（secure の中身は書かない）
     $state = [ordered]@{
