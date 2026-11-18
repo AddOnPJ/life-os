@@ -120,6 +120,11 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px}
   </section>
 
   <section>
+    <h2>生活の期限 <small>「期限 ◯◯ 日付」で追加</small></h2>
+    <ul class="plain" id="life"></ul>
+  </section>
+
+  <section>
     <h2>YouTube <small>@addonensemble</small></h2>
     <div id="youtube"></div>
   </section>
@@ -206,7 +211,8 @@ function render(D){
     {k:"決めてほしいこと", v:((D.addon && D.addon.decisions) || []).length, s:"件"},
   ];
   $("tiles").innerHTML = tiles.map(t => `<div class="tile"><div class="k">${esc(t.k)}</div><div class="v">${esc(t.v)}</div><div class="s">${esc(t.s)}</div></div>`).join("");
-  const al = [].concat(((D.body && D.body.alerts) || []).map(a => ({level:"注意", text:"体：" + a})), (D.addon && D.addon.alerts) || []);
+  const lifeAl = (D.life_deadlines || []).filter(x => x.level === "最優先" || x.level === "警告").map(x => ({level:x.level, text:"生活：" + x.title + "（" + md(x.due) + "）"}));
+  const al = [].concat(lifeAl, ((D.body && D.body.alerts) || []).map(a => ({level:"注意", text:"体：" + a})), (D.addon && D.addon.alerts) || []).sort((a,b) => ({"最優先":0,"警告":1,"注意":2}[a.level] ?? 3) - ({"最優先":0,"警告":1,"注意":2}[b.level] ?? 3));
   $("today-sub").textContent = al.length ? "対応 " + al.length + "件" : "注意なし";
   $("alerts").innerHTML = al.length ? al.slice(0, 10).map(a => `<li><span class="chip ${levelClass(a.level)}">${esc(a.level)}</span><span>${esc(a.text)}</span></li>`).join("") : `<li class="empty">今すぐ対応が必要なものはありません。</li>`;
 
@@ -237,6 +243,9 @@ function render(D){
     return `<tr><td>${names[k]}</td><td class="num">${esc(p.updated_text || "—")}</td><td class="num">${p.favorites ?? "—"}</td><td>${issues.length ? issues.map(esc).join("<br>") : '<span class="chip ok">問題なし</span>'}</td></tr>`; });
   $("listings").innerHTML = rows.length ? `<div class="scroll"><table><tr><th>掲載</th><th>更新</th><th>お気に入り</th><th>気になる点</th></tr>${rows.join("")}</table></div><p class="muted">PC が ${esc(L.checked_at || "")} に確認</p>` : `<p class="empty">掲載の確認は、PC の朝の同期が動いたあとに出ます。</p>`;
 
+  const LD = D.life_deadlines || [];
+  $("life").innerHTML = LD.length ? LD.slice(0, 10).map(o => { const dd = o.days; const when = dd < 0 ? (-dd) + "日超過" : dd === 0 ? "今日" : "あと" + dd + "日";
+    return `<li><span class="chip ${levelClass(o.level)}">${esc(md(o.due))}</span><span>${esc(o.title)} <span class="muted">（${esc(when)}${o.category ? "・" + esc(o.category) : ""}）</span></span></li>`; }).join("") : `<li class="empty">期限はありません。</li>`;
   const Y = D.youtube;
   if (Y && Y.items){
     const d7 = (v) => v == null ? "" : ` <span class="muted">（7日 ${v >= 0 ? "+" : ""}${fmt(v)}）</span>`;

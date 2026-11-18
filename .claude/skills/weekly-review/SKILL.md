@@ -88,3 +88,6 @@ exercise_sessions: 3
 
 - `git status` で `secure/` が含まれていないことを確認し、`週次振り返り YYYY-Www` でコミットして push する。
 - 最後に、「来週の山場」と「フォーカス候補」を5行以内で報告する（通知に載る文）。
+
+## 月初だけ：サブスクの更新日を埋める
+その月の最初の日曜は、Gmail で直近40日の領収書・更新・請求のメール（receipt / 領収書 / ご請求 / 更新 / renewal / subscription など）を探し、`domains/life/deadlines.yaml` に次の更新日の候補を足す（`repeat: monthly|yearly`、`note: 候補（○○のメールから）`）。金額・カード番号・注文番号は書かない。確かでないものは note に「要確認」。済んだ期限（status: done）で repeat があるものは、次の期限を足す。

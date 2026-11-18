@@ -1,0 +1,33 @@
+# 生活の期限の台帳。金額・口座・番号は書かない（お金の詳細は PC の secure/）
+# status: open / done / dropped
+# repeat: yearly / monthly / none（done にしたら、次の期限をエージェントが足す）
+# levels: 期限からの日数で段階を決める（負＝前）。省略時 {注意: -14, 警告: -3, 最優先: 0}
+# 足し方：スマホの Claude Code に「期限 ◯◯ 2027-03-01」と送る（quick-log が足す）
+deadlines:
+  - id: L-google-health-auth
+    title: Google Health の認証を「本番環境」にして再認証（しないと健康データの同期が止まる）
+    due: 2026-11-25
+    category: 手続き
+    repeat: none
+    levels: {注意: -5, 警告: -2, 最優先: 0}
+    status: open
+  - id: L-adobe
+    title: Adobe Creative Cloud をブラックフライデーで再契約するか決める（期限切れ中）
+    due: 2026-11-27
+    category: サブスク
+    repeat: none
+    note: セールの期間と条件は要確認
+    status: open
+  - id: L-workspace-storage
+    title: addon-pj.com の Workspace ストレージ（11/16 時点 83%）。上限を超えると14日後に読み取り専用。整理か容量追加を決める
+    due: 2026-12-15
+    category: サブスク
+    repeat: none
+    note: 使用率が週1%ずつ増えている（11/16 通知）。週次振り返りで確認
+    status: open
+  - id: L-subscription-dates
+    title: サブスクの更新日を埋める（Google AI Ultra・Workspace・X Premium・NewsPicks・WSJ・日経・WRESTLE UNIVERSE・Claude Max）。エージェントが Gmail の領収書から候補を出す
+    due: 2026-11-30
+    category: サブスク
+    repeat: none
+    status: open

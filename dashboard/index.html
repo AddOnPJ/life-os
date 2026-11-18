@@ -120,6 +120,11 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px}
   </section>
 
   <section>
+    <h2>生活の期限 <small>「期限 ◯◯ 日付」で追加</small></h2>
+    <ul class="plain" id="life"></ul>
+  </section>
+
+  <section>
     <h2>YouTube <small>@addonensemble</small></h2>
     <div id="youtube"></div>
   </section>
@@ -178,7 +183,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px}
 </main>
 
 <script type="application/json" id="snapshot">{
- "generated_at": "2026-11-19 00:44",
+ "generated_at": "2026-11-19 00:45",
  "links": {
   "repo": "https://github.com/AddOnPJ/life-os",
   "now": "https://github.com/AddOnPJ/life-os/blob/main/status/now.md",
@@ -743,6 +748,45 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px}
   "last_run": "# 2026-11-18\n- 初回。5つの立場の意見を突き合わせて台帳を作成。計画線 12末2・1末5・2末8・3末10\n- 決定：SNS発信の一言を募集文に、有料広告なし、入団期限は表向き3月、コンサートスクウェアに掲載、AI検索対策を行う\n"
  },
  "youtube": {},
+ "life_deadlines": [
+  {
+   "id": "L-adobe",
+   "title": "Adobe Creative Cloud をブラックフライデーで再契約するか決める（期限切れ中）",
+   "due": "2026-11-27",
+   "days": 8,
+   "category": "サブスク",
+   "level": "注意",
+   "note": "セールの期間と条件は要確認"
+  },
+  {
+   "id": "L-subscription-dates",
+   "title": "サブスクの更新日を埋める（Google AI Ultra・Workspace・X Premium・NewsPicks・WSJ・日経・WRESTLE UNIVERSE・Claude Max）。エージェントが Gmail の領収書から候補を出す",
+   "due": "2026-11-30",
+   "days": 11,
+   "category": "サブスク",
+   "level": "注意",
+   "note": ""
+  },
+  {
+   "id": "L-google-health-auth",
+   "title": "Google Health の認証を「本番環境」にして再認証（しないと健康データの同期が止まる）",
+   "due": "2026-11-25",
+   "days": 6,
+   "category": "手続き",
+   "level": null,
+   "note": ""
+  },
+  {
+   "id": "L-workspace-storage",
+   "title": "addon-pj.com の Workspace ストレージ（11/16 時点 83%）。上限を超えると14日後に読み取り専用。整理か容量追加を決める",
+   "due": "2026-12-15",
+   "days": 26,
+   "category": "サブスク",
+   "level": null,
+   "note": "使用率が週1%ずつ増えている（11/16 通知）。週次振り返りで確認"
+  }
+ ],
+ "inbox_md": "",
  "approvals": [
   {
    "done": false,
@@ -751,6 +795,10 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px}
   {
    "done": false,
    "text": "A1 サイトに AI 検索向けの3点（構造化データ・よくある質問・llms.txt）を入れる（種類: サイトの書き換え＝Yuichi の手作業 ／ 作成: 2026-11-19 ／ 中身: domains/addon/drafts/ai-visibility/）"
+  },
+  {
+   "done": false,
+   "text": "A3 YouTube の API キーを作って PC の .env に入れる（10分。種類: Yuichi の手作業 ／ 作成: 2026-11-19 ／ 手順: docs/google-health.md の末尾）"
   }
  ],
  "backlog": [
@@ -758,11 +806,6 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px}
    "id": "S15",
    "level": "高",
    "text": "Google Health の認証が「テスト中」なので、11/18 に取った更新用トークンが 7日（11/25 ごろ）で切れる（Google のヘルプで確認済み）。直し方：Google Cloud の「OAuth 同意画面」で公開ステータスを「本番環境」にし、PC で `python scripts/google_health/sync.py auth` をもう一度だけ実行する。Yuichi の作業（承認待ち A2）（11/19 更新）"
-  },
-  {
-   "id": "S16",
-   "level": "中",
-   "text": "YouTube の数字（登録者・動画ごとの再生）を毎日自動で取る。YouTube Data API は無料枠で足りる。PC の 6:30 の同期に足し、キーは PC の .env に置く（Google Cloud でキーの作成が要る）（11/18 点検）"
   },
   {
    "id": "S17",
@@ -808,6 +851,12 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px}
    "id": "S12",
    "level": "低",
    "text": "食事の記録が少ない（7日で1日）。もっと楽に記録できる方法（11/18）"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-19",
+   "text": "S16 YouTube の数字を PC が毎朝取り、司令室に出す仕組みを作った（scripts/youtube_stats.py）。鍵の作成は Yuichi（承認待ち A3）"
   },
   {
    "id": "",
@@ -942,7 +991,8 @@ function render(D){
     {k:"決めてほしいこと", v:((D.addon && D.addon.decisions) || []).length, s:"件"},
   ];
   $("tiles").innerHTML = tiles.map(t => `<div class="tile"><div class="k">${esc(t.k)}</div><div class="v">${esc(t.v)}</div><div class="s">${esc(t.s)}</div></div>`).join("");
-  const al = [].concat(((D.body && D.body.alerts) || []).map(a => ({level:"注意", text:"体：" + a})), (D.addon && D.addon.alerts) || []);
+  const lifeAl = (D.life_deadlines || []).filter(x => x.level === "最優先" || x.level === "警告").map(x => ({level:x.level, text:"生活：" + x.title + "（" + md(x.due) + "）"}));
+  const al = [].concat(lifeAl, ((D.body && D.body.alerts) || []).map(a => ({level:"注意", text:"体：" + a})), (D.addon && D.addon.alerts) || []).sort((a,b) => ({"最優先":0,"警告":1,"注意":2}[a.level] ?? 3) - ({"最優先":0,"警告":1,"注意":2}[b.level] ?? 3));
   $("today-sub").textContent = al.length ? "対応 " + al.length + "件" : "注意なし";
   $("alerts").innerHTML = al.length ? al.slice(0, 10).map(a => `<li><span class="chip ${levelClass(a.level)}">${esc(a.level)}</span><span>${esc(a.text)}</span></li>`).join("") : `<li class="empty">今すぐ対応が必要なものはありません。</li>`;
 
@@ -973,6 +1023,9 @@ function render(D){
     return `<tr><td>${names[k]}</td><td class="num">${esc(p.updated_text || "—")}</td><td class="num">${p.favorites ?? "—"}</td><td>${issues.length ? issues.map(esc).join("<br>") : '<span class="chip ok">問題なし</span>'}</td></tr>`; });
   $("listings").innerHTML = rows.length ? `<div class="scroll"><table><tr><th>掲載</th><th>更新</th><th>お気に入り</th><th>気になる点</th></tr>${rows.join("")}</table></div><p class="muted">PC が ${esc(L.checked_at || "")} に確認</p>` : `<p class="empty">掲載の確認は、PC の朝の同期が動いたあとに出ます。</p>`;
 
+  const LD = D.life_deadlines || [];
+  $("life").innerHTML = LD.length ? LD.slice(0, 10).map(o => { const dd = o.days; const when = dd < 0 ? (-dd) + "日超過" : dd === 0 ? "今日" : "あと" + dd + "日";
+    return `<li><span class="chip ${levelClass(o.level)}">${esc(md(o.due))}</span><span>${esc(o.title)} <span class="muted">（${esc(when)}${o.category ? "・" + esc(o.category) : ""}）</span></span></li>`; }).join("") : `<li class="empty">期限はありません。</li>`;
   const Y = D.youtube;
   if (Y && Y.items){
     const d7 = (v) => v == null ? "" : ` <span class="muted">（7日 ${v >= 0 ? "+" : ""}${fmt(v)}）</span>`;

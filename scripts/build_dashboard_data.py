@@ -165,6 +165,8 @@ def main() -> int:
             "last_run": last_run_text[:1200],
         },
         "youtube": yt,
+        "life_deadlines": rj("domains/life/obs/deadlines.json").get("items", []),
+        "inbox_md": rt("status/inbox.md")[:4000],
         "approvals": checklist(rt("status/approvals.md"), "待ち"),
         "backlog": backlog(rt("docs/backlog.md")),
         "automations": automations(rt("docs/automations.md")),

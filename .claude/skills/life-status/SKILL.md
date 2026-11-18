@@ -13,6 +13,8 @@ CLAUDE.md のルールに従う（推測を断定しない・装飾しない）�
 | 項目 | 取り方 |
 |---|---|
 | 体・記録の数字 | `python scripts/status_numbers.py --json status/numbers.json` の出力をそのまま使う（計算し直さない） |
+| 生活の期限 | `python scripts/life_deadlines.py` の出力をそのまま使う（台帳は `domains/life/deadlines.yaml`）。最優先・警告は「注意」にも出す |
+| メール（受信箱の整理） | `status/inbox.md`（朝のブリーフが作る） |
 | 予定 | Google カレンダー全カレンダー、今日〜14日後。朝のブリーフで取ったものがあれば使い回す |
 | 今日のブリーフ | `logs/daily/今日.md` の「## 今日のブリーフ」（気づき・メール・持ち越し） |
 | 人 | 直近14日の日次ログの「## 人・連絡」、`domains/people/` |
@@ -65,6 +67,12 @@ CLAUDE.md のルールに従う（推測を断定しない・装飾しない）�
 
 ## 体
 （status_numbers.py の出力をそのまま貼る）
+
+## 生活の期限
+（life_deadlines.py の出力をそのまま貼る）
+
+## メール
+- 要返信 ◯件・返事待ち ◯件（status/inbox.md から。件名と相手の名前だけ）
 
 ## 食事
 - 記録した日：7日で◯日。（記録が少なければ「写真か一言で送ると記録されます」と1行）

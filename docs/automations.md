@@ -27,6 +27,7 @@
 | 「恋愛記録 苗字」＋【記録】 | スマホの Claude Code（**love-coach** リポジトリを開く） | love-coach の `profiles/苗字/記録.md` に追記 |
 | 「A1 OK」「A1,A3 OK」「A1 なし」 | スマホの Claude Code（life-os） | 承認待ちを実行・取り下げ（approve） |
 | 「D1 外す」など | スマホの Claude Code（life-os） | AddOn の決めてほしいことを決定として反映（approve） |
+| 「期限 ◯◯ 日付」 | スマホの Claude Code（life-os） | 生活の期限の台帳（domains/life/deadlines.yaml）に足す |
 | 「改善 ◯◯」 | スマホの Claude Code（life-os） | 改善の一覧（docs/backlog.md）に足す |
 | 「grok」＋Grok の結果を貼る | スマホの Claude Code（life-os） | inbox に保存。AddOn エージェントが翌朝読む |
 | LINE のトーク履歴を添付 | Claude アプリの「恋愛コーチ」プロジェクト | 相手の気持ちの読み取りと次の一手 |
