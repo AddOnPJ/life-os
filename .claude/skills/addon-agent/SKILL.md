@@ -31,13 +31,13 @@ python scripts/addon_agent.py --json domains/addon/agent/obs/calc.json
 | 見るもの | 方法 | 記録先 |
 |---|---|---|
 | 応募・問い合わせ | Gmail：music@addon-pj.com 宛て、件名・本文に 入団／見学／応募／パート名、ジモティー（no-reply@jmty.jp、宛先 ytytcafe@gmail.com。宣伝メールは Yuichi が消すので、残っているものは問い合わせの可能性が高い）とアンサンブルファン（allegro@ensemble.fan。「募集を更新しました」は応募ではない。本文の更新パスワードは書き写さない）・コンサートスクウェアの通知メール。直近7日と、applicants.yaml の未完のスレッド | applicants.yaml（新規は stage: 問い合わせ、送信済みに返信があれば replied と stage を進める） |
-| 掲載の順位 | WebFetch：アンサンブルファン `https://allegro.ensemble.fan/conbrio/search_list?part=va`（va・vc・cb・ob・fg）、ジモティー大阪 吹奏楽 `https://jmty.jp/osaka/com-ban/g-2708`。並びを原文のまま抜き出し、「AddOn」の位置を数える | obs/日付.json |
+| 掲載の順位 | まず PC が毎朝取る `obs/listings.json` の `ranks`（アンサンブルファンの va・vc・ob・fg、ジモティー大阪の吹奏楽。推定順位）。無い・古いときだけ WebFetch：アンサンブルファン `https://allegro.ensemble.fan/conbrio/search_list?part=va`（va・vc・cb・ob・fg）、ジモティー大阪 吹奏楽 `https://jmty.jp/osaka/com-ban/g-2708`。並びを原文のまま抜き出し、「AddOn」の位置を数える | obs/日付.json |
 | 掲載の中身 | PC が毎朝取っている `domains/addon/agent/obs/listings.json`（`scripts/listing_check.py`：更新日・お気に入り・残っている過去の日付・本文のメール件数・パートや群青の動画の有無・「急募」など）。checked_at が48時間より古ければ「PC の確認が止まっている」と注意に出す。クラウドの WebFetch では記事ページの古い版が返ることがあるので、中身の判断には使わない | 差分があれば runs/ と承認待ち（直す案） |
 | ジモティーのお気に入り数 | listings.json の favorites（実験 EX1 の指標） | obs/日付.json |
 | X の調査（Grok Bot） | Google ドライブ `00_AI_Hub/exchange/to-claude/`（ID は `docs/exchange.md`）の直近48時間のファイルのうち、`exchange-log.md` にないもの。加えて Yuichi が「grok」と貼って送った `inbox/` のもの | `exchange-log.md` に1行、使えるものは runs/ と tactics・drafts へ |
 | 本番の準備 | `domains/addon/events/` の今日〜21日後 | obligations.yaml に未登録の期限があれば足す |
 
-取得に失敗したときは「取得失敗」と書き、前回の値で判断しない。2日続けて失敗したら注意に出す。
+取得に失敗したときは「取得失敗」と書き、前回の値で判断しない。WebFetch が許可待ちで使えないときは、待たずに PC の listings.json だけで判断する。2日続けて失敗したら注意に出す。
 
 ## 3. 判断して進める
 

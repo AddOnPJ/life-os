@@ -101,7 +101,7 @@ CLAUDE.md のルールに従う（推測を断定しない・装飾しない）�
 
 ## 4b. 自動化の点検
 
-`docs/automations.md` の「毎日」にある仕事が動いたかを、結果の置き場所で確かめる。PC の同期は `status/pc-sync.json` の ran_at（26時間より古い → 「PC の同期が止まっている。PC が起動しているか、Google Health の認証が切れていないか確認」）と listing（失敗が続く → 注意）を見る。止まっていそうなものは「注意」に1行で出す。
+`docs/automations.md` の「毎日」にある仕事が動いたかを、結果の置き場所で確かめる。PC の同期は `status/pc-sync.json` を見る。`ok: false` なら failed_step と error をそのまま「注意」に出す（例「PC の同期が sync.py fetch で失敗：…」）。ran_at（26時間より古い → 「PC の同期が止まっている。PC が起動しているか、Google Health の認証が切れていないか確認」）と listing（失敗が続く → 注意）を見る。止まっていそうなものは「注意」に1行で出す。
 
 ## 5. 終わり
 

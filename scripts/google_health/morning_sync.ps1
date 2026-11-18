@@ -6,7 +6,9 @@ $env:PYTHONIOENCODING = "utf-8"
 $log = "secure\health\morning_sync.log"
 New-Item -ItemType Directory -Force (Split-Path $log) | Out-Null
 
+$script:step = "開始"
 function Invoke-Step([string]$What, [scriptblock]$Cmd) {
+    $script:step = $What
     Write-Host "== $What"
     & $Cmd
     if ($LASTEXITCODE -ne 0) { throw "$What が失敗しました (exit $LASTEXITCODE)" }
@@ -46,6 +48,7 @@ try {
     # PC の同期が動いたことをクラウドに知らせる（secure の中身は書かない）
     $state = [ordered]@{
         ran_at = (Get-Date -Format "yyyy-MM-dd HH:mm")
+        ok = $true
         health = "ok"
         listing = $(if ($listingOk) { "ok" } else { "失敗" })
         youtube = $(if ($youtubeOk) { "ok" } else { "失敗" })
@@ -74,6 +77,19 @@ try {
     Write-Host "完了"
 } catch {
     Write-Host ("失敗: " + $_)
+    # 失敗したことをクラウドに知らせる（どの段階か・エラーの種類だけ。secure の中身やパスは書かない）
+    try {
+        $msg = ($_.Exception.Message -replace '[A-Za-z]:\\[^\s"]+', '<path>')
+        if ($msg.Length -gt 200) { $msg = $msg.Substring(0, 200) }
+        $state = [ordered]@{ ran_at = (Get-Date -Format "yyyy-MM-dd HH:mm"); ok = $false; failed_step = $script:step; error = $msg }
+        New-Item -ItemType Directory -Force "status" | Out-Null
+        [IO.File]::WriteAllText((Join-Path (Get-Location) "status\pc-sync.json"), ($state | ConvertTo-Json), (New-Object Text.UTF8Encoding($false)))
+        git reset -q
+        git add -- "status/pc-sync.json"
+        git commit -q -m "PC の同期が失敗（$($script:step)）"
+        git pull -q --rebase --autostash
+        git push -q
+    } catch { Write-Host ("失敗の報告もできませんでした: " + $_) }
     exit 1
 } finally {
     Stop-Transcript | Out-Null

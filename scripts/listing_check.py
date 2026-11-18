@@ -34,6 +34,14 @@ PAGES = {
     "site_recruit": "https://addon-pj.com/recruit/",
 }
 # 掲載にあってほしい語（なければ「ない」と記録するだけ。判断は AddOn エージェント）
+# 一覧での順位（クラウドの WebFetch は定期実行で使えないことがあるので PC で測る）
+RANK_PAGES = {
+    "ensemblefan_va": "https://allegro.ensemble.fan/conbrio/search_list?part=va",
+    "ensemblefan_vc": "https://allegro.ensemble.fan/conbrio/search_list?part=vc",
+    "ensemblefan_ob": "https://allegro.ensemble.fan/conbrio/search_list?part=ob",
+    "ensemblefan_fg": "https://allegro.ensemble.fan/conbrio/search_list?part=fg",
+    "jmty_suisougaku_osaka": "https://jmty.jp/osaka/com-ban/g-2708",
+}
 EXPECT = ["ヴァイオリン", "ヴィオラ", "チェロ", "コントラバス", "クラリネット", "オーボエ",
           "ファゴット", "サックス", "フルート", "IXj1YW6BqZw", "SNS"]
 AVOID = ["急募", "ボーカル"]
@@ -111,6 +119,16 @@ def summarize(name: str, text: str, today: dt.date) -> dict:
     return out
 
 
+def rank_in_list(text: str) -> dict:
+    """「AddOn」が一覧の何番目かを推定する。各行にある日付の数を、AddOn より前で数える。"""
+    i = text.find("AddOn")
+    if i < 0:
+        return {"rank": None, "note": "1ページ目に見当たらない"}
+    before = text[:i]
+    n = len(re.findall(r"20\d\d/\d{1,2}/\d{1,2}", before)) or len(DATE_MD.findall(before))
+    return {"rank": n + 1, "note": "推定（AddOn より前の日付の数＋1）"}
+
+
 def main() -> int:
     now = dt.datetime.now(JST)
     today = now.date()
@@ -121,6 +139,12 @@ def main() -> int:
             result["pages"][name] = {"url": url, **summarize(name, text, today)}
         except Exception as e:  # 取れなかったことも記録する
             result["pages"][name] = {"url": url, "ok": False, "error": type(e).__name__}
+    result["ranks"] = {}
+    for name, url in RANK_PAGES.items():
+        try:
+            result["ranks"][name] = {"url": url, **rank_in_list(to_text(fetch(url)))}
+        except Exception as e:
+            result["ranks"][name] = {"url": url, "rank": None, "error": type(e).__name__}
     OUT.mkdir(parents=True, exist_ok=True)
     body = json.dumps(result, ensure_ascii=False, indent=1)
     (OUT / "listings.json").write_text(body, encoding="utf-8")
