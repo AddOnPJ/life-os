@@ -1,0 +1,17 @@
+# 秘密情報
+.env
+.env.*
+*.key
+*.pem
+
+# 機微情報（git-crypt 設定まではコミットしない）
+secure/*
+!secure/README.md
+
+# OS / エディタ
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+node_modules/
+__pycache__/
