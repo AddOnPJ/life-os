@@ -30,7 +30,7 @@ python scripts/addon_agent.py --json domains/addon/agent/obs/calc.json
 
 | 見るもの | 方法 | 記録先 |
 |---|---|---|
-| 応募・問い合わせ | Gmail：music@addon-pj.com 宛て、件名・本文に 入団／見学／応募／パート名、ジモティーとアンサンブルファン・コンサートスクウェアの通知メール。直近7日と、applicants.yaml の未完のスレッド | applicants.yaml（新規は stage: 問い合わせ、送信済みに返信があれば replied と stage を進める） |
+| 応募・問い合わせ | Gmail：music@addon-pj.com 宛て、件名・本文に 入団／見学／応募／パート名、ジモティー（no-reply@jmty.jp、宛先 ytytcafe@gmail.com。宣伝メールは Yuichi が消すので、残っているものは問い合わせの可能性が高い）とアンサンブルファン（allegro@ensemble.fan。「募集を更新しました」は応募ではない。本文の更新パスワードは書き写さない）・コンサートスクウェアの通知メール。直近7日と、applicants.yaml の未完のスレッド | applicants.yaml（新規は stage: 問い合わせ、送信済みに返信があれば replied と stage を進める） |
 | 掲載の順位 | WebFetch：アンサンブルファン `https://allegro.ensemble.fan/conbrio/search_list?part=va`（va・vc・cb・ob・fg）、ジモティー大阪 吹奏楽 `https://jmty.jp/osaka/com-ban/g-2708`。並びを原文のまま抜き出し、「AddOn」の位置を数える | obs/日付.json |
 | 掲載の中身 | 公開ページはこちらから古い版しか取れないことがある。表示の更新日が Yuichi の更新日より古ければ「取得が古い」と記録し、判断に使わない | obs/日付.json |
 | ジモティーのお気に入り数 | 記事ページの表示。更新日が古い版なら使わない | obs/日付.json |
