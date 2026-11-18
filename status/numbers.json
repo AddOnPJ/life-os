@@ -1,0 +1,296 @@
+{
+ "generated_for": "2026-11-19",
+ "through": "2026-11-18",
+ "metrics": {
+  "sleep_hours": {
+   "label": "睡眠",
+   "unit": "h",
+   "digits": 1,
+   "yesterday": 2.8,
+   "avg7": 4.7,
+   "n7": 3,
+   "avg28": 4.7,
+   "n28": 3
+  },
+  "steps": {
+   "label": "歩数",
+   "unit": "",
+   "digits": 0,
+   "yesterday": 7506.0,
+   "avg7": 7807.666666666667,
+   "n7": 3,
+   "avg28": 7807.666666666667,
+   "n28": 3
+  },
+  "active_minutes": {
+   "label": "活動時間",
+   "unit": "分",
+   "digits": 0,
+   "yesterday": 118.0,
+   "avg7": 136.33333333333334,
+   "n7": 3,
+   "avg28": 136.33333333333334,
+   "n28": 3
+  }
+ },
+ "exercise_days7": 3,
+ "meal_days7": 1,
+ "log_days7": 3,
+ "sleep_short_streak": 2,
+ "no_exercise_streak": 0,
+ "alerts": [],
+ "daily": [
+  {
+   "date": "2026-10-22",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-10-23",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-10-24",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-10-25",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-10-26",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-10-27",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-10-28",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-10-29",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-10-30",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-10-31",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-01",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-02",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-03",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-04",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-05",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-06",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-07",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-08",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-09",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-10",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-11",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-12",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-13",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-14",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-15",
+   "exists": false,
+   "sleep_hours": null,
+   "steps": null,
+   "active_minutes": null,
+   "exercise_count": 0,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-16",
+   "exists": true,
+   "sleep_hours": 6.8,
+   "steps": 8257.0,
+   "active_minutes": 156.0,
+   "exercise_count": 1,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-17",
+   "exists": true,
+   "sleep_hours": 4.5,
+   "steps": 7660.0,
+   "active_minutes": 135.0,
+   "exercise_count": 1,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-18",
+   "exists": true,
+   "sleep_hours": 2.8,
+   "steps": 7506.0,
+   "active_minutes": 118.0,
+   "exercise_count": 1,
+   "meals_count": 1
+  }
+ ]
+}

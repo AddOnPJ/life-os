@@ -17,6 +17,7 @@
 - `secure/` … 機微情報（健康の詳細・恋愛・お金）。PC の中だけ。GitHub に上げない
 - `secure-inbox/` … スマホ・クラウドから送った機微メモの暗号文（`.age`）。公開鍵 `keys/age-public.txt` で暗号化、PC の秘密鍵で復号（`scripts/secure_note.py`）
 - `reviews/weekly/` … 週次振り返り
+- `status/` … 生活全体の現状まとめ（`now.md`、毎朝自動）と承認待ち（`approvals.md`）
 - `templates/` … 日次ログなどのひな形
 - `scripts/` … 集計・同期スクリプト
 - `.claude/skills/` … 定型作業のスキル
