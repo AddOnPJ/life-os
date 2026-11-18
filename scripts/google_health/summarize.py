@@ -357,7 +357,7 @@ def update_daily(day: dt.date, pub: dict, has_secure: bool, state: dict, dry: bo
         block.append("- 運動: " + "、".join(f"{e['start']:%H:%M} {e['type']} {e['minutes']}分" for e in ex))
     if has_secure:
         block.append("- 心拍・HRV・SpO2・体重などの細かい数値: secure に記録")
-    if block:
+    if block and "steps" in pub:   # rollup が取れていない日（取得日数の外）は既存ブロックを残す
         body = set_section_block(body, "## 運動・体調", block)
     body = add_confirm(body, confirms)
 
@@ -379,20 +379,26 @@ def update_secure(day: dt.date, sec: dict, dry: bool) -> int:
     if not sec:
         return 0
     f = SECURE_DIR / f"{day.isoformat()}.md"
-    block = [f"- {k}: {v}" for k, v in sec.items()]
-    new = "\n".join([MARK_S, *block, MARK_E])
-    if f.exists():
-        text = f.read_text(encoding="utf-8")
-        if MARK_S in text and MARK_E in text:
-            text = re.sub(re.escape(MARK_S) + r".*?" + re.escape(MARK_E), lambda _: new, text, flags=re.S)
-        else:
-            text = text.rstrip("\n") + f"\n\n## Google Health\n{new}\n"
+    text = f.read_text(encoding="utf-8") if f.exists() else ""
+    merged: dict = {}
+    m = re.search(re.escape(MARK_S) + r"(.*?)" + re.escape(MARK_E), text, flags=re.S)
+    if m:  # 取得日数の外で今回取れなかった項目は、前回の値を残す
+        for ln in m.group(1).strip().split("\n"):
+            k, _, v = ln.removeprefix("- ").partition(": ")
+            if k:
+                merged[k] = v
+    merged.update(sec)
+    new = "\n".join([MARK_S, *[f"- {k}: {v}" for k, v in merged.items()], MARK_E])
+    if m:
+        text = text[:m.start()] + new + text[m.end():]
+    elif text:
+        text = text.rstrip("\n") + f"\n\n## Google Health\n{new}\n"
     else:
         text = f"---\ndate: {day.isoformat()}\n---\n\n## Google Health\n{new}\n"
     if not dry:
         f.parent.mkdir(parents=True, exist_ok=True)
         f.write_text(text, encoding="utf-8", newline="\n")
-    return len(sec)
+    return len(merged)
 
 
 # ---------- main ----------
