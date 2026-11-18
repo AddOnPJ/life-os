@@ -32,9 +32,9 @@ python scripts/addon_agent.py --json domains/addon/agent/obs/calc.json
 |---|---|---|
 | 応募・問い合わせ | Gmail：music@addon-pj.com 宛て、件名・本文に 入団／見学／応募／パート名、ジモティー（no-reply@jmty.jp、宛先 ytytcafe@gmail.com。宣伝メールは Yuichi が消すので、残っているものは問い合わせの可能性が高い）とアンサンブルファン（allegro@ensemble.fan。「募集を更新しました」は応募ではない。本文の更新パスワードは書き写さない）・コンサートスクウェアの通知メール。直近7日と、applicants.yaml の未完のスレッド | applicants.yaml（新規は stage: 問い合わせ、送信済みに返信があれば replied と stage を進める） |
 | 掲載の順位 | WebFetch：アンサンブルファン `https://allegro.ensemble.fan/conbrio/search_list?part=va`（va・vc・cb・ob・fg）、ジモティー大阪 吹奏楽 `https://jmty.jp/osaka/com-ban/g-2708`。並びを原文のまま抜き出し、「AddOn」の位置を数える | obs/日付.json |
-| 掲載の中身 | 公開ページはこちらから古い版しか取れないことがある。表示の更新日が Yuichi の更新日より古ければ「取得が古い」と記録し、判断に使わない | obs/日付.json |
-| ジモティーのお気に入り数 | 記事ページの表示。更新日が古い版なら使わない | obs/日付.json |
-| X の調査（Grok Bot） | Grok は結果をチャットにしか残さない。Yuichi が「grok」と貼って送ったものが `inbox/` にあれば読む | 候補として runs/ に1行 |
+| 掲載の中身 | PC が毎朝取っている `domains/addon/agent/obs/listings.json`（`scripts/listing_check.py`：更新日・お気に入り・残っている過去の日付・本文のメール件数・パートや群青の動画の有無・「急募」など）。checked_at が48時間より古ければ「PC の確認が止まっている」と注意に出す。クラウドの WebFetch では記事ページの古い版が返ることがあるので、中身の判断には使わない | 差分があれば runs/ と承認待ち（直す案） |
+| ジモティーのお気に入り数 | listings.json の favorites（実験 EX1 の指標） | obs/日付.json |
+| X の調査（Grok Bot） | Google ドライブ `00_AI_Hub/exchange/to-claude/`（ID は `docs/exchange.md`）の直近48時間のファイルのうち、`exchange-log.md` にないもの。加えて Yuichi が「grok」と貼って送った `inbox/` のもの | `exchange-log.md` に1行、使えるものは runs/ と tactics・drafts へ |
 | 本番の準備 | `domains/addon/events/` の今日〜21日後 | obligations.yaml に未登録の期限があれば足す |
 
 取得に失敗したときは「取得失敗」と書き、前回の値で判断しない。2日続けて失敗したら注意に出す。
@@ -46,6 +46,9 @@ python scripts/addon_agent.py --json domains/addon/agent/obs/calc.json
 3. **完了の確認**：Yuichi が日次ログや inbox に「済み」「直した」と書いたもの、Gmail の送信済みで確かめられたものは、obligations.yaml の status を done にする。見学会が終わったら次の見学会の期限を足す
 4. **計画より遅れていたら**：tactics.yaml の todo を priority 順に1つ選び、実行に必要な下書き（掲載文・投稿文・依頼文）を `domains/addon/drafts/` に作って承認待ちに積む。1日に積むのは最大2件
 5. **実験**：判定日を過ぎたら、基準（開始前に固定したもの）で判定案を作り、承認待ちに積む
+
+### Grok Bot への依頼（翌朝の調査に入れてほしいこと）
+今日の判断で X の調査が役に立つこと（例：見学会の告知に反応しそうな人の探し方、特定パートの「再開」したい人の投稿、競合団体の動き）があれば、`to-grok/` に `YYYY-MM-DD_HHMM_claude-to-grok_request.md` を作る（形は `docs/exchange.md`）。1日1件まで。なければ作らない。
 
 ## 4. 報告する
 
