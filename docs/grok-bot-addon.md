@@ -88,3 +88,25 @@ X Premium の Grok Bot に、AddOnアンサンブルの **メンバー募集** �
 
 ## 要確認
 - Grok Bot の X プラグイン接続（非公開データを使う場合）。この用途は公開投稿だけなので、通常は不要の見込み
+
+---
+
+## 交換フォルダとのつなぎ（2026-11-18 追加）
+
+Grok Bot のチャットで次を送って、スキルとルーティンを更新する。先に Grok Bot に Google ドライブを接続しておく（「Google ドライブに接続して」と頼む）。
+
+```
+「AddOn広報リサーチ」のスキルを次のように更新してください。
+1. 最初に Google ドライブの「00_AI_Hub/exchange/to-grok」フォルダを開き、直近24時間に作られたファイルを読む。Claude からの依頼（topic: request）があれば、今日の調査に含める
+2. 調査が終わったら、結果を「00_AI_Hub/exchange/to-claude」フォルダに新しいファイルとして保存する。ファイル名は「YYYY-MM-DD_HHMM_grok-to-claude_addon-research.md」（日本時間）。先頭に次を書く：
+---
+from: grok
+to: claude
+created: YYYY-MM-DD HH:MM
+topic: addon-research
+reply_to: （依頼に答えた場合は、その依頼のファイル名）
+---
+3. 既にあるファイルは書き換えない。いつもどおり、投稿・返信・いいね・フォロー・DM はしない
+決まりの詳細は、同じフォルダの「README_使い方.md」にあります。
+更新したら、ルーティンの Instruction にも「to-grok を読む」「結果を to-claude に保存する」を足してください。
+```
