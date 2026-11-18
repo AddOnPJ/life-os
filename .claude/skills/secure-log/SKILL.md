@@ -17,14 +17,14 @@ description: PC で、暗号化された機微メモ（恋愛・お金・健康�
 
 | kind | 保存先 |
 |---|---|
-| love | `secure/love/<苗字>/記録.md` の先頭（相手ごと。フォルダがなければ `secure/love/_ひな形/` をコピー） |
+| love | life-os には置かない。`AddOnPJ/love-coach` の `secure/love/profiles/苗字/記録.md` の先頭に追記（PC に clone がなければ Yuichi に伝える） |
 | money | `secure/money/YYYY-MM.md` |
 | health | `secure/health/YYYY-MM-DD.md` |
 | other | `secure/notes/YYYY-MM-DD.md` |
 
-## 2. 恋愛（secure/love/<苗字>/）
+## 2. 恋愛
 
-構成は `secure/love/README.md`。基本情報は `相手メモ.md`、出来事と恋愛コーチの【記録】は `記録.md`（新しい順）、LINE は `line/最新.txt`。
+恋愛の正本は非公開リポジトリ `AddOnPJ/love-coach`（運用ルールはそのリポジトリの `secure/love/README.md`）。以下は記録の書き方の参考。
 
 記録のルール
 - 相手は**苗字だけ**。下の名前・連絡先・住所・勤務先・SNS アカウント・家族の情報は書かない

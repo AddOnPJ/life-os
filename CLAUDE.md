@@ -14,7 +14,8 @@
 - `domains/fitness/` … 運動・睡眠・体重など
 - `domains/addon/` … AddOn アンサンブル運営
 - `domains/people/` … 人間関係（本人に見られても困らない範囲だけ）
-- `secure/` … 機微情報（健康の詳細・恋愛・お金）。PC の中だけ。GitHub に上げない
+- `secure/` … 機微情報（健康の詳細・お金）。PC の中だけ。GitHub に上げない
+- 恋愛 … 別の非公開リポジトリ `AddOnPJ/love-coach` が正本（Yuichi が決めた例外）。life-os には書かない
 - `secure-inbox/` … スマホ・クラウドから送った機微メモの暗号文（`.age`）。公開鍵 `keys/age-public.txt` で暗号化、PC の秘密鍵で復号（`scripts/secure_note.py`）
 - `reviews/weekly/` … 週次振り返り
 - `status/` … 生活全体の現状まとめ（`now.md`、毎朝自動）と承認待ち（`approvals.md`）
@@ -31,7 +32,8 @@
 
 ## 機微情報
 - `secure/` 配下の内容を、要約も含めてほかのフォルダや外部サービスに書き出さない
-- 健康の詳細・恋愛・お金に当たる内容は `secure/` に振り分け、日次ログには「secure に記録」とだけ書く
+- 健康の詳細・お金に当たる内容は `secure/` に振り分け、日次ログには「secure に記録」とだけ書く
+- 恋愛の内容は `AddOnPJ/love-coach` に書く（life-os の日次ログには何も書かない）
 - 他人（恋愛の相手を含む）の連絡先・住所・本人が人に話していないことは記録しない。恋愛の相手は苗字だけで書く
 - クラウド（スマホの Claude Code・定期実行）では機微情報を平文で保存・コミットしない。`secure_note.py encrypt` で暗号化する
 - 健康については記録と傾向の整理まで。診断や治療の判断はしない

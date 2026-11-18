@@ -30,7 +30,7 @@ description: スマホなどから送られた短い記録（「昼 そば」「
 4. **機微** → 平文では保存しない。
    - `python scripts/secure_note.py encrypt --kind love|money|health --text "本文"` で暗号化して `secure-inbox/` に保存する（`pyrage` がなければ `pip install pyrage`）
    - 公開鍵 `keys/age-public.txt` がまだなければ、保存せずに「機微情報の記録は鍵の設定後に使えます（PC で keygen）」と返す
-   - 「恋愛記録 苗字」で始まるメッセージ（恋愛コーチの【記録】の転送）は `--kind love` で、先頭に苗字を残したまま暗号化する。PC の secure-log が `secure/love/<苗字>/記録.md` に追記する
+   - 「恋愛記録 苗字」で始まるメッセージ（恋愛コーチの【記録】の転送）は life-os に保存しない。`AddOnPJ/love-coach` を add_repo で追加し、そのリポジトリの CLAUDE.md の手順で追記する。追加できなければ「love-coach リポジトリを開いたセッションで送ってください」と返す
    - 恋愛の相手は**苗字だけ**で書く。下の名前・連絡先・住所・SNS アカウントは書かない（送られてきても省く）
    - 暗号化したら、この会話の返答に本文を繰り返さない
 5. `git add inbox secure-inbox` → `記録 YYYY-MM-DD HH:MM` でコミットして push する。`secure/` が含まれていないことを `git status` で確認する。

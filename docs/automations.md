@@ -21,7 +21,7 @@
 | 送り方 | どこ | やること |
 |---|---|---|
 | 「記録 ◯◯」、食事の写真 | スマホの Claude Code（life-os） | inbox に保存（quick-log） |
-| 「恋愛記録 苗字」＋【記録】 | スマホの Claude Code（life-os） | 暗号化して保存、PC で secure/love に追記 |
+| 「恋愛記録 苗字」＋【記録】 | スマホの Claude Code（**love-coach** リポジトリを開く） | love-coach の `profiles/苗字/記録.md` に追記 |
 | 「A1 OK」「A1 なし」 | スマホの Claude Code（life-os） | 承認待ちを実行・取り下げ（approve） |
 | LINE のトーク履歴を添付 | Claude アプリの「恋愛コーチ」プロジェクト | 相手の気持ちの読み取りと次の一手 |
 | 「secure を処理して」 | PC の Claude Code | 暗号化メモを復号して secure/ に整理（secure-log） |
