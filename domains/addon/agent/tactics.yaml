@@ -1,0 +1,94 @@
+# 打ち手の在庫。priority が小さいほど先。status: todo / proposed / doing / done / dropped / waiting_decision
+# 計画線より遅れたら、todo の上から承認待ちに出す
+tactics:
+  - id: T-jmty-mail
+    title: ジモティー本文から連絡先を外し、アプリ内メッセージで受ける
+    priority: 1
+    cost: 0
+    owner: Yuichi
+    status: doing
+  - id: T-site
+    title: サイトの募集ページを掲載とそろえる
+    priority: 1
+    cost: 0
+    owner: Yuichi
+    status: doing
+  - id: T-1129
+    title: 11/29 本番で募集（プログラムのQR、MC30秒、撮影、教室の生徒さん）
+    priority: 1
+    cost: 0
+    owner: Yuichi
+    status: doing
+  - id: T-reply
+    title: 返信は24時間以内。直近の見学日2〜3つ、「どこで知りましたか」、SNS発信の一言を入れる
+    priority: 1
+    cost: 0
+    owner: エージェント（下書き）
+    status: doing
+  - id: T-visit-experience
+    title: 見学を「同じパートの担当者の隣で合奏体験」に。3日前に易しいパート譜、終わったら次回を案内（入団率 40%→60% をねらう）
+    priority: 2
+    cost: 0
+    owner: Yuichi・団員
+    status: todo
+  - id: T-concertsquare
+    title: コンサートスクウェア（無料）に団員募集を掲載。管楽器・吹奏楽OB向けの文面
+    url: https://www.concertsquare.jp/recruit/new
+    priority: 2
+    cost: 0
+    owner: Yuichi（下書きはエージェント）
+    status: todo   # 2026-11-18 Yuichi 決定。掲載文の下書きを承認待ちに出す
+  - id: T-ai-visibility
+    title: AI 検索（ChatGPT・Gemini・Claude・Perplexity など）で「関西 アンサンブル 団員募集」「茨木 ヴィオラ 楽団」などを聞かれたときに AddOn が出るようにする（サイトの構造化データ・募集ページのQ&A・llms.txt・掲載先の情報の統一）。月1回、実際に各AIに聞いて出るかを記録する
+    priority: 2
+    cost: 0
+    owner: エージェント（調査・下書き）／Yuichi（サイトへの反映）
+    status: todo
+  - id: T-referral
+    title: 団員の紹介（12/13 全員Mtgで5分、紹介者欄つきのフォーム、春に入った4人の「入ってみて」3行）
+    priority: 2
+    cost: 0
+    owner: Yuichi・団員
+    status: todo
+  - id: T-university
+    title: 12〜3月に引退する大学オケ・吹奏楽部の4回生へ、団員の出身校のつてで案内（「6/20 の森のホールから一緒に」）
+    priority: 2
+    cost: 0
+    owner: 団員
+    status: todo
+  - id: T-part-pages
+    title: パート別の呼びかけ（ヴィオラはヴァイオリンからの持ち替え・レンタル案内、チェロは教室の大人の生徒、コントラバスは弦バス経験者、木管は「楽器は相談可・コンクールなし」）
+    priority: 3
+    cost: 0
+    owner: エージェント（下書き）
+    status: todo
+  - id: T-sns-reels
+    title: 11/29 の映像から縦動画を週3本（12/1〜20）。締めは見学会の日程
+    priority: 3
+    cost: 0
+    owner: Yuichi（下書きはエージェント）
+    status: todo
+  - id: T-ef-paid
+    title: アンサンブルファンの有料プラン（団体A、月1,320円・6か月単位）で優先掲載
+    priority: 4
+    cost: 7920
+    owner: Yuichi
+    status: waiting_decision
+  - id: T-age
+    title: 募集年齢の上限（45歳）を外す（楽器を再開する人を逃さない）
+    priority: 2
+    cost: 0
+    owner: Yuichi
+    status: waiting_decision
+  - id: T-every-practice
+    title: 見学会の日以外の練習日も見学できるようにする
+    priority: 3
+    cost: 0
+    owner: Yuichi
+    status: todo
+  - id: T-ads
+    title: Instagram 広告
+    priority: 9
+    cost: 23000
+    owner: Yuichi
+    status: dropped   # 2026-11-18 Yuichi：できればかけたくない

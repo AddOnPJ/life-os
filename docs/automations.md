@@ -10,6 +10,8 @@
 | 6:30 | life-os-google-health | PC（タスク スケジューラ） | Pixel Watch のデータを取得し、日次ログに歩数・睡眠などを書く | `logs/daily/`（詳細は `secure/health/`） |
 | 6:47 | life-os 朝のブリーフ | Claude 定期実行（クラウド） | カレンダー・Gmail・記録から今日のブリーフ、続けて現状まとめ。応募メールには返信の下書き（送らない） | `logs/daily/今日.md`、`status/now.md`、通知 |
 
+| 7:13 | AddOn エージェント | Claude 定期実行（クラウド） | 募集・本番・発信の点検と判断。応募への返信の下書き、期限の段階分け、打ち手の準備。月曜は3つの立場のAIで検討会 | `domains/addon/agent/status.md`、`status/approvals.md`、通知 |
+
 ## 毎週
 
 | 時刻 | 名前 | どこで動く | やること | 結果の置き場所 |
@@ -22,7 +24,9 @@
 |---|---|---|
 | 「記録 ◯◯」、食事の写真 | スマホの Claude Code（life-os） | inbox に保存（quick-log） |
 | 「恋愛記録 苗字」＋【記録】 | スマホの Claude Code（**love-coach** リポジトリを開く） | love-coach の `profiles/苗字/記録.md` に追記 |
-| 「A1 OK」「A1 なし」 | スマホの Claude Code（life-os） | 承認待ちを実行・取り下げ（approve） |
+| 「A1 OK」「A1,A3 OK」「A1 なし」 | スマホの Claude Code（life-os） | 承認待ちを実行・取り下げ（approve） |
+| 「D1 外す」など | スマホの Claude Code（life-os） | AddOn の決めてほしいことを決定として反映（approve） |
+| 「grok」＋Grok の結果を貼る | スマホの Claude Code（life-os） | inbox に保存。AddOn エージェントが翌朝読む |
 | LINE のトーク履歴を添付 | Claude アプリの「恋愛コーチ」プロジェクト | 相手の気持ちの読み取りと次の一手 |
 | 「secure を処理して」 | PC の Claude Code | 暗号化メモを復号して secure/ に整理（secure-log） |
 

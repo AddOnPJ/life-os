@@ -23,6 +23,12 @@ description: status/approvals.md の承認待ちを、Yuichi の「A3 OK」「A3
 ## 「A3 なし」
 A3 を「済み」に移し、`（取り下げ: YYYY-MM-DD）` を付けて commit・push。返答は1行。
 
+## 「A1,A3 OK」（まとめて）
+番号を並べたものは、並んだ番号だけを上から順に実行する（それぞれ中身を示してから）。番号のない「全部OK」は、一覧を示して番号で返してもらう。
+
+## 決めてほしいこと（D番号）
+「D1 外す」「D3 見送り」のように返ってきたら、`domains/addon/agent/decisions.md` の未決から決定済みに日付つきで移し、goal.yaml・tactics.yaml・`domains/addon/recruitment.md` の該当箇所に反映して commit・push。返答は1行。
+
 ## 守ること
-- 1つの「OK」で実行するのは、その番号の1件だけ。「全部OK」と言われたら、一覧を示して1件ずつ確認する
+- 1つの「OK」で実行するのは、指定された番号だけ
 - 承認待ちに書かれていない操作は、OK と言われても実行しない

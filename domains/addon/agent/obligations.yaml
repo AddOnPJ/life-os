@@ -1,0 +1,80 @@
+# 期限の台帳。status: open / done / dropped
+# levels: 期限からの日数で段階を決める（負＝前）。省略時は {注意: -3, 警告: 0, 最優先: 2}
+# owner: Yuichi / エージェント / 団員
+obligations:
+  - id: OB-jmty-mail
+    title: ジモティー本文のメールアドレスを消す（ガイドライン8-2：メンバー募集は本文に連絡先を書けない）
+    due: 2026-11-22
+    owner: Yuichi
+    done_when: Yuichi が「消した」と返す（公開ページはこちらから最新を取れないことがある）
+    status: open
+  - id: OB-site-recruit
+    title: サイトの募集ページを直す（「急募」、ボーカルの記載、サックス・フルート・コントラバス、曜日と見学日、群青の動画、「活動の様子をSNSで発信しています」）
+    due: 2026-11-22
+    owner: Yuichi
+    done_when: https://addon-pj.com/recruit/ に反映
+    status: open
+  - id: OB-1129-program
+    title: 11/29 のプログラムに見学会（12/13・12/20）とQRを載せる
+    due: 2026-11-25
+    owner: Yuichi
+    done_when: 印刷データに反映（印刷の締切は要確認）
+    status: open
+  - id: OB-1129-mc
+    title: 11/29 のMCで団員が30秒、募集の一言（「私も募集を見て入りました」）。担当を決める
+    due: 2026-11-26
+    owner: Yuichi
+    status: open
+  - id: OB-1129-camera
+    title: 11/29 の撮影担当を1人決める（全曲を固定で＋スマホ縦。12月の募集動画に使う）
+    due: 2026-11-26
+    owner: Yuichi
+    status: open
+  - id: OB-acomelo
+    title: アコメロ音楽教室の先生に、大人の生徒さんへ見学会を案内してよいか聞く
+    due: 2026-11-26
+    owner: Yuichi
+    status: open
+  - id: OB-1213-prep
+    title: 12/13 見学会の準備（見学者がいれば、易しいパート譜と同じパートの担当者を3日前までに連絡）
+    due: 2026-12-10
+    owner: Yuichi
+    status: open
+  - id: OB-1213-referral
+    title: 12/13 の全員ミーティングで5分、紹介のお願い（「関西にいる同期を1人だけ思い浮かべて」）
+    due: 2026-12-13
+    owner: Yuichi
+    status: open
+  - id: OB-1213-listing
+    title: 12/13 の見学会が終わったら、掲載（ジモティー・アンサンブルファン・サイト）から12/13を消し、次の1件を足す
+    due: 2026-12-13
+    owner: Yuichi
+    levels: {注意: -1, 警告: 0, 最優先: 2}
+    status: open
+  - id: OB-1220-listing
+    title: 12/20 の見学会が終わったら、掲載から12/20を消し、次の1件を足す
+    due: 2026-12-20
+    owner: Yuichi
+    levels: {注意: -1, 警告: 0, 最優先: 2}
+    status: open
+  - id: OB-0124-listing
+    title: 1/24 の見学会が終わったら、掲載から1/24を消し、次の1件を足す
+    due: 2027-01-24
+    owner: Yuichi
+    levels: {注意: -1, 警告: 0, 最優先: 2}
+    status: open
+  - id: OB-next-visits
+    title: 2〜3月の見学会の日程を決める（1/24 のあとが空く）
+    due: 2026-12-27
+    owner: Yuichi
+    status: open
+  - id: OB-EX1-judge
+    title: ジモティー吹奏楽ジャンルの実験を判定する
+    due: 2026-12-16
+    owner: エージェント
+    status: open
+  - id: OB-march-request
+    title: 3月の依頼演奏会の日付と会場を events/ に登録する
+    due: 2026-12-31
+    owner: Yuichi
+    status: open

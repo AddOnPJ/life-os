@@ -16,7 +16,7 @@ CLAUDE.md のルールに従う（推測を断定しない・装飾しない）�
 | 予定 | Google カレンダー全カレンダー、今日〜14日後。朝のブリーフで取ったものがあれば使い回す |
 | 今日のブリーフ | `logs/daily/今日.md` の「## 今日のブリーフ」（気づき・メール・持ち越し） |
 | 人 | 直近14日の日次ログの「## 人・連絡」、`domains/people/` |
-| AddOn | `domains/addon/events/`（次の本番）、`tasks.md`、`recruitment.md` |
+| AddOn | `domains/addon/agent/status.md`（AddOn エージェントの最新）。なければ `domains/addon/events/`、`tasks.md` |
 | 週のフォーカス | `reviews/weekly/` の最新 |
 | 承認待ち | `status/approvals.md` の「待ち」 |
 | 恋愛・お金・健康の詳細 | 見ない。`secure-inbox/` に今日の `.age` が増えていれば「secure に新しいメモあり（PC で処理）」とだけ書く |
@@ -73,8 +73,9 @@ CLAUDE.md のルールに従う（推測を断定しない・装飾しない）�
 - 連絡待ち・しばらく連絡していない人（日次ログに書いた範囲だけ）
 
 ## AddOn
-- 次の本番まであと◯日。準備の残り◯件（期限が近い順に3つ）
-- 応募：今月◯件（recruitment.md / メールから）
+- 目標：3月末までに応募10件、いま◯件（計画◯件）。agent/status.md の「目標」の1行をそのまま
+- 最優先・警告（agent/status.md の「今やること」から）
+- 次の本番まであと◯日
 
 ## 今週のフォーカス
 - （週次振り返りで選んだもの）

@@ -1,0 +1,16 @@
+# 実験台帳。判定基準は開始前に固定する（後から変えたらスクリプトが警告）
+# status: planned / running / adopted / rejected / extended
+experiments:
+  - id: EX1
+    title: ジモティーのジャンルを「その他」から「吹奏楽」に変える
+    channel: ジモティー
+    change: ジャンル その他 → 吹奏楽
+    start: 2026-11-18   # 要確認：一覧では 11/18 に吹奏楽ジャンルに出ていた。Yuichi の確認待ち
+    end: 2026-12-16
+    hypothesis: 管楽器（Ob・Fg・Cl・Sax）と吹奏楽で弦バスを弾いていた人の目に止まり、問い合わせが増える
+    metric: お気に入りの増え方（件/週）と、ジモティー経由の問い合わせ数
+    baseline: {favorites: 29, since: 2026-10-07, per_week: 4.8}   # 「その他」の6週で29件
+    adopt_if: お気に入り ≥ 6件/週 または ジモティー経由の問い合わせ ≥ 1
+    reject_if: お気に入り ≤ 4.8件/週 かつ 問い合わせ 0
+    confounds: 11/18 の本文更新、11/22 までのメールアドレス削除、11/29 本番、12/13 の掲載更新が期間内にある。期間中は本文の大きな変更をしない
+    status: running

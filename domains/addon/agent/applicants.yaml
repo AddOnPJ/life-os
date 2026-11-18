@@ -1,0 +1,18 @@
+# 応募者（キーは Gmail のスレッドID、なければ ジモティー-日付-番号 など）
+# 名前は頭文字だけ。メールアドレス・電話・住所は書かない
+# stage: 問い合わせ / 返信済み / 見学予約 / 見学済み / 入団 / 見送り / 辞退
+# source: ジモティー / アンサンブルファン / コンサートスクウェア / Instagram / X / YouTube / サイト / 紹介 / 演奏会 / 教室 / 大学 / 不明
+# source_conf: 確認済み（本人が答えた）/ 推定 / 不明
+applicants: []
+# 例:
+# - id: 19a2b3c4d5e6f7a8
+#   initial: K.T
+#   part: ヴィオラ
+#   received: 2026-12-02
+#   source: ジモティー
+#   source_conf: 確認済み
+#   stage: 見学予約
+#   visit: 2026-12-13
+#   replied: 2026-12-02
+#   joined:
+#   note: 吹奏楽から10年ぶり
