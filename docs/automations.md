@@ -16,6 +16,7 @@
 
 | 時刻 | 名前 | どこで動く | やること | 結果の置き場所 |
 |---|---|---|---|---|
+| 土曜 20:13 | life-os 仕組みの点検 | Claude 定期実行（クラウド） | 各仕事が動いたか、うるさい・足りない・壊れているところを見つけ、直せるものは直す。大きな変更はブランチを作って承認待ちへ | `reviews/system/`、`docs/backlog.md`、通知 |
 | 日曜 20:47 | life-os 週次振り返り | Claude 定期実行（クラウド） | 1週間の数字・AddOn・来週の山場とフォーカス候補 | `reviews/weekly/`、通知 |
 
 ## 自分で送ると動くもの
@@ -26,6 +27,7 @@
 | 「恋愛記録 苗字」＋【記録】 | スマホの Claude Code（**love-coach** リポジトリを開く） | love-coach の `profiles/苗字/記録.md` に追記 |
 | 「A1 OK」「A1,A3 OK」「A1 なし」 | スマホの Claude Code（life-os） | 承認待ちを実行・取り下げ（approve） |
 | 「D1 外す」など | スマホの Claude Code（life-os） | AddOn の決めてほしいことを決定として反映（approve） |
+| 「改善 ◯◯」 | スマホの Claude Code（life-os） | 改善の一覧（docs/backlog.md）に足す |
 | 「grok」＋Grok の結果を貼る | スマホの Claude Code（life-os） | inbox に保存。AddOn エージェントが翌朝読む |
 | LINE のトーク履歴を添付 | Claude アプリの「恋愛コーチ」プロジェクト | 相手の気持ちの読み取りと次の一手 |
 | 「secure を処理して」 | PC の Claude Code | 暗号化メモを復号して secure/ に整理（secure-log） |
