@@ -8,6 +8,7 @@
 |---|---|---|---|---|
 | 6:00 | AddOn広報リサーチ | Grok Bot（ルーティン） | X の公開情報から募集・集客の材料と投稿の下書き。投稿・いいね・DM はしない | Grok Bot のチャット |
 | 6:30 | life-os-google-health | PC（タスク スケジューラ） | Pixel Watch のデータを取得し、日次ログに歩数・睡眠などを書く | `logs/daily/`（詳細は `secure/health/`） |
+| 6:23 | AddOn エージェント | Claude 定期実行（クラウド） | 募集・本番・発信の点検と判断。応募への返信の下書き、期限の段階分け、打ち手の準備。月曜は3つの立場のAIで検討会。通知は最優先のときだけ（ふだんは 6:47 のブリーフにまとめる） | `domains/addon/agent/status.md`、`status/approvals.md` |
 | 6:47 | life-os 朝のブリーフ | Claude 定期実行（クラウド） | カレンダー・Gmail・記録から今日のブリーフ、続けて現状まとめ。応募メールには返信の下書き（送らない） | `logs/daily/今日.md`、`status/now.md`、通知 |
 
 | 7:13 | AddOn エージェント | Claude 定期実行（クラウド） | 募集・本番・発信の点検と判断。応募への返信の下書き、期限の段階分け、打ち手の準備。月曜は3つの立場のAIで検討会 | `domains/addon/agent/status.md`、`status/approvals.md`、通知 |
