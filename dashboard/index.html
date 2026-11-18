@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>life-os 司令室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Old+Mincho:wght@600;700&display=swap">
+<style>
+/* 藍の紙面に朱の印。上から「今日の要点 → 目標 → 体 → 期限と判断 → 仕組み」。スマホは1列、タブレット2列、PC3列 */
+:root{
+  --bg:#f4f5f2; --paper:#ffffff; --ink:#1d2433; --muted:#5d6676; --line:#dfe2e6;
+  --accent:#23467e; --accent-soft:#e6ecf6;
+  --crit:#b93a1f; --warn:#a26a12; --ok:#2e7a4f; --crit-soft:#fbe9e4; --warn-soft:#f8efdc; --ok-soft:#e4f2e9;
+  --display:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#12161f; --paper:#1a202c; --ink:#e7eaf0; --muted:#9aa3b2; --line:#2c3443;
+  --accent:#8fb0ea; --accent-soft:#223152;
+  --crit:#f08a6c; --warn:#e2b25a; --ok:#6cc792; --crit-soft:#3a2420; --warn-soft:#352b1a; --ok-soft:#1c3226;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#12161f; --paper:#1a202c; --ink:#e7eaf0; --muted:#9aa3b2; --line:#2c3443;
+  --accent:#8fb0ea; --accent-soft:#223152;
+  --crit:#f08a6c; --warn:#e2b25a; --ok:#6cc792; --crit-soft:#3a2420; --warn-soft:#352b1a; --ok-soft:#1c3226;
+  color-scheme:dark; }
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+a{color:var(--accent)}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+h1{font-family:var(--display);font-size:20px;margin:0;letter-spacing:.04em}
+.fresh{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+nav a{font-size:13px;text-decoration:none;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink);background:var(--paper)}
+nav a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{max-width:1240px;margin:0 auto;padding:16px;display:grid;gap:16px;grid-template-columns:1fr}
+@media (min-width:720px){main{grid-template-columns:1fr 1fr}}
+@media (min-width:1100px){main{grid-template-columns:1fr 1fr 1fr}}
+section{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+section.wide{grid-column:1/-1}
+h2{font-family:var(--display);font-size:17px;margin:0 0 8px;text-wrap:balance;display:flex;gap:8px;align-items:baseline}
+h2 small{font-family:var(--body);font-size:12px;color:var(--muted);font-weight:400}
+.tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.tile{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.tile .k{font-size:12px;color:var(--muted)}
+.tile .v{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.tile .s{font-size:12px;color:var(--muted)}
+ul.plain{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+ul.plain li{display:flex;gap:8px;align-items:flex-start}
+.chip{flex:none;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.chip.crit{background:var(--crit-soft);color:var(--crit);border-color:transparent}
+.chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.chip.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.chip.info{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.muted{color:var(--muted);font-size:13px}
+.empty{color:var(--muted);font-size:13px}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font-size:11px;font-family:var(--body)}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .plan{stroke:var(--muted);stroke-dasharray:4 4;fill:none;stroke-width:1.5}
+.chart .actual{stroke:var(--accent);fill:none;stroke-width:2.5}
+.chart .area{fill:var(--accent-soft)}
+.chart .bar{fill:var(--accent)}
+.chart .bar.low{fill:var(--crit)}
+.chart .ref{stroke:var(--crit);stroke-dasharray:3 3;stroke-width:1}
+.chart .dot{fill:var(--accent)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500;white-space:nowrap}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
+.progress > i{display:block;height:100%;background:var(--accent)}
+.ask{display:grid;gap:8px}
+.ask form{display:flex;gap:8px;flex-wrap:wrap}
+.ask input{flex:1 1 220px;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+button{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--paper);cursor:pointer}
+button.ghost{background:transparent;color:var(--accent)}
+.answer{white-space:pre-wrap;font-size:14px;border-left:3px solid var(--accent);padding:4px 10px}
+details summary{cursor:pointer;color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <h1>life-os 司令室</h1>
+  <span class="fresh" id="fresh"></span>
+  <nav>
+    <a href="#today">今日</a><a href="#addon">AddOn</a><a href="#body">体</a><a href="#decide">判断</a><a href="#system">仕組み</a>
+  </nav>
+</div></header>
+<main>
+  <section class="wide" id="today">
+    <h2>今日の要点 <small id="today-sub"></small></h2>
+    <div class="tiles" id="tiles"></div>
+    <div style="height:10px"></div>
+    <ul class="plain" id="alerts"></ul>
+  </section>
+
+  <section id="addon">
+    <h2>応募 <small>2027年3月末までに10件</small></h2>
+    <div id="goal-chart"></div>
+    <p class="muted" id="goal-note"></p>
+  </section>
+
+  <section>
+    <h2>期限 <small>近い順</small></h2>
+    <ul class="plain" id="obligations"></ul>
+  </section>
+
+  <section>
+    <h2>実験と掲載</h2>
+    <div id="experiments"></div>
+    <div style="height:8px"></div>
+    <div id="listings"></div>
+  </section>
+
+  <section id="body">
+    <h2>睡眠 <small>時間・28日</small></h2>
+    <div id="sleep-chart"></div>
+  </section>
+
+  <section>
+    <h2>歩数 <small>28日</small></h2>
+    <div id="steps-chart"></div>
+  </section>
+
+  <section>
+    <h2>体の平均</h2>
+    <div class="scroll"><table id="body-table"></table></div>
+    <p class="muted" id="body-note"></p>
+  </section>
+
+  <section id="decide">
+    <h2>承認待ち <small>スマホの Claude Code で「A1 OK」</small></h2>
+    <ul class="plain" id="approvals"></ul>
+    <div style="height:10px"></div>
+    <h2>決めてほしいこと <small>「D1 外す」など</small></h2>
+    <ul class="plain" id="decisions"></ul>
+  </section>
+
+  <section>
+    <h2>打ち手 <small>優先順</small></h2>
+    <ul class="plain" id="tactics"></ul>
+  </section>
+
+  <section>
+    <h2>Claude に聞く</h2>
+    <div class="ask">
+      <p class="muted">このページの状況をもとに答えます。例：「今日いちばん大事なことは？」「応募を増やすために今週やることは？」</p>
+      <form id="ask-form"><label for="ask-q" class="muted" style="display:none">質問</label>
+        <input id="ask-q" placeholder="質問を入力" autocomplete="off"><button type="submit" id="ask-btn">聞く</button></form>
+      <div class="answer" id="ask-a" hidden></div>
+    </div>
+  </section>
+
+  <section class="wide" id="system">
+    <h2>仕組み <small>自動で動いているもの</small></h2>
+    <div class="scroll"><table id="automations"></table></div>
+    <p class="muted" id="syshealth"></p>
+  </section>
+
+  <section class="wide">
+    <h2>改善の一覧</h2>
+    <ul class="plain" id="backlog"></ul>
+    <details><summary>済み</summary><ul class="plain" id="backlog-done" style="margin-top:8px"></ul></details>
+    <p class="muted" id="links"></p>
+  </section>
+</main>
+
+<script type="application/json" id="snapshot">{
+ "generated_at": "2026-11-18 23:59",
+ "links": {
+  "repo": "https://github.com/AddOnPJ/life-os",
+  "now": "https://github.com/AddOnPJ/life-os/blob/main/status/now.md",
+  "addon": "https://github.com/AddOnPJ/life-os/blob/main/domains/addon/agent/status.md",
+  "backlog": "https://github.com/AddOnPJ/life-os/blob/main/docs/backlog.md",
+  "automations": "https://github.com/AddOnPJ/life-os/blob/main/docs/automations.md",
+  "doc": "https://claude.ai/artifact/Qv563GNdcmyiL5MnNqRL2U"
+ },
+ "now_md": "# いまの状態\n<!-- life-status 2026-11-18 21:50 生成（初回・手動。明日 6:47 から毎朝自動で作り直す） -->\n更新：11/18（水）21:50\n\n## 要対応（今日〜3日）\n- ハーブ園の返事待ち（11/18 送信）→ 11/20 までになければ電話（078-271-1160）\n- Instagram（addon_ensemble）の見慣れないログイン（11/11）に心当たりがなければパスワード変更\n- [ ] 期限切れ：定期演奏会 曲目・曲順の確定（11/15）※済んでいれば準備ファイルで✓\n\n## 予定の詰まり（14日）\n- 11/21（土）終日 みさとさんコンサート\n- 11/28（土）9:00-13:00 練習 → 11/29（日）本番で2日連続\n- 次の本番：11/29 定期演奏会（森のホール）あと11日\n- 週ごとの件数と空いている夜は、明日の自動更新から出る\n\n## 体\n（11/16〜18 の3日分。7日・28日平均はデータがたまるまで同じ値）\n\n| | 昨日 | 7日平均 | 28日平均 |\n|---|---|---|---|\n| 睡眠 | 2.8h | 4.7h（3日） | 4.7h（3日） |\n| 歩数 | 7,506 | 7,808（3日） | 7,808（3日） |\n| 活動時間 | 118分 | 136分（3日） | 136分（3日） |\n\n- 運動した日：直近7日で3日\n- 食事の記録：直近7日で1日（日次ログがある日 3日）\n\n\n## 食事\n- 写真か一言を「記録」で送ると記録されます\n\n## AddOn\n- 次の本番まであと11日。準備の残りは domains/addon/events/2026-11-29-ハーブ園コンサート.md\n- 応募：直近14日 0件（メールから）\n- Workspace ストレージ 83%（上限を超えると14日後に読み取り専用）\n",
+ "body": {
+  "through": "2026-11-18",
+  "metrics": {
+   "sleep_hours": {
+    "label": "睡眠",
+    "unit": "h",
+    "digits": 1,
+    "yesterday": 2.8,
+    "avg7": 4.7,
+    "n7": 3,
+    "avg28": 4.7,
+    "n28": 3
+   },
+   "steps": {
+    "label": "歩数",
+    "unit": "",
+    "digits": 0,
+    "yesterday": 7506.0,
+    "avg7": 7807.666666666667,
+    "n7": 3,
+    "avg28": 7807.666666666667,
+    "n28": 3
+   },
+   "active_minutes": {
+    "label": "活動時間",
+    "unit": "分",
+    "digits": 0,
+    "yesterday": 118.0,
+    "avg7": 136.33333333333334,
+    "n7": 3,
+    "avg28": 136.33333333333334,
+    "n28": 3
+   }
+  },
+  "alerts": [],
+  "exercise_days7": 3,
+  "meal_days7": 1,
+  "daily": [
+   {
+    "date": "2026-10-22",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-10-23",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-10-24",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-10-25",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-10-26",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-10-27",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-10-28",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-10-29",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-10-30",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-10-31",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-01",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-02",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-03",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-04",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-05",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-06",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-07",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-08",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-09",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-10",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-11",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-12",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-13",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-14",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-15",
+    "sleep_hours": null,
+    "steps": null,
+    "active_minutes": null,
+    "exercise_count": 0,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-16",
+    "sleep_hours": 6.8,
+    "steps": 8257.0,
+    "active_minutes": 156.0,
+    "exercise_count": 1,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-17",
+    "sleep_hours": 4.5,
+    "steps": 7660.0,
+    "active_minutes": 135.0,
+    "exercise_count": 1,
+    "meals_count": 0
+   },
+   {
+    "date": "2026-11-18",
+    "sleep_hours": 2.8,
+    "steps": 7506.0,
+    "active_minutes": 118.0,
+    "exercise_count": 1,
+    "meals_count": 1
+   }
+  ]
+ },
+ "addon": {
+  "goal": {
+   "total": 0,
+   "target": 10,
+   "plan_now": 0,
+   "gap": 0,
+   "next_plan": "2026-12-31",
+   "next_plan_value": 2,
+   "days_left": 132,
+   "needed_per_month": 2.27,
+   "last28": 0,
+   "joined": 0,
+   "by_source": {},
+   "by_stage": {},
+   "by_part": {}
+  },
+  "target": 10,
+  "deadline": "2027-03-31",
+  "series": [],
+  "plan": [
+   {
+    "date": "2026-12-31",
+    "count": 2
+   },
+   {
+    "date": "2027-01-31",
+    "count": 5
+   },
+   {
+    "date": "2027-02-28",
+    "count": 8
+   },
+   {
+    "date": "2027-03-31",
+    "count": 10
+   }
+  ],
+  "alerts": [
+   {
+    "level": "注意",
+    "text": "ジモティー本文のメールアドレスを消す（ガイドライン8-2：メンバー募集は本文に連絡先を書けない）　期限 11/22（あと3日）",
+    "id": "OB-jmty-mail"
+   },
+   {
+    "level": "注意",
+    "text": "サイトの募集ページを直す（「急募」、ボーカルの記載、サックス・フルート・コントラバス、曜日と見学日、群青の動画、「活動の様子をSNSで発信しています」）　期限 11/22（あと3日）",
+    "id": "OB-site-recruit"
+   }
+  ],
+  "obligations": [
+   {
+    "id": "OB-jmty-mail",
+    "title": "ジモティー本文のメールアドレスを消す（ガイドライン8-2：メンバー募集は本文に連絡先を書けない）",
+    "due": "2026-11-22",
+    "days": 3,
+    "owner": "Yuichi",
+    "level": "注意"
+   },
+   {
+    "id": "OB-site-recruit",
+    "title": "サイトの募集ページを直す（「急募」、ボーカルの記載、サックス・フルート・コントラバス、曜日と見学日、群青の動画、「活動の様子をSNSで発信しています」）",
+    "due": "2026-11-22",
+    "days": 3,
+    "owner": "Yuichi",
+    "level": "注意"
+   },
+   {
+    "id": "OB-1129-program",
+    "title": "11/29 のプログラムに見学会（12/13・12/20）とQRを載せる",
+    "due": "2026-11-25",
+    "days": 6,
+    "owner": "Yuichi",
+    "level": null
+   },
+   {
+    "id": "OB-1129-mc",
+    "title": "11/29 のMCで団員が30秒、募集の一言（「私も募集を見て入りました」）。担当を決める",
+    "due": "2026-11-26",
+    "days": 7,
+    "owner": "Yuichi",
+    "level": null
+   },
+   {
+    "id": "OB-1129-camera",
+    "title": "11/29 の撮影担当を1人決める（全曲を固定で＋スマホ縦。12月の募集動画に使う）",
+    "due": "2026-11-26",
+    "days": 7,
+    "owner": "Yuichi",
+    "level": null
+   },
+   {
+    "id": "OB-acomelo",
+    "title": "アコメロ音楽教室の先生に、大人の生徒さんへ見学会を案内してよいか聞く",
+    "due": "2026-11-26",
+    "days": 7,
+    "owner": "Yuichi",
+    "level": null
+   },
+   {
+    "id": "OB-1213-prep",
+    "title": "12/13 見学会の準備（見学者がいれば、易しいパート譜と同じパートの担当者を3日前までに連絡）",
+    "due": "2026-12-10",
+    "days": 21,
+    "owner": "Yuichi",
+    "level": null
+   },
+   {
+    "id": "OB-1213-referral",
+    "title": "12/13 の全員ミーティングで5分、紹介のお願い（「関西にいる同期を1人だけ思い浮かべて」）",
+    "due": "2026-12-13",
+    "days": 24,
+    "owner": "Yuichi",
+    "level": null
+   },
+   {
+    "id": "OB-1213-listing",
+    "title": "12/13 の見学会が終わったら、掲載（ジモティー・アンサンブルファン・サイト）から12/13を消し、次の1件を足す",
+    "due": "2026-12-13",
+    "days": 24,
+    "owner": "Yuichi",
+    "level": null
+   },
+   {
+    "id": "OB-EX1-judge",
+    "title": "ジモティー吹奏楽ジャンルの実験を判定する",
+    "due": "2026-12-16",
+    "days": 27,
+    "owner": "エージェント",
+    "level": null
+   },
+   {
+    "id": "OB-1220-listing",
+    "title": "12/20 の見学会が終わったら、掲載から12/20を消し、次の1件を足す",
+    "due": "2026-12-20",
+    "days": 31,
+    "owner": "Yuichi",
+    "level": null
+   },
+   {
+    "id": "OB-next-visits",
+    "title": "2〜3月の見学会の日程を決める（1/24 のあとが空く）",
+    "due": "2026-12-27",
+    "days": 38,
+    "owner": "Yuichi",
+    "level": null
+   },
+   {
+    "id": "OB-march-request",
+    "title": "3月の依頼演奏会の日付と会場を events/ に登録する",
+    "due": "2026-12-31",
+    "days": 42,
+    "owner": "Yuichi",
+    "level": null
+   },
+   {
+    "id": "OB-0124-listing",
+    "title": "1/24 の見学会が終わったら、掲載から1/24を消し、次の1件を足す",
+    "due": "2027-01-24",
+    "days": 66,
+    "owner": "Yuichi",
+    "level": null
+   }
+  ],
+  "experiments": [
+   {
+    "id": "EX1",
+    "title": "ジモティーのジャンルを「その他」から「吹奏楽」に変える",
+    "start": "2026-11-18",
+    "end": "2026-12-16",
+    "metric": "お気に入りの増え方（件/週）と、ジモティー経由の問い合わせ数",
+    "adopt_if": "お気に入り ≥ 6件/週 または ジモティー経由の問い合わせ ≥ 1",
+    "reject_if": "お気に入り ≤ 4.8件/週 かつ 問い合わせ 0",
+    "status": "running"
+   }
+  ],
+  "tactics": [
+   {
+    "id": "T-jmty-mail",
+    "title": "ジモティー本文から連絡先を外し、アプリ内メッセージで受ける",
+    "priority": 1,
+    "status": "doing",
+    "owner": "Yuichi"
+   },
+   {
+    "id": "T-site",
+    "title": "サイトの募集ページを掲載とそろえる",
+    "priority": 1,
+    "status": "doing",
+    "owner": "Yuichi"
+   },
+   {
+    "id": "T-1129",
+    "title": "11/29 本番で募集（プログラムのQR、MC30秒、撮影、教室の生徒さん）",
+    "priority": 1,
+    "status": "doing",
+    "owner": "Yuichi"
+   },
+   {
+    "id": "T-reply",
+    "title": "返信は24時間以内。直近の見学日2〜3つ、「どこで知りましたか」、SNS発信の一言を入れる",
+    "priority": 1,
+    "status": "doing",
+    "owner": "エージェント（下書き）"
+   },
+   {
+    "id": "T-visit-experience",
+    "title": "見学を「同じパートの担当者の隣で合奏体験」に。3日前に易しいパート譜、終わったら次回を案内（入団率 40%→60% をねらう）",
+    "priority": 2,
+    "status": "todo",
+    "owner": "Yuichi・団員"
+   },
+   {
+    "id": "T-concertsquare",
+    "title": "コンサートスクウェア（無料）に団員募集を掲載。管楽器・吹奏楽OB向けの文面",
+    "priority": 2,
+    "status": "todo",
+    "owner": "Yuichi（下書きはエージェント）"
+   },
+   {
+    "id": "T-ai-visibility",
+    "title": "AI 検索（ChatGPT・Gemini・Claude・Perplexity など）で「関西 アンサンブル 団員募集」「茨木 ヴィオラ 楽団」などを聞かれたときに AddOn が出るようにする（サイトの構造化データ・募集ページのQ&A・llms.txt・掲載先の情報の統一）。月1回、実際に各AIに聞いて出るかを記録する",
+    "priority": 2,
+    "status": "todo",
+    "owner": "エージェント（調査・下書き）／Yuichi（サイトへの反映）"
+   },
+   {
+    "id": "T-referral",
+    "title": "団員の紹介（12/13 全員Mtgで5分、紹介者欄つきのフォーム、春に入った4人の「入ってみて」3行）",
+    "priority": 2,
+    "status": "todo",
+    "owner": "Yuichi・団員"
+   },
+   {
+    "id": "T-university",
+    "title": "12〜3月に引退する大学オケ・吹奏楽部の4回生へ、団員の出身校のつてで案内（「6/20 の森のホールから一緒に」）",
+    "priority": 2,
+    "status": "todo",
+    "owner": "団員"
+   },
+   {
+    "id": "T-part-pages",
+    "title": "パート別の呼びかけ（ヴィオラはヴァイオリンからの持ち替え・レンタル案内、チェロは教室の大人の生徒、コントラバスは弦バス経験者、木管は「楽器は相談可・コンクールなし」）",
+    "priority": 3,
+    "status": "todo",
+    "owner": "エージェント（下書き）"
+   },
+   {
+    "id": "T-sns-reels",
+    "title": "11/29 の映像から縦動画を週3本（12/1〜20）。締めは見学会の日程",
+    "priority": 3,
+    "status": "todo",
+    "owner": "Yuichi（下書きはエージェント）"
+   },
+   {
+    "id": "T-ef-paid",
+    "title": "アンサンブルファンの有料プラン（団体A、月1,320円・6か月単位）で優先掲載",
+    "priority": 4,
+    "status": "waiting_decision",
+    "owner": "Yuichi"
+   },
+   {
+    "id": "T-age",
+    "title": "募集年齢の上限（45歳）を外す（楽器を再開する人を逃さない）",
+    "priority": 2,
+    "status": "waiting_decision",
+    "owner": "Yuichi"
+   },
+   {
+    "id": "T-every-practice",
+    "title": "見学会の日以外の練習日も見学できるようにする",
+    "priority": 3,
+    "status": "todo",
+    "owner": "Yuichi"
+   }
+  ],
+  "decisions": [
+   "D1 募集年齢の上限（45歳）を外すか（2人が「外すべき」。楽器を再開する30代後半〜50代を落としている）",
+   "D3 アンサンブルファンの有料プラン（月1,320円・6か月で7,920円）を使うか（費用対効果が論点。週次の検討会で、無料掲載の順位の落ち方と応募の経路を見て判断案を出す）",
+   "D4 アンサンブルファンにはいつから掲載しているか（春の応募10件のうち、ここからは0件だった）",
+   "D6 11/29 のプログラムの印刷締切",
+   "D7 3月の依頼演奏会の日付と会場"
+  ],
+  "listings": {},
+  "last_run": "# 2026-11-18\n- 初回。5つの立場の意見を突き合わせて台帳を作成。計画線 12末2・1末5・2末8・3末10\n- 決定：SNS発信の一言を募集文に、有料広告なし、入団期限は表向き3月、コンサートスクウェアに掲載、AI検索対策を行う\n"
+ },
+ "approvals": [],
+ "backlog": [
+  {
+   "id": "S15",
+   "level": "高",
+   "text": "Google Health の認証が「テスト中」のアプリなので、更新用のトークンが約7日で切れる可能性がある（要確認）。切れると 6:30 の健康データ同期が止まる。11/25 ごろに止まっていないか確認し、止まるなら再認証の手順を短くするか、アプリの公開状態を見直す（11/18 点検）"
+  },
+  {
+   "id": "S16",
+   "level": "中",
+   "text": "YouTube の数字（登録者・動画ごとの再生）を毎日自動で取る。YouTube Data API は無料枠で足りる。PC の 6:30 の同期に足し、キーは PC の .env に置く（Google Cloud でキーの作成が要る）（11/18 点検）"
+  },
+  {
+   "id": "S17",
+   "level": "中",
+   "text": "Instagram の数字（リールの再生・保存・シェア、フォロワー）を取る。Instagram の API は無料だが、プロアカウントと Meta のアプリ・トークンが要る（11/18 点検）"
+  },
+  {
+   "id": "S18",
+   "level": "中",
+   "text": "SNS の発信が止まっていないかの点検（X・Instagram の最終投稿日）。14日投稿がなければ AddOn エージェントが投稿案を出す（11/18 点検）"
+  },
+  {
+   "id": "S13",
+   "level": "中",
+   "text": "睡眠時間が短すぎる日がある（11/18 が 2.8h）。計測の抜けか、主な睡眠だけを数えているか、PC の summarize.py を確認する（11/18 点検）"
+  },
+  {
+   "id": "S5",
+   "level": "中",
+   "text": "応募の経路を自動で分ける：掲載先ごとに music+jmty@ などの宛先を使えるか確認（Google Workspace のサブアドレス）（11/18）"
+  },
+  {
+   "id": "S7",
+   "level": "中",
+   "text": "PC の週次まとめ（secure：健康の詳細・お金）を作る（11/18）"
+  },
+  {
+   "id": "S8",
+   "level": "中",
+   "text": "Antigravity：GEMINI.md と、PC の画面（体の数字のグラフなど）（11/18）"
+  },
+  {
+   "id": "S9",
+   "level": "中",
+   "text": "AI 検索で AddOn が見つかるように、サイトの構造化データ・よくある質問・llms.txt の下書きを作る（11/18）"
+  },
+  {
+   "id": "S10",
+   "level": "中",
+   "text": "承認待ちで実行できるのはメール・予定・ファイルだけ。掲載サイトの書き換えは Yuichi の手作業のまま。PC の内蔵ブラウザで代行できるか検討（11/18）"
+  },
+  {
+   "id": "S11",
+   "level": "低",
+   "text": "恋愛コーチの【記録】の保存を一度試して、手間を確かめる（11/18）"
+  },
+  {
+   "id": "S12",
+   "level": "低",
+   "text": "食事の記録が少ない（7日で1日）。もっと楽に記録できる方法（11/18）"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-18",
+   "text": "S20 PC の同期が自分の実行時刻を 6:10 に変える処理を足した（手作業なし）。あわせて PC の同期が動いたかを status/pc-sync.json に残し、朝の現状まとめが止まりを検知する"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-18",
+   "text": "S1 スマホで見る画面を作った（Claude Docs「life-os いまの状態」https://claude.ai/artifact/Qv563GNdcmyiL5MnNqRL2U ）。毎朝 6:47 に書き直す（status/dashboard.md）"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-18",
+   "text": "S4 PC が毎朝 6:30 に掲載ページ（ジモティー・アンサンブルファン・サイトの募集ページ）を取り、要点を obs/listings.json に残す（scripts/listing_check.py）。初回の動作確認は 11/19 朝"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-18",
+   "text": "S3 Grok ⇄ Claude の交換フォルダ（ドライブ 00_AI_Hub/exchange）と決まりを作った（docs/exchange.md）。Grok Bot 側の設定は Yuichi が Grok に頼む"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-18",
+   "text": "S19 ジモティーの通知メールは届いている（no-reply@jmty.jp → ytytcafe@gmail.com。最後は 2026-06-02）。宣伝メールは Yuichi が削除しているだけ。AddOn エージェントの検索条件に送信元を明記した"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-18",
+   "text": "S2 AddOn エージェントを 6:23 に前倒しし、通知を 6:47 のブリーフにまとめた（最優先のときだけ AddOn からも通知）"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-18",
+   "text": "S6 AGENTS.md にルールの例外を明記（Claude の定期実行は決められたファイルだけ main に直接、仕組みの変更は improve/ ブランチ）。恋愛は扱わない旨も追加"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-18",
+   "text": "重複していた朝の定期実行を3つ削除（毎朝のブリーフィング、AddOn 募集チェック、AI強化策チーム 朝会議）"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-18",
+   "text": "自動で動いているものの一覧（docs/automations.md）と、止まっていないかの点検を追加"
+  }
+ ],
+ "automations": [
+  {
+   "when": "6:00",
+   "name": "AddOn広報リサーチ",
+   "where": "Grok Bot（ルーティン）",
+   "what": "`to-grok/` の依頼を読み、X の公開情報から募集・集客の材料と投稿の下書き。投稿・いいね・DM はしない"
+  },
+  {
+   "when": "6:10",
+   "name": "life-os-google-health",
+   "where": "PC（タスク スケジューラ）",
+   "what": "Pixel Watch のデータを取得し、日次ログに歩数・睡眠などを書く。続けて募集掲載のページを取り、要点を残す。動いた記録を残す"
+  },
+  {
+   "when": "6:23",
+   "name": "AddOn エージェント",
+   "where": "Claude 定期実行（クラウド）",
+   "what": "募集・本番・発信の点検と判断。応募への返信の下書き、期限の段階分け、打ち手の準備。月曜は3つの立場のAIで検討会。通知は最優先のときだけ（ふだんは 6:47 のブリーフにまとめる）"
+  },
+  {
+   "when": "6:47",
+   "name": "life-os 朝のブリーフ",
+   "where": "Claude 定期実行（クラウド）",
+   "what": "カレンダー・Gmail・記録から今日のブリーフ（AddOn の最優先・警告を含む）、続けて現状まとめ"
+  },
+  {
+   "when": "土曜 20:13",
+   "name": "life-os 仕組みの点検",
+   "where": "Claude 定期実行（クラウド）",
+   "what": "各仕事が動いたか、うるさい・足りない・壊れているところを見つけ、直せるものは直す。大きな変更はブランチを作って承認待ちへ"
+  },
+  {
+   "when": "日曜 20:47",
+   "name": "life-os 週次振り返り",
+   "where": "Claude 定期実行（クラウド）",
+   "what": "1週間の数字・AddOn・来週の山場とフォーカス候補"
+  }
+ ],
+ "health_of_system": {
+  "pc_sync": {},
+  "addon_last_run": "2026-11-18",
+  "last_review": "2026-W47"
+ }
+}</script>
+<script>
+"use strict";
+const DRIVE_FOLDER = "1NklDmH7O1Juw25bOI8ra9OR2XsjbZQBe";
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = (v, d=0) => v == null ? "—" : Number(v).toLocaleString("ja-JP", {maximumFractionDigits:d, minimumFractionDigits:d});
+const levelClass = (lv) => lv === "最優先" ? "crit" : lv === "警告" ? "warn" : lv === "注意" ? "info" : "";
+let DATA = null, SOURCE = "埋め込み";
+
+function md(d){ const x = new Date(d + "T00:00:00+09:00"); return (x.getMonth()+1) + "/" + x.getDate(); }
+function daysTo(d){ const t = new Date(); const today = new Date(t.getFullYear(), t.getMonth(), t.getDate()); return Math.round((new Date(d + "T00:00:00") - today) / 86400000); }
+
+function render(D){
+  DATA = D;
+  $("fresh").textContent = "更新 " + (D.generated_at || "—") + "（" + SOURCE + "）";
+  const g = (D.addon && D.addon.goal) || {};
+  const m = (D.body && D.body.metrics) || {};
+  const obls = (D.addon && D.addon.obligations) || [];
+  const nextShow = obls.find(o => /本番|演奏会/.test(o.title) && o.days >= 0);
+  const tiles = [
+    {k:"応募（累計）", v:(g.total ?? 0) + " / " + (D.addon.target ?? 10), s:"計画 " + (g.plan_now ?? 0) + "件・あと" + (g.days_left ?? "—") + "日"},
+    {k:"必要ペース", v:(g.needed_per_month ?? "—"), s:"件 / 月"},
+    {k:"睡眠 7日平均", v:fmt(m.sleep_hours && m.sleep_hours.avg7, 1), s:"時間（" + ((m.sleep_hours && m.sleep_hours.n7) || 0) + "日分）"},
+    {k:"歩数 7日平均", v:fmt(m.steps && m.steps.avg7), s:"歩（" + ((m.steps && m.steps.n7) || 0) + "日分）"},
+    {k:"承認待ち", v:(D.approvals || []).length, s:"件"},
+    {k:"決めてほしいこと", v:((D.addon && D.addon.decisions) || []).length, s:"件"},
+  ];
+  $("tiles").innerHTML = tiles.map(t => `<div class="tile"><div class="k">${esc(t.k)}</div><div class="v">${esc(t.v)}</div><div class="s">${esc(t.s)}</div></div>`).join("");
+  const al = [].concat(((D.body && D.body.alerts) || []).map(a => ({level:"注意", text:"体：" + a})), (D.addon && D.addon.alerts) || []);
+  $("today-sub").textContent = al.length ? "対応 " + al.length + "件" : "注意なし";
+  $("alerts").innerHTML = al.length ? al.slice(0, 10).map(a => `<li><span class="chip ${levelClass(a.level)}">${esc(a.level)}</span><span>${esc(a.text)}</span></li>`).join("") : `<li class="empty">今すぐ対応が必要なものはありません。</li>`;
+
+  goalChart(D.addon || {});
+  const ob = obls.slice().sort((a,b) => a.due < b.due ? -1 : 1).slice(0, 12);
+  $("obligations").innerHTML = ob.length ? ob.map(o => {
+    const dd = o.days; const when = dd < 0 ? (-dd) + "日超過" : dd === 0 ? "今日" : "あと" + dd + "日";
+    return `<li><span class="chip ${levelClass(o.level)}">${esc(md(o.due))}</span><span>${esc(o.title)} <span class="muted">（${esc(when)}・${esc(o.owner)}）</span></span></li>`; }).join("") : `<li class="empty">期限はありません。</li>`;
+
+  const ex = (D.addon && D.addon.experiments) || [];
+  $("experiments").innerHTML = ex.map(e => {
+    const s = new Date(e.start + "T00:00:00"), en = new Date(e.end + "T00:00:00"), n = new Date();
+    const p = Math.max(0, Math.min(100, (n - s) / (en - s) * 100));
+    return `<div style="display:grid;gap:4px"><div><span class="chip info">${esc(e.id)}</span> ${esc(e.title)}</div>
+      <div class="progress" role="img" aria-label="期間の${Math.round(p)}%"><i style="width:${p}%"></i></div>
+      <div class="muted">${esc(md(e.start))}〜${esc(md(e.end))}　採用：${esc(e.adopt_if)}</div></div>`; }).join("") || `<p class="empty">実験はありません。</p>`;
+  const L = (D.addon && D.addon.listings) || {};
+  const pages = L.pages || {};
+  const names = {jmty:"ジモティー", ensemblefan:"アンサンブルファン", site_recruit:"サイトの募集ページ"};
+  const rows = Object.keys(names).filter(k => pages[k]).map(k => { const p = pages[k];
+    if (!p.ok) return `<tr><td>${names[k]}</td><td colspan="3"><span class="chip crit">取得失敗</span></td></tr>`;
+    const issues = [];
+    if ((p.past_dates || []).length) issues.push("過去の日付 " + p.past_dates.map(md).join("・"));
+    if (p.emails_in_body) issues.push("本文にメール " + p.emails_in_body + "件");
+    if ((p.avoid_found || []).length) issues.push("「" + p.avoid_found.join("」「") + "」あり");
+    const missing = Object.entries(p.has || {}).filter(([w, ok]) => !ok).map(([w]) => w === "IXj1YW6BqZw" ? "群青の動画" : w);
+    if (missing.length) issues.push("なし：" + missing.join("・"));
+    return `<tr><td>${names[k]}</td><td class="num">${esc(p.updated_text || "—")}</td><td class="num">${p.favorites ?? "—"}</td><td>${issues.length ? issues.map(esc).join("<br>") : '<span class="chip ok">問題なし</span>'}</td></tr>`; });
+  $("listings").innerHTML = rows.length ? `<div class="scroll"><table><tr><th>掲載</th><th>更新</th><th>お気に入り</th><th>気になる点</th></tr>${rows.join("")}</table></div><p class="muted">PC が ${esc(L.checked_at || "")} に確認</p>` : `<p class="empty">掲載の確認は、PC の朝の同期が動いたあとに出ます。</p>`;
+
+  barChart("sleep-chart", (D.body && D.body.daily) || [], "sleep_hours", 6, 1);
+  lineChart("steps-chart", (D.body && D.body.daily) || [], "steps");
+  const keys = [["sleep_hours","睡眠","時間",1],["steps","歩数","歩",0],["active_minutes","活動時間","分",0]];
+  $("body-table").innerHTML = `<tr><th></th><th>昨日</th><th>7日平均</th><th>28日平均</th></tr>` + keys.map(([k,l,u,dg]) => { const x = m[k] || {};
+    return `<tr><td>${l}</td><td class="num">${fmt(x.yesterday,dg)}</td><td class="num">${fmt(x.avg7,dg)}</td><td class="num">${fmt(x.avg28,dg)}</td></tr>`; }).join("");
+  $("body-note").textContent = "運動した日 " + (D.body.exercise_days7 ?? "—") + "日／7日、食事の記録 " + (D.body.meal_days7 ?? "—") + "日／7日。" + (D.body.through ? D.body.through.slice(5).replace("-","/") + " までの数字" : "");
+
+  const ap = D.approvals || [];
+  $("approvals").innerHTML = ap.length ? ap.map(a => `<li><span class="chip warn">待ち</span><span>${esc(a.text)}</span></li>`).join("") : `<li class="empty">承認待ちはありません。</li>`;
+  const dc = (D.addon && D.addon.decisions) || [];
+  $("decisions").innerHTML = dc.length ? dc.map(d => `<li><span class="chip info">${esc(d.split(" ")[0])}</span><span>${esc(d.replace(/^\S+\s/, ""))}</span></li>`).join("") : `<li class="empty">決めてほしいことはありません。</li>`;
+  const tc = ((D.addon && D.addon.tactics) || []).slice().sort((a,b) => (a.priority||9) - (b.priority||9));
+  const st = {todo:["未着手",""], doing:["進行中","info"], done:["済み","ok"], waiting_decision:["判断待ち","warn"], proposed:["提案中","info"]};
+  $("tactics").innerHTML = tc.map(t => { const s = st[t.status] || [t.status, ""]; return `<li><span class="chip ${s[1]}">${esc(s[0])}</span><span>${esc(t.title)}</span></li>`; }).join("");
+
+  const au = D.automations || [];
+  $("automations").innerHTML = `<tr><th>時刻</th><th>名前</th><th>どこで</th><th>やること</th></tr>` + au.map(a => `<tr><td class="num">${esc(a.when)}</td><td>${esc(a.name)}</td><td>${esc(a.where)}</td><td>${esc(a.what.replace(/`/g,""))}</td></tr>`).join("");
+  const h = D.health_of_system || {}; const pc = h.pc_sync || {};
+  $("syshealth").textContent = "PC の同期：" + (pc.ran_at || "まだ記録なし") + (pc.listing ? "（掲載確認 " + pc.listing + "）" : "") + (pc.schedule ? "、実行時刻 " + pc.schedule : "") + "／AddOn エージェント最終：" + (h.addon_last_run || "—") + "／仕組みの点検：" + (h.last_review || "—");
+  const bl = D.backlog || [];
+  const open = bl.filter(b => b.level !== "済み"), done = bl.filter(b => b.level === "済み");
+  const lc = {"高":"crit","中":"warn","低":""};
+  $("backlog").innerHTML = open.map(b => `<li><span class="chip ${lc[b.level]||""}">${esc(b.id)} ${esc(b.level)}</span><span>${esc(b.text)}</span></li>`).join("") || `<li class="empty">残っている改善はありません。</li>`;
+  $("backlog-done").innerHTML = done.map(b => `<li><span class="chip ok">${esc(b.date ? md(b.date) : "済")}</span><span>${esc(b.text)}</span></li>`).join("");
+  const lk = D.links || {};
+  $("links").innerHTML = `元のファイル：<a href="${esc(lk.now)}">いまの状態</a>・<a href="${esc(lk.addon)}">AddOn</a>・<a href="${esc(lk.backlog)}">改善の一覧</a>・<a href="${esc(lk.automations)}">自動化</a>・<a href="${esc(lk.repo)}">life-os</a>`;
+}
+
+function svgWrap(w, h, inner, label){ return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">${inner}</svg>`; }
+
+function goalChart(A){
+  const W = 520, H = 220, L = 30, R = 12, T = 12, B = 26;
+  const start = new Date((A.series && A.series[0] && A.series[0].date || "2026-11-19") + "T00:00:00");
+  const end = new Date((A.deadline || "2027-03-31") + "T00:00:00");
+  const span = end - start || 1, maxY = Math.max(A.target || 10, ...((A.series||[]).map(s => s.count)));
+  const x = (d) => L + (new Date(d + "T00:00:00") - start) / span * (W - L - R);
+  const y = (v) => T + (1 - v / maxY) * (H - T - B);
+  let g = "";
+  for (let v = 0; v <= maxY; v += 2) g += `<line class="grid" x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`;
+  const months = ["2026-12-01","2027-01-01","2027-02-01","2027-03-01"];
+  months.forEach(mo => g += `<text x="${x(mo)}" y="${H-8}" text-anchor="middle">${new Date(mo).getMonth()+1}月</text>`);
+  const plan = [{date: A.series && A.series[0] ? A.series[0].date : "2026-11-19", count:0}].concat(A.plan || []);
+  g += `<polyline class="plan" points="${plan.map(p => x(p.date) + "," + y(p.count)).join(" ")}"/>`;
+  plan.slice(1).forEach(p => g += `<text x="${x(p.date)-4}" y="${y(p.count)-6}" text-anchor="end">${p.count}</text>`);
+  const s = A.series || [];
+  if (s.length){
+    const pts = s.map(p => x(p.date) + "," + y(p.count)).join(" ");
+    g += `<polygon class="area" points="${x(s[0].date)},${y(0)} ${pts} ${x(s[s.length-1].date)},${y(0)}"/>`;
+    g += `<polyline class="actual" points="${pts}"/>`;
+    const last = s[s.length-1];
+    g += `<circle class="dot" cx="${x(last.date)}" cy="${y(last.count)}" r="4"/><text x="${x(last.date)+8}" y="${y(last.count)-6}">いま ${last.count}件</text>`;
+  }
+  $("goal-chart").innerHTML = svgWrap(W, H, g, "応募の累計と計画線");
+  const G = A.goal || {};
+  $("goal-note").textContent = "実線が実績、点線が計画（12月末2・1月末5・2月末8・3月末10）。" + (G.gap < 0 ? "計画より" + (-G.gap) + "件遅れ。" : "計画どおり。") + (G.by_source && Object.keys(G.by_source).length ? " 経路：" + Object.entries(G.by_source).map(([k,v]) => k + v).join("・") : "");
+}
+
+function barChart(id, rows, key, refLine, digits){
+  const W = 520, H = 180, L = 28, R = 8, T = 10, B = 24;
+  const vals = rows.map(r => r[key]); const maxV = Math.max(refLine + 2, ...vals.filter(v => v != null));
+  const n = rows.length || 1, bw = (W - L - R) / n;
+  const y = (v) => T + (1 - v / maxV) * (H - T - B);
+  let g = "";
+  for (let v = 0; v <= maxV; v += 2) g += `<line class="grid" x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L-5}" y="${y(v)+4}" text-anchor="end">${v}</text>`;
+  rows.forEach((r, i) => { const v = r[key]; if (v == null) return;
+    g += `<rect class="bar ${v < refLine ? "low" : ""}" x="${L + i*bw + 1}" y="${y(v)}" width="${Math.max(bw-2,2)}" height="${y(0)-y(v)}"><title>${md(r.date)} ${v}</title></rect>`; });
+  g += `<line class="ref" x1="${L}" x2="${W-R}" y1="${y(refLine)}" y2="${y(refLine)}"/><text x="${W-R}" y="${y(refLine)-4}" text-anchor="end">${refLine}時間</text>`;
+  [0, Math.floor(n/2), n-1].forEach(i => rows[i] && (g += `<text x="${L + i*bw + bw/2}" y="${H-6}" text-anchor="middle">${md(rows[i].date)}</text>`));
+  const have = vals.filter(v => v != null).length;
+  $(id).innerHTML = have ? svgWrap(W, H, g, "睡眠時間") + `<p class="muted">朱色は6時間未満の日。データは ${have} 日分。</p>` : `<p class="empty">データがまだありません。</p>`;
+}
+
+function lineChart(id, rows, key){
+  const W = 520, H = 180, L = 40, R = 10, T = 10, B = 24;
+  const pts = rows.map((r, i) => ({i, v:r[key], d:r.date})).filter(p => p.v != null);
+  if (!pts.length){ $(id).innerHTML = `<p class="empty">データがまだありません。</p>`; return; }
+  const maxV = Math.ceil(Math.max(...pts.map(p => p.v), 10000) / 2500) * 2500, n = rows.length || 1;
+  const x = (i) => L + i / Math.max(n-1,1) * (W - L - R), y = (v) => T + (1 - v / maxV) * (H - T - B);
+  let g = "";
+  for (let v = 0; v <= maxV; v += 2500) g += `<line class="grid" x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L-5}" y="${y(v)+4}" text-anchor="end">${(v/1000).toFixed(1)}k</text>`;
+  const line = pts.map(p => x(p.i) + "," + y(p.v)).join(" ");
+  g += `<polygon class="area" points="${x(pts[0].i)},${y(0)} ${line} ${x(pts[pts.length-1].i)},${y(0)}"/><polyline class="actual" points="${line}"/>`;
+  const last = pts[pts.length-1];
+  g += `<circle class="dot" cx="${x(last.i)}" cy="${y(last.v)}" r="4"/><text x="${x(last.i)-6}" y="${y(last.v)-8}" text-anchor="end">${fmt(last.v)}</text>`;
+  [0, Math.floor(n/2), n-1].forEach(i => rows[i] && (g += `<text x="${x(i)}" y="${H-6}" text-anchor="middle">${md(rows[i].date)}</text>`));
+  $(id).innerHTML = svgWrap(W, H, g, "歩数") + `<p class="muted">データは ${pts.length} 日分。</p>`;
+}
+
+/* 最新データ：Google ドライブ 00_AI_Hub/dashboard の最新ファイル（毎朝の定期実行が置く） */
+function findJson(x){
+  if (x == null) return null;
+  if (typeof x === "string"){ const i = x.indexOf("{"), j = x.lastIndexOf("}"); if (i >= 0 && j > i){ try { const o = JSON.parse(x.slice(i, j+1)); if (o && o.generated_at) return o; } catch(e){} } return null; }
+  if (typeof x === "object"){ if (x.generated_at) return x; for (const k of Object.keys(x)){ const r = findJson(x[k]); if (r) return r; } }
+  return null;
+}
+async function call(mcp, tool, input){
+  try { const srv = await mcp.server("Google Drive"); return await srv[tool](input); }
+  catch(e){ const r = await mcp.callTool("Google Drive", tool, input); return r && r.payload !== undefined ? r.payload : r; }
+}
+async function loadLatest(){
+  let mcp = null;
+  try { mcp = await claude.use("mcp"); } catch(e){}
+  if (!mcp) return;
+  try {
+    const found = await call(mcp, "search_files", {query:`parentId = '${DRIVE_FOLDER}' and title contains 'dashboard-'`, orderBy:"modifiedTime desc", pageSize:1, excludeContentSnippets:true});
+    const f = found && found.files && found.files[0];
+    if (!f) return;
+    const content = await call(mcp, "read_file_content", {fileId: f.id});
+    const D = findJson(content);
+    if (D && (!DATA || D.generated_at >= DATA.generated_at)){ SOURCE = "ドライブの最新"; render(D); }
+  } catch(e){
+    $("fresh").textContent += "　最新の取得に失敗（" + (e && e.code || "エラー") + "）";
+  }
+}
+
+async function setupAsk(){
+  let sample = null;
+  try { sample = await claude.use("sample"); } catch(e){}
+  const form = $("ask-form");
+  if (!sample){ form.querySelector("button").disabled = true; $("ask-q").placeholder = "この表示では Claude に聞けません"; return; }
+  let ctrl = null;
+  form.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const q = $("ask-q").value.trim(); if (!q) return;
+    const out = $("ask-a"); out.hidden = false; out.textContent = "考えています…";
+    if (ctrl) ctrl.abort(); ctrl = new AbortController();
+    const brief = { 更新: DATA.generated_at, 今の状態: DATA.now_md, AddOn: {目標: DATA.addon.goal, 注意: DATA.addon.alerts, 期限: DATA.addon.obligations, 実験: DATA.addon.experiments, 打ち手: DATA.addon.tactics, 決めてほしいこと: DATA.addon.decisions, 掲載: DATA.addon.listings}, 承認待ち: DATA.approvals, 改善: DATA.backlog.filter(b => b.level !== "済み") };
+    const prompt = "あなたは辻祐一（Yuichi）の生活と、Yuichiが代表を務めるアマチュア楽団 AddOn アンサンブルの運営を支えるアシスタントです。次のデータだけを根拠に、日本語で短く具体的に答えてください。データにないことは推測せず「データにない」と書く。箇条書きは5つまで。装飾語や励ましは不要。\n\nデータ:\n" + JSON.stringify(brief) + "\n\n質問: " + q;
+    try {
+      await sample(prompt, {signal: ctrl.signal, cache: false, onText: ({text}) => { out.textContent = text; }});
+    } catch(e){
+      out.textContent = e && e.code === "rate_limited" ? "少し時間をおいてから聞いてください。" : e && e.code === "not_granted" ? "Claude に聞く許可がありません。" : "答えを取得できませんでした。";
+    }
+  });
+}
+
+let snap = null; try { snap = JSON.parse($("snapshot").textContent); } catch(e){}
+if (snap) render(snap);
+loadLatest();
+setupAsk();
+</script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>life-os 司令室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Old+Mincho:wght@600;700&display=swap">
+<style>
+/* 藍の紙面に朱の印。上から「今日の要点 → 目標 → 体 → 期限と判断 → 仕組み」。スマホは1列、タブレット2列、PC3列 */
+:root{
+  --bg:#f4f5f2; --paper:#ffffff; --ink:#1d2433; --muted:#5d6676; --line:#dfe2e6;
+  --accent:#23467e; --accent-soft:#e6ecf6;
+  --crit:#b93a1f; --warn:#a26a12; --ok:#2e7a4f; --crit-soft:#fbe9e4; --warn-soft:#f8efdc; --ok-soft:#e4f2e9;
+  --display:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#12161f; --paper:#1a202c; --ink:#e7eaf0; --muted:#9aa3b2; --line:#2c3443;
+  --accent:#8fb0ea; --accent-soft:#223152;
+  --crit:#f08a6c; --warn:#e2b25a; --ok:#6cc792; --crit-soft:#3a2420; --warn-soft:#352b1a; --ok-soft:#1c3226;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#12161f; --paper:#1a202c; --ink:#e7eaf0; --muted:#9aa3b2; --line:#2c3443;
+  --accent:#8fb0ea; --accent-soft:#223152;
+  --crit:#f08a6c; --warn:#e2b25a; --ok:#6cc792; --crit-soft:#3a2420; --warn-soft:#352b1a; --ok-soft:#1c3226;
+  color-scheme:dark; }
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+a{color:var(--accent)}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+h1{font-family:var(--display);font-size:20px;margin:0;letter-spacing:.04em}
+.fresh{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+nav a{font-size:13px;text-decoration:none;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink);background:var(--paper)}
+nav a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{max-width:1240px;margin:0 auto;padding:16px;display:grid;gap:16px;grid-template-columns:1fr}
+@media (min-width:720px){main{grid-template-columns:1fr 1fr}}
+@media (min-width:1100px){main{grid-template-columns:1fr 1fr 1fr}}
+section{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+section.wide{grid-column:1/-1}
+h2{font-family:var(--display);font-size:17px;margin:0 0 8px;text-wrap:balance;display:flex;gap:8px;align-items:baseline}
+h2 small{font-family:var(--body);font-size:12px;color:var(--muted);font-weight:400}
+.tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.tile{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.tile .k{font-size:12px;color:var(--muted)}
+.tile .v{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.tile .s{font-size:12px;color:var(--muted)}
+ul.plain{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+ul.plain li{display:flex;gap:8px;align-items:flex-start}
+.chip{flex:none;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.chip.crit{background:var(--crit-soft);color:var(--crit);border-color:transparent}
+.chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.chip.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.chip.info{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.muted{color:var(--muted);font-size:13px}
+.empty{color:var(--muted);font-size:13px}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font-size:11px;font-family:var(--body)}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .plan{stroke:var(--muted);stroke-dasharray:4 4;fill:none;stroke-width:1.5}
+.chart .actual{stroke:var(--accent);fill:none;stroke-width:2.5}
+.chart .area{fill:var(--accent-soft)}
+.chart .bar{fill:var(--accent)}
+.chart .bar.low{fill:var(--crit)}
+.chart .ref{stroke:var(--crit);stroke-dasharray:3 3;stroke-width:1}
+.chart .dot{fill:var(--accent)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500;white-space:nowrap}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
+.progress > i{display:block;height:100%;background:var(--accent)}
+.ask{display:grid;gap:8px}
+.ask form{display:flex;gap:8px;flex-wrap:wrap}
+.ask input{flex:1 1 220px;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+button{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--paper);cursor:pointer}
+button.ghost{background:transparent;color:var(--accent)}
+.answer{white-space:pre-wrap;font-size:14px;border-left:3px solid var(--accent);padding:4px 10px}
+details summary{cursor:pointer;color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <h1>life-os 司令室</h1>
+  <span class="fresh" id="fresh"></span>
+  <nav>
+    <a href="#today">今日</a><a href="#addon">AddOn</a><a href="#body">体</a><a href="#decide">判断</a><a href="#system">仕組み</a>
+  </nav>
+</div></header>
+<main>
+  <section class="wide" id="today">
+    <h2>今日の要点 <small id="today-sub"></small></h2>
+    <div class="tiles" id="tiles"></div>
+    <div style="height:10px"></div>
+    <ul class="plain" id="alerts"></ul>
+  </section>
+
+  <section id="addon">
+    <h2>応募 <small>2027年3月末までに10件</small></h2>
+    <div id="goal-chart"></div>
+    <p class="muted" id="goal-note"></p>
+  </section>
+
+  <section>
+    <h2>期限 <small>近い順</small></h2>
+    <ul class="plain" id="obligations"></ul>
+  </section>
+
+  <section>
+    <h2>実験と掲載</h2>
+    <div id="experiments"></div>
+    <div style="height:8px"></div>
+    <div id="listings"></div>
+  </section>
+
+  <section id="body">
+    <h2>睡眠 <small>時間・28日</small></h2>
+    <div id="sleep-chart"></div>
+  </section>
+
+  <section>
+    <h2>歩数 <small>28日</small></h2>
+    <div id="steps-chart"></div>
+  </section>
+
+  <section>
+    <h2>体の平均</h2>
+    <div class="scroll"><table id="body-table"></table></div>
+    <p class="muted" id="body-note"></p>
+  </section>
+
+  <section id="decide">
+    <h2>承認待ち <small>スマホの Claude Code で「A1 OK」</small></h2>
+    <ul class="plain" id="approvals"></ul>
+    <div style="height:10px"></div>
+    <h2>決めてほしいこと <small>「D1 外す」など</small></h2>
+    <ul class="plain" id="decisions"></ul>
+  </section>
+
+  <section>
+    <h2>打ち手 <small>優先順</small></h2>
+    <ul class="plain" id="tactics"></ul>
+  </section>
+
+  <section>
+    <h2>Claude に聞く</h2>
+    <div class="ask">
+      <p class="muted">このページの状況をもとに答えます。例：「今日いちばん大事なことは？」「応募を増やすために今週やることは？」</p>
+      <form id="ask-form"><label for="ask-q" class="muted" style="display:none">質問</label>
+        <input id="ask-q" placeholder="質問を入力" autocomplete="off"><button type="submit" id="ask-btn">聞く</button></form>
+      <div class="answer" id="ask-a" hidden></div>
+    </div>
+  </section>
+
+  <section class="wide" id="system">
+    <h2>仕組み <small>自動で動いているもの</small></h2>
+    <div class="scroll"><table id="automations"></table></div>
+    <p class="muted" id="syshealth"></p>
+  </section>
+
+  <section class="wide">
+    <h2>改善の一覧</h2>
+    <ul class="plain" id="backlog"></ul>
+    <details><summary>済み</summary><ul class="plain" id="backlog-done" style="margin-top:8px"></ul></details>
+    <p class="muted" id="links"></p>
+  </section>
+</main>
+
+<script type="application/json" id="snapshot">__SNAPSHOT__</script>
+<script>
+"use strict";
+const DRIVE_FOLDER = "1NklDmH7O1Juw25bOI8ra9OR2XsjbZQBe";
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = (v, d=0) => v == null ? "—" : Number(v).toLocaleString("ja-JP", {maximumFractionDigits:d, minimumFractionDigits:d});
+const levelClass = (lv) => lv === "最優先" ? "crit" : lv === "警告" ? "warn" : lv === "注意" ? "info" : "";
+let DATA = null, SOURCE = "埋め込み";
+
+function md(d){ const x = new Date(d + "T00:00:00+09:00"); return (x.getMonth()+1) + "/" + x.getDate(); }
+function daysTo(d){ const t = new Date(); const today = new Date(t.getFullYear(), t.getMonth(), t.getDate()); return Math.round((new Date(d + "T00:00:00") - today) / 86400000); }
+
+function render(D){
+  DATA = D;
+  $("fresh").textContent = "更新 " + (D.generated_at || "—") + "（" + SOURCE + "）";
+  const g = (D.addon && D.addon.goal) || {};
+  const m = (D.body && D.body.metrics) || {};
+  const obls = (D.addon && D.addon.obligations) || [];
+  const nextShow = obls.find(o => /本番|演奏会/.test(o.title) && o.days >= 0);
+  const tiles = [
+    {k:"応募（累計）", v:(g.total ?? 0) + " / " + (D.addon.target ?? 10), s:"計画 " + (g.plan_now ?? 0) + "件・あと" + (g.days_left ?? "—") + "日"},
+    {k:"必要ペース", v:(g.needed_per_month ?? "—"), s:"件 / 月"},
+    {k:"睡眠 7日平均", v:fmt(m.sleep_hours && m.sleep_hours.avg7, 1), s:"時間（" + ((m.sleep_hours && m.sleep_hours.n7) || 0) + "日分）"},
+    {k:"歩数 7日平均", v:fmt(m.steps && m.steps.avg7), s:"歩（" + ((m.steps && m.steps.n7) || 0) + "日分）"},
+    {k:"承認待ち", v:(D.approvals || []).length, s:"件"},
+    {k:"決めてほしいこと", v:((D.addon && D.addon.decisions) || []).length, s:"件"},
+  ];
+  $("tiles").innerHTML = tiles.map(t => `<div class="tile"><div class="k">${esc(t.k)}</div><div class="v">${esc(t.v)}</div><div class="s">${esc(t.s)}</div></div>`).join("");
+  const al = [].concat(((D.body && D.body.alerts) || []).map(a => ({level:"注意", text:"体：" + a})), (D.addon && D.addon.alerts) || []);
+  $("today-sub").textContent = al.length ? "対応 " + al.length + "件" : "注意なし";
+  $("alerts").innerHTML = al.length ? al.slice(0, 10).map(a => `<li><span class="chip ${levelClass(a.level)}">${esc(a.level)}</span><span>${esc(a.text)}</span></li>`).join("") : `<li class="empty">今すぐ対応が必要なものはありません。</li>`;
+
+  goalChart(D.addon || {});
+  const ob = obls.slice().sort((a,b) => a.due < b.due ? -1 : 1).slice(0, 12);
+  $("obligations").innerHTML = ob.length ? ob.map(o => {
+    const dd = o.days; const when = dd < 0 ? (-dd) + "日超過" : dd === 0 ? "今日" : "あと" + dd + "日";
+    return `<li><span class="chip ${levelClass(o.level)}">${esc(md(o.due))}</span><span>${esc(o.title)} <span class="muted">（${esc(when)}・${esc(o.owner)}）</span></span></li>`; }).join("") : `<li class="empty">期限はありません。</li>`;
+
+  const ex = (D.addon && D.addon.experiments) || [];
+  $("experiments").innerHTML = ex.map(e => {
+    const s = new Date(e.start + "T00:00:00"), en = new Date(e.end + "T00:00:00"), n = new Date();
+    const p = Math.max(0, Math.min(100, (n - s) / (en - s) * 100));
+    return `<div style="display:grid;gap:4px"><div><span class="chip info">${esc(e.id)}</span> ${esc(e.title)}</div>
+      <div class="progress" role="img" aria-label="期間の${Math.round(p)}%"><i style="width:${p}%"></i></div>
+      <div class="muted">${esc(md(e.start))}〜${esc(md(e.end))}　採用：${esc(e.adopt_if)}</div></div>`; }).join("") || `<p class="empty">実験はありません。</p>`;
+  const L = (D.addon && D.addon.listings) || {};
+  const pages = L.pages || {};
+  const names = {jmty:"ジモティー", ensemblefan:"アンサンブルファン", site_recruit:"サイトの募集ページ"};
+  const rows = Object.keys(names).filter(k => pages[k]).map(k => { const p = pages[k];
+    if (!p.ok) return `<tr><td>${names[k]}</td><td colspan="3"><span class="chip crit">取得失敗</span></td></tr>`;
+    const issues = [];
+    if ((p.past_dates || []).length) issues.push("過去の日付 " + p.past_dates.map(md).join("・"));
+    if (p.emails_in_body) issues.push("本文にメール " + p.emails_in_body + "件");
+    if ((p.avoid_found || []).length) issues.push("「" + p.avoid_found.join("」「") + "」あり");
+    const missing = Object.entries(p.has || {}).filter(([w, ok]) => !ok).map(([w]) => w === "IXj1YW6BqZw" ? "群青の動画" : w);
+    if (missing.length) issues.push("なし：" + missing.join("・"));
+    return `<tr><td>${names[k]}</td><td class="num">${esc(p.updated_text || "—")}</td><td class="num">${p.favorites ?? "—"}</td><td>${issues.length ? issues.map(esc).join("<br>") : '<span class="chip ok">問題なし</span>'}</td></tr>`; });
+  $("listings").innerHTML = rows.length ? `<div class="scroll"><table><tr><th>掲載</th><th>更新</th><th>お気に入り</th><th>気になる点</th></tr>${rows.join("")}</table></div><p class="muted">PC が ${esc(L.checked_at || "")} に確認</p>` : `<p class="empty">掲載の確認は、PC の朝の同期が動いたあとに出ます。</p>`;
+
+  barChart("sleep-chart", (D.body && D.body.daily) || [], "sleep_hours", 6, 1);
+  lineChart("steps-chart", (D.body && D.body.daily) || [], "steps");
+  const keys = [["sleep_hours","睡眠","時間",1],["steps","歩数","歩",0],["active_minutes","活動時間","分",0]];
+  $("body-table").innerHTML = `<tr><th></th><th>昨日</th><th>7日平均</th><th>28日平均</th></tr>` + keys.map(([k,l,u,dg]) => { const x = m[k] || {};
+    return `<tr><td>${l}</td><td class="num">${fmt(x.yesterday,dg)}</td><td class="num">${fmt(x.avg7,dg)}</td><td class="num">${fmt(x.avg28,dg)}</td></tr>`; }).join("");
+  $("body-note").textContent = "運動した日 " + (D.body.exercise_days7 ?? "—") + "日／7日、食事の記録 " + (D.body.meal_days7 ?? "—") + "日／7日。" + (D.body.through ? D.body.through.slice(5).replace("-","/") + " までの数字" : "");
+
+  const ap = D.approvals || [];
+  $("approvals").innerHTML = ap.length ? ap.map(a => `<li><span class="chip warn">待ち</span><span>${esc(a.text)}</span></li>`).join("") : `<li class="empty">承認待ちはありません。</li>`;
+  const dc = (D.addon && D.addon.decisions) || [];
+  $("decisions").innerHTML = dc.length ? dc.map(d => `<li><span class="chip info">${esc(d.split(" ")[0])}</span><span>${esc(d.replace(/^\S+\s/, ""))}</span></li>`).join("") : `<li class="empty">決めてほしいことはありません。</li>`;
+  const tc = ((D.addon && D.addon.tactics) || []).slice().sort((a,b) => (a.priority||9) - (b.priority||9));
+  const st = {todo:["未着手",""], doing:["進行中","info"], done:["済み","ok"], waiting_decision:["判断待ち","warn"], proposed:["提案中","info"]};
+  $("tactics").innerHTML = tc.map(t => { const s = st[t.status] || [t.status, ""]; return `<li><span class="chip ${s[1]}">${esc(s[0])}</span><span>${esc(t.title)}</span></li>`; }).join("");
+
+  const au = D.automations || [];
+  $("automations").innerHTML = `<tr><th>時刻</th><th>名前</th><th>どこで</th><th>やること</th></tr>` + au.map(a => `<tr><td class="num">${esc(a.when)}</td><td>${esc(a.name)}</td><td>${esc(a.where)}</td><td>${esc(a.what.replace(/`/g,""))}</td></tr>`).join("");
+  const h = D.health_of_system || {}; const pc = h.pc_sync || {};
+  $("syshealth").textContent = "PC の同期：" + (pc.ran_at || "まだ記録なし") + (pc.listing ? "（掲載確認 " + pc.listing + "）" : "") + (pc.schedule ? "、実行時刻 " + pc.schedule : "") + "／AddOn エージェント最終：" + (h.addon_last_run || "—") + "／仕組みの点検：" + (h.last_review || "—");
+  const bl = D.backlog || [];
+  const open = bl.filter(b => b.level !== "済み"), done = bl.filter(b => b.level === "済み");
+  const lc = {"高":"crit","中":"warn","低":""};
+  $("backlog").innerHTML = open.map(b => `<li><span class="chip ${lc[b.level]||""}">${esc(b.id)} ${esc(b.level)}</span><span>${esc(b.text)}</span></li>`).join("") || `<li class="empty">残っている改善はありません。</li>`;
+  $("backlog-done").innerHTML = done.map(b => `<li><span class="chip ok">${esc(b.date ? md(b.date) : "済")}</span><span>${esc(b.text)}</span></li>`).join("");
+  const lk = D.links || {};
+  $("links").innerHTML = `元のファイル：<a href="${esc(lk.now)}">いまの状態</a>・<a href="${esc(lk.addon)}">AddOn</a>・<a href="${esc(lk.backlog)}">改善の一覧</a>・<a href="${esc(lk.automations)}">自動化</a>・<a href="${esc(lk.repo)}">life-os</a>`;
+}
+
+function svgWrap(w, h, inner, label){ return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">${inner}</svg>`; }
+
+function goalChart(A){
+  const W = 520, H = 220, L = 30, R = 12, T = 12, B = 26;
+  const start = new Date((A.series && A.series[0] && A.series[0].date || "2026-11-19") + "T00:00:00");
+  const end = new Date((A.deadline || "2027-03-31") + "T00:00:00");
+  const span = end - start || 1, maxY = Math.max(A.target || 10, ...((A.series||[]).map(s => s.count)));
+  const x = (d) => L + (new Date(d + "T00:00:00") - start) / span * (W - L - R);
+  const y = (v) => T + (1 - v / maxY) * (H - T - B);
+  let g = "";
+  for (let v = 0; v <= maxY; v += 2) g += `<line class="grid" x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`;
+  const months = ["2026-12-01","2027-01-01","2027-02-01","2027-03-01"];
+  months.forEach(mo => g += `<text x="${x(mo)}" y="${H-8}" text-anchor="middle">${new Date(mo).getMonth()+1}月</text>`);
+  const plan = [{date: A.series && A.series[0] ? A.series[0].date : "2026-11-19", count:0}].concat(A.plan || []);
+  g += `<polyline class="plan" points="${plan.map(p => x(p.date) + "," + y(p.count)).join(" ")}"/>`;
+  plan.slice(1).forEach(p => g += `<text x="${x(p.date)-4}" y="${y(p.count)-6}" text-anchor="end">${p.count}</text>`);
+  const s = A.series || [];
+  if (s.length){
+    const pts = s.map(p => x(p.date) + "," + y(p.count)).join(" ");
+    g += `<polygon class="area" points="${x(s[0].date)},${y(0)} ${pts} ${x(s[s.length-1].date)},${y(0)}"/>`;
+    g += `<polyline class="actual" points="${pts}"/>`;
+    const last = s[s.length-1];
+    g += `<circle class="dot" cx="${x(last.date)}" cy="${y(last.count)}" r="4"/><text x="${x(last.date)+8}" y="${y(last.count)-6}">いま ${last.count}件</text>`;
+  }
+  $("goal-chart").innerHTML = svgWrap(W, H, g, "応募の累計と計画線");
+  const G = A.goal || {};
+  $("goal-note").textContent = "実線が実績、点線が計画（12月末2・1月末5・2月末8・3月末10）。" + (G.gap < 0 ? "計画より" + (-G.gap) + "件遅れ。" : "計画どおり。") + (G.by_source && Object.keys(G.by_source).length ? " 経路：" + Object.entries(G.by_source).map(([k,v]) => k + v).join("・") : "");
+}
+
+function barChart(id, rows, key, refLine, digits){
+  const W = 520, H = 180, L = 28, R = 8, T = 10, B = 24;
+  const vals = rows.map(r => r[key]); const maxV = Math.max(refLine + 2, ...vals.filter(v => v != null));
+  const n = rows.length || 1, bw = (W - L - R) / n;
+  const y = (v) => T + (1 - v / maxV) * (H - T - B);
+  let g = "";
+  for (let v = 0; v <= maxV; v += 2) g += `<line class="grid" x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L-5}" y="${y(v)+4}" text-anchor="end">${v}</text>`;
+  rows.forEach((r, i) => { const v = r[key]; if (v == null) return;
+    g += `<rect class="bar ${v < refLine ? "low" : ""}" x="${L + i*bw + 1}" y="${y(v)}" width="${Math.max(bw-2,2)}" height="${y(0)-y(v)}"><title>${md(r.date)} ${v}</title></rect>`; });
+  g += `<line class="ref" x1="${L}" x2="${W-R}" y1="${y(refLine)}" y2="${y(refLine)}"/><text x="${W-R}" y="${y(refLine)-4}" text-anchor="end">${refLine}時間</text>`;
+  [0, Math.floor(n/2), n-1].forEach(i => rows[i] && (g += `<text x="${L + i*bw + bw/2}" y="${H-6}" text-anchor="middle">${md(rows[i].date)}</text>`));
+  const have = vals.filter(v => v != null).length;
+  $(id).innerHTML = have ? svgWrap(W, H, g, "睡眠時間") + `<p class="muted">朱色は6時間未満の日。データは ${have} 日分。</p>` : `<p class="empty">データがまだありません。</p>`;
+}
+
+function lineChart(id, rows, key){
+  const W = 520, H = 180, L = 40, R = 10, T = 10, B = 24;
+  const pts = rows.map((r, i) => ({i, v:r[key], d:r.date})).filter(p => p.v != null);
+  if (!pts.length){ $(id).innerHTML = `<p class="empty">データがまだありません。</p>`; return; }
+  const maxV = Math.ceil(Math.max(...pts.map(p => p.v), 10000) / 2500) * 2500, n = rows.length || 1;
+  const x = (i) => L + i / Math.max(n-1,1) * (W - L - R), y = (v) => T + (1 - v / maxV) * (H - T - B);
+  let g = "";
+  for (let v = 0; v <= maxV; v += 2500) g += `<line class="grid" x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L-5}" y="${y(v)+4}" text-anchor="end">${(v/1000).toFixed(1)}k</text>`;
+  const line = pts.map(p => x(p.i) + "," + y(p.v)).join(" ");
+  g += `<polygon class="area" points="${x(pts[0].i)},${y(0)} ${line} ${x(pts[pts.length-1].i)},${y(0)}"/><polyline class="actual" points="${line}"/>`;
+  const last = pts[pts.length-1];
+  g += `<circle class="dot" cx="${x(last.i)}" cy="${y(last.v)}" r="4"/><text x="${x(last.i)-6}" y="${y(last.v)-8}" text-anchor="end">${fmt(last.v)}</text>`;
+  [0, Math.floor(n/2), n-1].forEach(i => rows[i] && (g += `<text x="${x(i)}" y="${H-6}" text-anchor="middle">${md(rows[i].date)}</text>`));
+  $(id).innerHTML = svgWrap(W, H, g, "歩数") + `<p class="muted">データは ${pts.length} 日分。</p>`;
+}
+
+/* 最新データ：Google ドライブ 00_AI_Hub/dashboard の最新ファイル（毎朝の定期実行が置く） */
+function findJson(x){
+  if (x == null) return null;
+  if (typeof x === "string"){ const i = x.indexOf("{"), j = x.lastIndexOf("}"); if (i >= 0 && j > i){ try { const o = JSON.parse(x.slice(i, j+1)); if (o && o.generated_at) return o; } catch(e){} } return null; }
+  if (typeof x === "object"){ if (x.generated_at) return x; for (const k of Object.keys(x)){ const r = findJson(x[k]); if (r) return r; } }
+  return null;
+}
+async function call(mcp, tool, input){
+  try { const srv = await mcp.server("Google Drive"); return await srv[tool](input); }
+  catch(e){ const r = await mcp.callTool("Google Drive", tool, input); return r && r.payload !== undefined ? r.payload : r; }
+}
+async function loadLatest(){
+  let mcp = null;
+  try { mcp = await claude.use("mcp"); } catch(e){}
+  if (!mcp) return;
+  try {
+    const found = await call(mcp, "search_files", {query:`parentId = '${DRIVE_FOLDER}' and title contains 'dashboard-'`, orderBy:"modifiedTime desc", pageSize:1, excludeContentSnippets:true});
+    const f = found && found.files && found.files[0];
+    if (!f) return;
+    const content = await call(mcp, "read_file_content", {fileId: f.id});
+    const D = findJson(content);
+    if (D && (!DATA || D.generated_at >= DATA.generated_at)){ SOURCE = "ドライブの最新"; render(D); }
+  } catch(e){
+    $("fresh").textContent += "　最新の取得に失敗（" + (e && e.code || "エラー") + "）";
+  }
+}
+
+async function setupAsk(){
+  let sample = null;
+  try { sample = await claude.use("sample"); } catch(e){}
+  const form = $("ask-form");
+  if (!sample){ form.querySelector("button").disabled = true; $("ask-q").placeholder = "この表示では Claude に聞けません"; return; }
+  let ctrl = null;
+  form.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const q = $("ask-q").value.trim(); if (!q) return;
+    const out = $("ask-a"); out.hidden = false; out.textContent = "考えています…";
+    if (ctrl) ctrl.abort(); ctrl = new AbortController();
+    const brief = { 更新: DATA.generated_at, 今の状態: DATA.now_md, AddOn: {目標: DATA.addon.goal, 注意: DATA.addon.alerts, 期限: DATA.addon.obligations, 実験: DATA.addon.experiments, 打ち手: DATA.addon.tactics, 決めてほしいこと: DATA.addon.decisions, 掲載: DATA.addon.listings}, 承認待ち: DATA.approvals, 改善: DATA.backlog.filter(b => b.level !== "済み") };
+    const prompt = "あなたは辻祐一（Yuichi）の生活と、Yuichiが代表を務めるアマチュア楽団 AddOn アンサンブルの運営を支えるアシスタントです。次のデータだけを根拠に、日本語で短く具体的に答えてください。データにないことは推測せず「データにない」と書く。箇条書きは5つまで。装飾語や励ましは不要。\n\nデータ:\n" + JSON.stringify(brief) + "\n\n質問: " + q;
+    try {
+      await sample(prompt, {signal: ctrl.signal, cache: false, onText: ({text}) => { out.textContent = text; }});
+    } catch(e){
+      out.textContent = e && e.code === "rate_limited" ? "少し時間をおいてから聞いてください。" : e && e.code === "not_granted" ? "Claude に聞く許可がありません。" : "答えを取得できませんでした。";
+    }
+  });
+}
+
+let snap = null; try { snap = JSON.parse($("snapshot").textContent); } catch(e){}
+if (snap) render(snap);
+loadLatest();
+setupAsk();
+</script>
+</body>
+</html>
