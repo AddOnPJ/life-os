@@ -1,4 +1,4 @@
-# 毎朝 6:30（Windows タスクスケジューラ）: Google Health 取得 → 日次ログ反映 → push
+﻿# 毎朝 6:30（Windows タスクスケジューラ）: Google Health 取得 → 日次ログ反映 → push
 # ログは secure 配下に出す（コミットされない）。
 $ErrorActionPreference = "Stop"
 Set-Location (Resolve-Path (Join-Path $PSScriptRoot "..\.."))
@@ -16,7 +16,7 @@ Start-Transcript -Path $log -Append | Out-Null
 try {
     Write-Host ("開始 " + (Get-Date -Format "yyyy-MM-dd HH:mm:ss"))
     # 先に取り込む（スマホ・クラウドの記録とぶつからないように）
-    Invoke-Step "git pull --rebase" { git pull --rebase }
+    Invoke-Step "git pull --rebase" { git pull --rebase --autostash }
     Invoke-Step "sync.py fetch" { python scripts/google_health/sync.py fetch --days 2 }
     Invoke-Step "summarize.py" { python scripts/google_health/summarize.py --days 3 }
 
@@ -30,7 +30,7 @@ try {
     git push
     if ($LASTEXITCODE -ne 0) {
         # 競合で弾かれたとき 1 回だけやり直す
-        Invoke-Step "git pull --rebase（再）" { git pull --rebase }
+        Invoke-Step "git pull --rebase（再）" { git pull --rebase --autostash }
         Invoke-Step "git push（再）" { git push }
     }
     Write-Host "完了"
