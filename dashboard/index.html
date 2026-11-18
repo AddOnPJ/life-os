@@ -120,6 +120,11 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px}
   </section>
 
   <section>
+    <h2>メール <small>Gmail のラベル「life-os/要返信」</small></h2>
+    <div id="inbox" class="muted" style="white-space:pre-wrap"></div>
+  </section>
+
+  <section>
     <h2>生活の期限 <small>「期限 ◯◯ 日付」で追加</small></h2>
     <ul class="plain" id="life"></ul>
   </section>
@@ -942,7 +947,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px}
    "when": "6:47",
    "name": "life-os 朝のブリーフ",
    "where": "Claude 定期実行（クラウド）",
-   "what": "カレンダー・Gmail・記録から今日のブリーフ（AddOn の最優先・警告を含む）、続けて現状まとめ"
+   "what": "受信箱の整理（要返信・返事待ちのラベル、返信の下書き）、カレンダー・Gmail・記録から今日のブリーフ（AddOn の最優先・警告を含む）、続けて現状まとめ"
   },
   {
    "when": "土曜 20:13",
@@ -1023,6 +1028,8 @@ function render(D){
     return `<tr><td>${names[k]}</td><td class="num">${esc(p.updated_text || "—")}</td><td class="num">${p.favorites ?? "—"}</td><td>${issues.length ? issues.map(esc).join("<br>") : '<span class="chip ok">問題なし</span>'}</td></tr>`; });
   $("listings").innerHTML = rows.length ? `<div class="scroll"><table><tr><th>掲載</th><th>更新</th><th>お気に入り</th><th>気になる点</th></tr>${rows.join("")}</table></div><p class="muted">PC が ${esc(L.checked_at || "")} に確認</p>` : `<p class="empty">掲載の確認は、PC の朝の同期が動いたあとに出ます。</p>`;
 
+  const IB = (D.inbox_md || "").replace(/^#.*\n/m, "").replace(/<!--.*?-->\n?/s, "").replace(/\*\*/g, "").trim();
+  $("inbox").textContent = IB || "受信箱の整理は、明日の朝のブリーフから出ます。";
   const LD = D.life_deadlines || [];
   $("life").innerHTML = LD.length ? LD.slice(0, 10).map(o => { const dd = o.days; const when = dd < 0 ? (-dd) + "日超過" : dd === 0 ? "今日" : "あと" + dd + "日";
     return `<li><span class="chip ${levelClass(o.level)}">${esc(md(o.due))}</span><span>${esc(o.title)} <span class="muted">（${esc(when)}${o.category ? "・" + esc(o.category) : ""}）</span></span></li>`; }).join("") : `<li class="empty">期限はありません。</li>`;

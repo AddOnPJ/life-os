@@ -9,7 +9,7 @@
 | 6:00 | AddOn広報リサーチ | Grok Bot（ルーティン） | `to-grok/` の依頼を読み、X の公開情報から募集・集客の材料と投稿の下書き。投稿・いいね・DM はしない | Grok Bot のチャットと、ドライブ `00_AI_Hub/exchange/to-claude/`（docs/exchange.md） |
 | 6:10 | life-os-google-health | PC（タスク スケジューラ） | Pixel Watch のデータを取得し、日次ログに歩数・睡眠などを書く。続けて募集掲載のページを取り、要点を残す。動いた記録を残す | `logs/daily/`（詳細は `secure/health/`）、`domains/addon/agent/obs/listings.json`、`status/pc-sync.json` |
 | 6:23 | AddOn エージェント | Claude 定期実行（クラウド） | 募集・本番・発信の点検と判断。応募への返信の下書き、期限の段階分け、打ち手の準備。月曜は3つの立場のAIで検討会。通知は最優先のときだけ（ふだんは 6:47 のブリーフにまとめる） | `domains/addon/agent/status.md`、`status/approvals.md` |
-| 6:47 | life-os 朝のブリーフ | Claude 定期実行（クラウド） | カレンダー・Gmail・記録から今日のブリーフ（AddOn の最優先・警告を含む）、続けて現状まとめ | `logs/daily/今日.md`、`status/now.md`、スマホの画面（Claude Docs）、通知 |
+| 6:47 | life-os 朝のブリーフ | Claude 定期実行（クラウド） | 受信箱の整理（要返信・返事待ちのラベル、返信の下書き）、カレンダー・Gmail・記録から今日のブリーフ（AddOn の最優先・警告を含む）、続けて現状まとめ | `logs/daily/今日.md`、`status/inbox.md`、Gmail のラベル「life-os/要返信」「life-os/返事待ち」、`status/now.md`、スマホの画面（Claude Docs）、通知 |
 
 
 ## 毎週
