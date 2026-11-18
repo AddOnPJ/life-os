@@ -15,4 +15,4 @@
 ## 3. PC の中だけの詳細画面
 - `C:\Users\ytytc\claude-work\life-os\secure\dashboard.html`（ブラウザで開いてブックマーク）
 - 詳しい健康（安静時心拍・HRV・SpO2・体重・睡眠の区切り）とお金。毎朝の PC の同期で作り直す（scripts/secure_weekly.py）。GitHub・クラウドには出ない
-- 司令室（artifact）の最新版：version 1795016669-8f1a 以降。ページを変えたら `python scripts/build_dashboard_page.py` → publish_files（slug 303a0b74-ec11-4e0c-962a-958db0b70a88）
+- 司令室（artifact）の最新版：version 1795016853-c15e 以降。ページを変えたら `python scripts/build_dashboard_page.py` → publish_files（slug 303a0b74-ec11-4e0c-962a-958db0b70a88）
