@@ -1,0 +1,10 @@
+{
+ "date": "2026-11-18",
+ "time": "23:35",
+ "note": "初回の手動点検",
+ "ensemblefan_va": {"rank": 16, "page_size": 30, "same_day_updates_above": 15, "updated": "2026-11-18", "source": "https://allegro.ensemble.fan/conbrio/search_list?part=va", "memo": "1〜18位がすべて11/18更新。関東の団体が大半"},
+ "jmty_suisougaku_osaka": {"rank": 9, "total": 119, "updated_shown": "2026-11-18", "source": "https://jmty.jp/osaka/com-ban/g-2708", "memo": "吹奏楽ジャンルの一覧に出ている＝ジャンル変更は11/18に反映済みとみられる"},
+ "jmty_article": {"status": "取得が古い", "memo": "記事ページは11/2版が返る。Yuichi のブラウザでは更新済み"},
+ "gmail_applications_30d": 0,
+ "gmail_jmty_notifications_30d": 0
+}
