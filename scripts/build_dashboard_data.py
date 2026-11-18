@@ -113,6 +113,23 @@ def main() -> int:
     last_run_text = runs[-1].read_text(encoding="utf-8") if runs else ""
     reviews = sorted((ROOT / "reviews/system").glob("*.md"))
 
+    # YouTube（PC が毎朝取る。7日前の記録と比べる）
+    yt = rj("domains/addon/agent/obs/youtube.json")
+    if yt:
+        obs = ROOT / "domains/addon/agent/obs"
+        cur_date = dt.date.fromisoformat(yt["checked_at"][:10])
+        prev = None
+        for back in range(7, 15):
+            f = obs / f"youtube-{(cur_date - dt.timedelta(days=back)).isoformat()}.json"
+            if f.exists():
+                prev = json.loads(f.read_text(encoding="utf-8")); break
+        pv = {v["id"]: v["views"] for v in (prev or {}).get("items", [])}
+        for v in yt.get("items", []):
+            v["views_7d"] = v["views"] - pv[v["id"]] if v["id"] in pv else None
+        yt["subscribers_7d"] = (yt["subscribers"] - prev["subscribers"]) if prev and yt.get("subscribers") is not None and prev.get("subscribers") is not None else None
+        yt["views_7d"] = (yt["views"] - prev["views"]) if prev else None
+        yt["items"] = yt.get("items", [])[:15]
+
     data = {
         "generated_at": now.strftime("%Y-%m-%d %H:%M"),
         "links": {
@@ -147,6 +164,7 @@ def main() -> int:
             "listings": rj("domains/addon/agent/obs/listings.json"),
             "last_run": last_run_text[:1200],
         },
+        "youtube": yt,
         "approvals": checklist(rt("status/approvals.md"), "待ち"),
         "backlog": backlog(rt("docs/backlog.md")),
         "automations": automations(rt("docs/automations.md")),

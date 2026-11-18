@@ -119,6 +119,11 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px}
     <div id="listings"></div>
   </section>
 
+  <section>
+    <h2>YouTube <small>@addonensemble</small></h2>
+    <div id="youtube"></div>
+  </section>
+
   <section id="body">
     <h2>睡眠 <small>時間・28日</small></h2>
     <div id="sleep-chart"></div>
@@ -232,6 +237,14 @@ function render(D){
     return `<tr><td>${names[k]}</td><td class="num">${esc(p.updated_text || "—")}</td><td class="num">${p.favorites ?? "—"}</td><td>${issues.length ? issues.map(esc).join("<br>") : '<span class="chip ok">問題なし</span>'}</td></tr>`; });
   $("listings").innerHTML = rows.length ? `<div class="scroll"><table><tr><th>掲載</th><th>更新</th><th>お気に入り</th><th>気になる点</th></tr>${rows.join("")}</table></div><p class="muted">PC が ${esc(L.checked_at || "")} に確認</p>` : `<p class="empty">掲載の確認は、PC の朝の同期が動いたあとに出ます。</p>`;
 
+  const Y = D.youtube;
+  if (Y && Y.items){
+    const d7 = (v) => v == null ? "" : ` <span class="muted">（7日 ${v >= 0 ? "+" : ""}${fmt(v)}）</span>`;
+    $("youtube").innerHTML = `<div class="tiles"><div class="tile"><div class="k">登録者</div><div class="v">${fmt(Y.subscribers)}</div><div class="s">${Y.subscribers_7d == null ? "前週の記録待ち" : "7日 " + (Y.subscribers_7d >= 0 ? "+" : "") + Y.subscribers_7d}</div></div><div class="tile"><div class="k">総再生</div><div class="v">${fmt(Y.views)}</div><div class="s">${Y.views_7d == null ? "前週の記録待ち" : "7日 +" + fmt(Y.views_7d)}</div></div></div>
+      <div class="scroll" style="margin-top:8px"><table><tr><th>曲</th><th>再生</th></tr>${Y.items.slice(0,8).map(v => `<tr><td>${esc(v.title)}</td><td class="num">${fmt(v.views)}${d7(v.views_7d)}</td></tr>`).join("")}</table></div><p class="muted">PC が ${esc(Y.checked_at)} に取得</p>`;
+  } else {
+    $("youtube").innerHTML = `<p class="empty">YouTube の数字は、PC に鍵（YOUTUBE_API_KEY）を入れると毎朝ここに出ます。</p>`;
+  }
   barChart("sleep-chart", (D.body && D.body.daily) || [], "sleep_hours", 6, 1);
   lineChart("steps-chart", (D.body && D.body.daily) || [], "steps");
   const keys = [["sleep_hours","睡眠","時間",1],["steps","歩数","歩",0],["active_minutes","活動時間","分",0]];

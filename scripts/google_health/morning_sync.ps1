@@ -37,12 +37,16 @@ try {
     python scripts/listing_check.py
     $listingOk = ($LASTEXITCODE -eq 0)
     if (-not $listingOk) { Write-Host "listing_check.py が失敗（続行）" }
+    # YouTube の数字（.env に YOUTUBE_API_KEY があるときだけ。失敗しても続行）
+    python scripts/youtube_stats.py
+    $youtubeOk = ($LASTEXITCODE -eq 0)
 
     # PC の同期が動いたことをクラウドに知らせる（secure の中身は書かない）
     $state = [ordered]@{
         ran_at = (Get-Date -Format "yyyy-MM-dd HH:mm")
         health = "ok"
         listing = $(if ($listingOk) { "ok" } else { "失敗" })
+        youtube = $(if ($youtubeOk) { "ok" } else { "失敗" })
         schedule = $reschedule
     }
     New-Item -ItemType Directory -Force "status" | Out-Null
@@ -50,10 +54,10 @@ try {
 
     git add logs/daily
     $today = Get-Date -Format "yyyy-MM-dd"
-    foreach ($f in @("domains/addon/agent/obs/listings.json", "domains/addon/agent/obs/listings-$today.json", "status/pc-sync.json")) {
+    foreach ($f in @("domains/addon/agent/obs/listings.json", "domains/addon/agent/obs/listings-$today.json", "domains/addon/agent/obs/youtube.json", "domains/addon/agent/obs/youtube-$today.json", "status/pc-sync.json")) {
         if (Test-Path $f) { git add -- $f }
     }
-    $extra = git diff --cached --name-only | Where-Object { $_ -notlike "logs/daily/*" -and $_ -notlike "domains/addon/agent/obs/listings*.json" -and $_ -ne "status/pc-sync.json" }
+    $extra = git diff --cached --name-only | Where-Object { $_ -notlike "logs/daily/*" -and $_ -notlike "domains/addon/agent/obs/listings*.json" -and $_ -notlike "domains/addon/agent/obs/youtube*.json" -and $_ -ne "status/pc-sync.json" }
     if ($extra) { throw "決められたファイル以外が含まれています: $extra" }   # secure 混入の最終ガード
     git diff --cached --quiet
     if ($LASTEXITCODE -eq 0) { Write-Host "変更なし。コミットしません。"; return }

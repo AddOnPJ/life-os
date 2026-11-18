@@ -10,7 +10,6 @@ Yuichi は、スマホの Claude Code（life-os）に「改善 ◯◯」と送�
 - [ ] S15 Google Health の認証が「テスト中」なので、11/18 に取った更新用トークンが 7日（11/25 ごろ）で切れる（Google のヘルプで確認済み）。直し方：Google Cloud の「OAuth 同意画面」で公開ステータスを「本番環境」にし、PC で `python scripts/google_health/sync.py auth` をもう一度だけ実行する。Yuichi の作業（承認待ち A2）（11/19 更新）
 
 ## 中
-- [ ] S16 YouTube の数字（登録者・動画ごとの再生）を毎日自動で取る。YouTube Data API は無料枠で足りる。PC の 6:30 の同期に足し、キーは PC の .env に置く（Google Cloud でキーの作成が要る）（11/18 点検）
 - [ ] S17 Instagram の数字（リールの再生・保存・シェア、フォロワー）を取る。Instagram の API は無料だが、プロアカウントと Meta のアプリ・トークンが要る（11/18 点検）
 - [ ] S18 SNS の発信が止まっていないかの点検（X・Instagram の最終投稿日）。14日投稿がなければ AddOn エージェントが投稿案を出す（11/18 点検）
 - [ ] S13 睡眠時間が短すぎる日がある（11/18 が 2.8h）。計測の抜けか、主な睡眠だけを数えているか、PC の summarize.py を確認する（11/18 点検）
@@ -24,6 +23,7 @@ Yuichi は、スマホの Claude Code（life-os）に「改善 ◯◯」と送�
 - [ ] S12 食事の記録が少ない（7日で1日）。もっと楽に記録できる方法（11/18）
 
 ## 済み
+- 2026-11-19 S16 YouTube の数字を PC が毎朝取り、司令室に出す仕組みを作った（scripts/youtube_stats.py）。鍵の作成は Yuichi（承認待ち A3）
 - 2026-11-19 S9 AI 検索向けの下書き（構造化データ・よくある質問・llms.txt）を domains/addon/drafts/ai-visibility/ に作った。サイトへの反映は Yuichi（承認待ち A1）
 - 2026-11-18 S20 PC の同期が自分の実行時刻を 6:10 に変える処理を足した（手作業なし）。あわせて PC の同期が動いたかを status/pc-sync.json に残し、朝の現状まとめが止まりを検知する
 - 2026-11-18 S1 スマホで見る画面を作った（Claude Docs「life-os いまの状態」https://claude.ai/artifact/Qv563GNdcmyiL5MnNqRL2U ）。毎朝 6:47 に書き直す（status/dashboard.md）

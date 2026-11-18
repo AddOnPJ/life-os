@@ -68,3 +68,9 @@ scripts/google_health/sync.py fetch --days 3 を実行し、結果を確認し�
 2. 公開ステータスの「アプリを公開」→「本番環境」に変える（Google の審査は申請しなくてよい。自分だけが使うので、未確認アプリの注意画面が出るだけ）
 3. PC の PowerShell で `cd C:\Users\ytytc\claude-work\life-os` → `python scripts/google_health/sync.py auth`。ブラウザで「このアプリは Google で確認されていません」と出たら「詳細」→「（安全ではないページ）に移動」で進めて許可
 4. 翌朝 6:10 の同期が動けば完了（司令室の「仕組み」に PC の同期の時刻が出る）
+
+## YouTube の数字を毎朝取る（S16、2026-11-19 追記）
+1. Google Cloud コンソール（健康データと同じプロジェクトでよい）→「API とサービス」→「ライブラリ」→「YouTube Data API v3」→ 有効にする
+2. 「認証情報」→「認証情報を作成」→「API キー」。できたキーの「キーを制限」で、API の制限を「YouTube Data API v3」だけにする
+3. PC の `C:\Users\ytytc\claude-work\life-os\.env` に1行足す（ファイルがなければメモ帳で作る）：`YOUTUBE_API_KEY=作ったキー`
+4. 翌朝の同期から、司令室の「YouTube」に登録者数と曲ごとの再生数が出る（使う枠は1日 5 ユニット程度。無料枠は 10,000）
