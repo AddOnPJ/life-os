@@ -20,6 +20,10 @@ updated: 2026-11-18
 
 ## レベルの目安
 - 中級＝楽器経験3〜5年程度。難しくない曲なら、自分で譜読みして演奏できる
+- 募集文では演奏動画を見てもらう形にする（言葉より伝わる）。候補：
+  - First Love（2026・再生最多）https://www.youtube.com/watch?v=3uBNfJGmMoA
+  - 群青（2026.9.26 依頼演奏会）https://www.youtube.com/watch?v=IXj1YW6BqZw
+  - チャンネル https://www.youtube.com/@addonensemble
 
 ## 募集パート（2026-11-18 更新）
 - 募集中：ヴァイオリン2・ヴィオラ2・チェロ1・クラリネット2・オーボエ1・ファゴット1
