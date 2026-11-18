@@ -27,7 +27,20 @@ cd $HOME\claude-work\life-os
 claude
 ```
 
-## 3. secure/ の暗号化（健康・恋愛・お金を記録し始める前に）
+## 3. 機微メモ用の鍵を作る（スマホから恋愛・お金・健康の詳細を記録するため）
+
+```
+pip install pyrage
+python scripts/secure_note.py keygen
+git add keys/age-public.txt
+git commit -m "機微メモ用の公開鍵"
+git push
+```
+
+- 秘密鍵 `secure/keys/age-identity.txt` は PC の中だけ。USB メモリやパスワード管理アプリなど、別の安全な場所にもコピーしておく（なくすと過去の暗号メモが読めなくなる）
+- 以後、スマホから送った機微メモは暗号文で `secure-inbox/` に届き、PC で「secure を処理して」と頼むと `secure/` に展開される
+
+## 4.（任意）secure/ ごと暗号化して GitHub に置く
 
 いまは `secure/` の中身は .gitignore で GitHub に上がらないようにしてある。
 暗号化してから GitHub に載せたい場合は git-crypt を使う:
