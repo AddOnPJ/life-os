@@ -8,7 +8,6 @@ Yuichi は、スマホの Claude Code（life-os）に「改善 ◯◯」と送�
 
 ## 高
 - [ ] S15 Google Health の認証が「テスト中」のアプリなので、更新用のトークンが約7日で切れる可能性がある（要確認）。切れると 6:30 の健康データ同期が止まる。11/25 ごろに止まっていないか確認し、止まるなら再認証の手順を短くするか、アプリの公開状態を見直す（11/18 点検）
-- [ ] S1 スマホで見る画面がない（今は GitHub アプリで now.md を読むだけ）。Claude Docs など、毎朝自動で更新できる見やすい画面を作る（Yuichi 11/18）
 
 ## 中
 - [ ] S16 YouTube の数字（登録者・動画ごとの再生）を毎日自動で取る。YouTube Data API は無料枠で足りる。PC の 6:30 の同期に足し、キーは PC の .env に置く（Google Cloud でキーの作成が要る）（11/18 点検）
@@ -27,6 +26,7 @@ Yuichi は、スマホの Claude Code（life-os）に「改善 ◯◯」と送�
 - [ ] S12 食事の記録が少ない（7日で1日）。もっと楽に記録できる方法（11/18）
 
 ## 済み
+- 2026-11-18 S1 スマホで見る画面を作った（Claude Docs「life-os いまの状態」https://claude.ai/artifact/Qv563GNdcmyiL5MnNqRL2U ）。毎朝 6:47 に書き直す（status/dashboard.md）
 - 2026-11-18 S4 PC が毎朝 6:30 に掲載ページ（ジモティー・アンサンブルファン・サイトの募集ページ）を取り、要点を obs/listings.json に残す（scripts/listing_check.py）。初回の動作確認は 11/19 朝
 - 2026-11-18 S3 Grok ⇄ Claude の交換フォルダ（ドライブ 00_AI_Hub/exchange）と決まりを作った（docs/exchange.md）。Grok Bot 側の設定は Yuichi が Grok に頼む
 - 2026-11-18 S19 ジモティーの通知メールは届いている（no-reply@jmty.jp → ytytcafe@gmail.com。最後は 2026-06-02）。宣伝メールは Yuichi が削除しているだけ。AddOn エージェントの検索条件に送信元を明記した
