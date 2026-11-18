@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-18 23:59",
+ "generated_at": "2026-11-19 00:03",
  "links": {
   "repo": "https://github.com/AddOnPJ/life-os",
   "now": "https://github.com/AddOnPJ/life-os/blob/main/status/now.md",
@@ -291,7 +291,12 @@
   },
   "target": 10,
   "deadline": "2027-03-31",
-  "series": [],
+  "series": [
+   {
+    "date": "2026-11-19",
+    "count": 0
+   }
+  ],
   "plan": [
    {
     "date": "2026-12-31",
@@ -558,12 +563,21 @@
   "listings": {},
   "last_run": "# 2026-11-18\n- 初回。5つの立場の意見を突き合わせて台帳を作成。計画線 12末2・1末5・2末8・3末10\n- 決定：SNS発信の一言を募集文に、有料広告なし、入団期限は表向き3月、コンサートスクウェアに掲載、AI検索対策を行う\n"
  },
- "approvals": [],
+ "approvals": [
+  {
+   "done": false,
+   "text": "A2 Google Health の認証を「本番環境」にして、PC で一度だけ再認証する（11/25 までに。種類: Yuichi の手作業 ／ 作成: 2026-11-19 ／ 手順: docs/google-health.md の末尾）"
+  },
+  {
+   "done": false,
+   "text": "A1 サイトに AI 検索向けの3点（構造化データ・よくある質問・llms.txt）を入れる（種類: サイトの書き換え＝Yuichi の手作業 ／ 作成: 2026-11-19 ／ 中身: domains/addon/drafts/ai-visibility/）"
+  }
+ ],
  "backlog": [
   {
    "id": "S15",
    "level": "高",
-   "text": "Google Health の認証が「テスト中」のアプリなので、更新用のトークンが約7日で切れる可能性がある（要確認）。切れると 6:30 の健康データ同期が止まる。11/25 ごろに止まっていないか確認し、止まるなら再認証の手順を短くするか、アプリの公開状態を見直す（11/18 点検）"
+   "text": "Google Health の認証が「テスト中」なので、11/18 に取った更新用トークンが 7日（11/25 ごろ）で切れる（Google のヘルプで確認済み）。直し方：Google Cloud の「OAuth 同意画面」で公開ステータスを「本番環境」にし、PC で `python scripts/google_health/sync.py auth` をもう一度だけ実行する。Yuichi の作業（承認待ち A2）（11/19 更新）"
   },
   {
    "id": "S16",
@@ -601,11 +615,6 @@
    "text": "Antigravity：GEMINI.md と、PC の画面（体の数字のグラフなど）（11/18）"
   },
   {
-   "id": "S9",
-   "level": "中",
-   "text": "AI 検索で AddOn が見つかるように、サイトの構造化データ・よくある質問・llms.txt の下書きを作る（11/18）"
-  },
-  {
    "id": "S10",
    "level": "中",
    "text": "承認待ちで実行できるのはメール・予定・ファイルだけ。掲載サイトの書き換えは Yuichi の手作業のまま。PC の内蔵ブラウザで代行できるか検討（11/18）"
@@ -619,6 +628,12 @@
    "id": "S12",
    "level": "低",
    "text": "食事の記録が少ない（7日で1日）。もっと楽に記録できる方法（11/18）"
+  },
+  {
+   "id": "",
+   "level": "済み",
+   "date": "2026-11-19",
+   "text": "S9 AI 検索向けの下書き（構造化データ・よくある質問・llms.txt）を domains/addon/drafts/ai-visibility/ に作った。サイトへの反映は Yuichi（承認待ち A1）"
   },
   {
    "id": "",

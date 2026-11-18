@@ -60,3 +60,11 @@ scripts/google_health/sync.py fetch --days 3 を実行し、結果を確認し�
   （Google の OAuth の仕様）。切れたら `auth` をやり直す。週1回の手間が気になる場合は別の方法を検討する
 - API スコープは「制限付き」。テストユーザー本人のデータを読むだけなら審査なしで使える想定だが、実際に通るかは初回認証で確認
 - `sync.py` の CivilDateTime の形と、一覧取得の filter 書式は未確認（v1 は filter なし）
+
+
+## 7日で認証が切れないようにする（2026-11-19 追記）
+「テスト中」のアプリでは、テストユーザーの認証は同意から7日で切れ、更新用トークンも無効になる（Google Cloud のヘルプ）。毎週やり直さずに済むよう、一度だけ次をする。
+1. PC かスマホのブラウザで Google Cloud コンソール → 健康データ用のプロジェクト → 「Google Auth Platform」（または「OAuth 同意画面」）→「対象」
+2. 公開ステータスの「アプリを公開」→「本番環境」に変える（Google の審査は申請しなくてよい。自分だけが使うので、未確認アプリの注意画面が出るだけ）
+3. PC の PowerShell で `cd C:\Users\ytytc\claude-work\life-os` → `python scripts/google_health/sync.py auth`。ブラウザで「このアプリは Google で確認されていません」と出たら「詳細」→「（安全ではないページ）に移動」で進めて許可
+4. 翌朝 6:10 の同期が動けば完了（司令室の「仕組み」に PC の同期の時刻が出る）
