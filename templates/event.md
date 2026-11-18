@@ -2,7 +2,8 @@
 date: YYYY-MM-DD
 title:
 type: 本番        # 本番 / 練習 / イベント
-location:
+venue:
+venue_type:      # 屋内 / 屋外 / 屋内（アクセスに屋外移動あり）
 calendar:        # 元のカレンダー名
 ---
 
