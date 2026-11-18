@@ -1,0 +1,45 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MusicGroup",
+      "@id": "https://addon-pj.com/#group",
+      "name": "AddOnアンサンブル",
+      "alternateName": "AddOn Ensemble",
+      "url": "https://addon-pj.com/",
+      "description": "大阪府茨木市を拠点に、クラシック楽器（弦楽器・木管楽器）でJ-POP・ジブリ・ディズニー・映画音楽・ミュージカルを演奏するアマチュア楽団。公式音源を耳コピしたオリジナル編曲で、個々のレベルに合わせて編曲している。",
+      "genre": ["J-POP", "アニメ・映画音楽", "ミュージカル", "クラシック"],
+      "foundingLocation": {"@type": "Place", "name": "大阪府茨木市"},
+      "areaServed": ["大阪府", "茨木市", "高槻市", "神戸市"],
+      "email": "music@addon-pj.com",
+      "sameAs": [
+        "https://www.youtube.com/@addonensemble",
+        "https://www.instagram.com/addon_ensemble/",
+        "https://x.com/addon_ensemble"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://addon-pj.com/recruit/#page",
+      "url": "https://addon-pj.com/recruit/",
+      "name": "団員募集｜AddOnアンサンブル（大阪・茨木）",
+      "about": {"@id": "https://addon-pj.com/#group"},
+      "description": "ヴァイオリン・ヴィオラ・チェロ・コントラバス・クラリネット・オーボエ・ファゴット・サックスを募集中（フルートは2027年1月から）。練習は月2回・日曜10:30〜13:00、茨木市。団費は月2,000円のみ。子連れOK。中級（経験3〜5年程度）。"
+    },
+    {
+      "@type": "Event",
+      "name": "AddOnアンサンブル 説明会・練習見学会",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "startDate": "2026-12-13T09:30:00+09:00",
+      "endDate": "2026-12-13T13:00:00+09:00",
+      "location": {"@type": "Place", "name": "茨木市の音楽施設（阪急茨木市駅とJR茨木駅の中間）", "address": {"@type": "PostalAddress", "addressLocality": "茨木市", "addressRegion": "大阪府", "addressCountry": "JP"}},
+      "organizer": {"@id": "https://addon-pj.com/#group"},
+      "isAccessibleForFree": true,
+      "description": "9:30 説明会、10:30〜13:00 練習見学。申し込みは music@addon-pj.com"
+    }
+  ]
+}
+</script>
+<!-- 見学会の日付は終わったら次の日程に書き換える（12/20・1/24 も同じ形で足せる） -->

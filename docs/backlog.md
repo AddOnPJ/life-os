@@ -17,7 +17,6 @@ Yuichi は、スマホの Claude Code（life-os）に「改善 ◯◯」と送�
 - [ ] S5 応募の経路を自動で分ける：掲載先ごとに music+jmty@ などの宛先を使えるか確認（Google Workspace のサブアドレス）（11/18）
 - [ ] S7 PC の週次まとめ（secure：健康の詳細・お金）を作る（11/18）
 - [ ] S8 Antigravity：GEMINI.md と、PC の画面（体の数字のグラフなど）（11/18）
-- [ ] S9 AI 検索で AddOn が見つかるように、サイトの構造化データ・よくある質問・llms.txt の下書きを作る（11/18）
 - [ ] S10 承認待ちで実行できるのはメール・予定・ファイルだけ。掲載サイトの書き換えは Yuichi の手作業のまま。PC の内蔵ブラウザで代行できるか検討（11/18）
 
 ## 低
@@ -25,6 +24,7 @@ Yuichi は、スマホの Claude Code（life-os）に「改善 ◯◯」と送�
 - [ ] S12 食事の記録が少ない（7日で1日）。もっと楽に記録できる方法（11/18）
 
 ## 済み
+- 2026-11-19 S9 AI 検索向けの下書き（構造化データ・よくある質問・llms.txt）を domains/addon/drafts/ai-visibility/ に作った。サイトへの反映は Yuichi（承認待ち A1）
 - 2026-11-18 S20 PC の同期が自分の実行時刻を 6:10 に変える処理を足した（手作業なし）。あわせて PC の同期が動いたかを status/pc-sync.json に残し、朝の現状まとめが止まりを検知する
 - 2026-11-18 S1 スマホで見る画面を作った（Claude Docs「life-os いまの状態」https://claude.ai/artifact/Qv563GNdcmyiL5MnNqRL2U ）。毎朝 6:47 に書き直す（status/dashboard.md）
 - 2026-11-18 S4 PC が毎朝 6:30 に掲載ページ（ジモティー・アンサンブルファン・サイトの募集ページ）を取り、要点を obs/listings.json に残す（scripts/listing_check.py）。初回の動作確認は 11/19 朝
