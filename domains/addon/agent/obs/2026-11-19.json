@@ -1,0 +1,11 @@
+{
+ "date": "2026-11-19",
+ "time": "06:30",
+ "ensemblefan_va": {"rank": null, "status": "取得失敗", "memo": "WebFetch の許可待ちが時間切れ（定期実行では応答者がいない）"},
+ "jmty_suisougaku_osaka": {"rank": null, "status": "取得失敗", "memo": "同上"},
+ "listings_json": {"status": "ファイルなし", "memo": "domains/addon/agent/obs/listings.json がまだない（PC の listing_check.py が未稼働か未コミット）"},
+ "jmty_favorites": null,
+ "gmail_applications_7d": 0,
+ "gmail_memo": "直近7日：アンサンブルファンの更新通知2件（応募ではない）、TicketMe の営業メール1件（応募ではない）",
+ "grok": "2026-11-19_0604_grok-to-claude_addon-research.md を読んだ"
+}

@@ -2,6 +2,17 @@
 # levels: 期限からの日数で段階を決める（負＝前）。省略時は {注意: -3, 警告: 0, 最優先: 2}
 # owner: Yuichi / エージェント / 団員
 obligations:
+  - id: OB-1129-venue-reply
+    title: 11/29 会場（森のホール）から時間変更の受領連絡が来ているか確かめる。なければ電話
+    due: 2026-11-20
+    owner: Yuichi
+    done_when: 会場の返信が Gmail にある、または Yuichi が「電話した」と返す
+    status: open
+  - id: OB-1129-herb-site
+    title: ハーブ園サイト「森のホール イベント情報」が新しい時間（開場13:15・開演13:30）に直っているか確認
+    due: 2026-11-21
+    owner: Yuichi
+    status: open
   - id: OB-jmty-mail
     title: ジモティー本文のメールアドレスを消す（ガイドライン8-2：メンバー募集は本文に連絡先を書けない）
     due: 2026-11-22
