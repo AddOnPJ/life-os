@@ -1,0 +1,12 @@
+{
+ "date": "2026-11-20",
+ "time": "06:30",
+ "ensemblefan_va": {"rank": null, "status": "取得失敗", "memo": "listings.json なし。この定期実行に WebFetch はないため取得しなかった"},
+ "jmty_suisougaku_osaka": {"rank": null, "status": "取得失敗", "memo": "同上"},
+ "listings_json": {"status": "ファイルなし", "memo": "2日続けてなし。status/pc-sync.json もリポジトリにない"},
+ "jmty_favorites": null,
+ "gmail_applications_7d": 0,
+ "gmail_memo": "直近7日：アンサンブルファンの更新通知2件（応募ではない）。ジモティー・コンサートスクウェアの通知なし",
+ "venue_reply": "未着（11/18 送信のあと、会場からの返信なし。6:30 時点）",
+ "grok": "2026-11-20_0608_grok-to-claude_addon-research.md を読んだ"
+}
