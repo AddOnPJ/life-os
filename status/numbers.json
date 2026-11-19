@@ -1,54 +1,47 @@
 {
- "generated_for": "2026-11-19",
- "through": "2026-11-18",
+ "generated_for": "2026-11-20",
+ "through": "2026-11-19",
  "metrics": {
   "sleep_hours": {
    "label": "睡眠",
    "unit": "h",
    "digits": 1,
-   "yesterday": 2.8,
-   "avg7": 4.7,
-   "n7": 3,
-   "avg28": 4.7,
-   "n28": 3
+   "yesterday": 5.9,
+   "avg7": 5.0,
+   "n7": 4,
+   "avg28": 5.0,
+   "n28": 4
   },
   "steps": {
    "label": "歩数",
    "unit": "",
    "digits": 0,
-   "yesterday": 7506.0,
-   "avg7": 7807.666666666667,
-   "n7": 3,
-   "avg28": 7807.666666666667,
-   "n28": 3
+   "yesterday": 6249.0,
+   "avg7": 7418.0,
+   "n7": 4,
+   "avg28": 7418.0,
+   "n28": 4
   },
   "active_minutes": {
    "label": "活動時間",
    "unit": "分",
    "digits": 0,
-   "yesterday": 118.0,
-   "avg7": 136.33333333333334,
-   "n7": 3,
-   "avg28": 136.33333333333334,
-   "n28": 3
+   "yesterday": 131.0,
+   "avg7": 135.0,
+   "n7": 4,
+   "avg28": 135.0,
+   "n28": 4
   }
  },
- "exercise_days7": 3,
+ "exercise_days7": 4,
  "meal_days7": 1,
- "log_days7": 3,
- "sleep_short_streak": 2,
+ "log_days7": 4,
+ "sleep_short_streak": 3,
  "no_exercise_streak": 0,
- "alerts": [],
+ "alerts": [
+  "睡眠6時間未満が3日続いている"
+ ],
  "daily": [
-  {
-   "date": "2026-10-22",
-   "exists": false,
-   "sleep_hours": null,
-   "steps": null,
-   "active_minutes": null,
-   "exercise_count": 0,
-   "meals_count": 0
-  },
   {
    "date": "2026-10-23",
    "exists": false,
@@ -289,8 +282,17 @@
    "sleep_hours": 2.8,
    "steps": 7506.0,
    "active_minutes": 118.0,
-   "exercise_count": 1,
+   "exercise_count": 2,
    "meals_count": 1
+  },
+  {
+   "date": "2026-11-19",
+   "exists": true,
+   "sleep_hours": 5.9,
+   "steps": 6249.0,
+   "active_minutes": 131.0,
+   "exercise_count": 1,
+   "meals_count": 0
   }
  ]
 }
