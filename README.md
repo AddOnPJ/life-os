@@ -7,4 +7,5 @@ Yuichi の個人用ライフマネジメント基盤（private）。
 - 改善の一覧: docs/backlog.md（新しい会話はまずここを読む）
 - ルール: CLAUDE.md（Claude Code 向け）/ AGENTS.md（ほかのエージェント向け）
 - 初回セットアップ: docs/setup.md
+- Claude アプリのプロジェクト: life-os（docs/life-os-project.md）・恋愛コーチ（docs/love-coach-project.md）
 - 日次ログのひな形: templates/daily.md
