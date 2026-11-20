@@ -10,7 +10,7 @@ deadlines:
     category: 手続き
     repeat: none
     levels: {注意: -5, 警告: -2, 最優先: 0}
-    status: open
+    status: done   # 2026-11-20 本番環境にして再認証済み
   - id: L-adobe
     title: Adobe Creative Cloud をブラックフライデーで再契約するか決める（期限切れ中）
     due: 2026-11-27

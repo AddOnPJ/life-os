@@ -2,15 +2,6 @@
  "date": "2026-11-20",
  "items": [
   {
-   "id": "L-google-health-auth",
-   "title": "Google Health の認証を「本番環境」にして再認証（しないと健康データの同期が止まる）",
-   "due": "2026-11-25",
-   "days": 5,
-   "category": "手続き",
-   "level": "注意",
-   "note": ""
-  },
-  {
    "id": "L-adobe",
    "title": "Adobe Creative Cloud をブラックフライデーで再契約するか決める（期限切れ中）",
    "due": "2026-11-27",
