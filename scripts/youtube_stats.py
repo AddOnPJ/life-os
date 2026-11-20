@@ -50,7 +50,7 @@ def main() -> int:
     key = api_key()
     if not key:
         print("YOUTUBE_API_KEY がないので取得しません（.env に書くと動きます）")
-        return 0
+        return 3  # 鍵なし（morning_sync.ps1 が pc-sync.json に「鍵なし」と書く）
     now = dt.datetime.now(JST)
     ch = get("channels", key, part="statistics,contentDetails,snippet", forHandle=HANDLE)
     if not ch.get("items"):
