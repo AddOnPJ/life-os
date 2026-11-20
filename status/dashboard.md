@@ -14,4 +14,4 @@
 
 ## 3. PC の中だけの詳細画面（2026-11-20 で終了）
 - 以前の `secure\dashboard.html`（scripts/secure_weekly.py）は作らない。健康の数字は日次ログに入り、司令室の「体」で見る
-- 司令室（artifact）の最新版：version 1795016853-c15e 以降。ページを変えたら `python scripts/build_dashboard_page.py` → publish_files（slug 303a0b74-ec11-4e0c-962a-958db0b70a88）
+- 司令室（artifact）の最新版：version 1795182143-42bc 以降。ページを変えたら `python scripts/build_dashboard_page.py` → publish_files（slug 303a0b74-ec11-4e0c-962a-958db0b70a88）
