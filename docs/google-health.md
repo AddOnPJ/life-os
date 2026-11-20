@@ -81,3 +81,14 @@ scripts/google_health/sync.py fetch --days 3 を実行し、結果を確認し�
 - 心拍などの「1回で14日まで」の種別は区切って取りつなぐ。睡眠などの1件ずつの種別は、期間の最初の日より古いデータが出るまでページをめくる
 - 取った期間は生データのフォルダの `_meta.json` に残り、`summarize.py` がその期間を日次ログに反映する
 - 認証が生きているかだけ確かめる：`python scripts/google_health/sync.py check`
+
+## 本番環境にした（2026-11-20）
+- Google Cloud プロジェクト `life-os-515105` の Google Auth Platform で、公開ステータスを「本番環境」にした（Claude が Chrome で操作）。7日で認証が切れる制限はなくなる
+- 本番にするにはホームページとプライバシーポリシーの URL が必要だったため、ytytcafe@gmail.com のドライブ「life-os/公開ページ」に文書を置いて入れた（docs/life-os-privacy.md）。承認済みドメインは google.com（もとから）
+- Google の審査は受けていない。自分だけが使うので、利用者100人までの制限と「確認されていないアプリ」の注意画面が出るだけ
+- **テスト中に作ったトークンは切れることがあるので、PC で一度だけ認証し直す**：
+  1. PC の PowerShell：`cd C:\Users\ytytc\claude-work\life-os` → `git pull`
+  2. `python scripts/google_health/sync.py auth` → 表示された URL をブラウザで開く → ytytcafe@gmail.com を選ぶ →「このアプリは Google で確認されていません」は「詳細」→「life-os（安全ではないページ）に移動」→ 項目に全部チェックして「続行」
+  3. www.google.com に移ったら、アドレスバーの URL 全体をコピーして PowerShell に貼って Enter
+  4. `schtasks /Run /TN "life-os-google-health"` で同期をすぐ動かす（初回は35日分をさかのぼって埋める）
+- もし「このアプリはブロックされています」と出て進めないときは、公開ステータスを「テストに戻す」で元に戻せる（そのときは7日ごとの再認証に戻る）
