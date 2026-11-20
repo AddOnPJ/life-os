@@ -1,13 +1,13 @@
 # 自動で動いているもの一覧
 
-増やす・止める・時刻を変えるときは、このファイルも直す。最終確認：2026-11-18
+増やす・止める・時刻を変えるときは、このファイルも直す。最終確認：2026-11-20
 
 ## 毎日
 
 | 時刻 | 名前 | どこで動く | やること | 結果の置き場所 |
 |---|---|---|---|---|
 | 6:00 | AddOn広報リサーチ | Grok Bot（ルーティン） | `to-grok/` の依頼を読み、X の公開情報から募集・集客の材料と投稿の下書き。投稿・いいね・DM はしない | Grok Bot のチャットと、ドライブ `00_AI_Hub/exchange/to-claude/`（docs/exchange.md） |
-| 6:10 | life-os-google-health | PC（タスク スケジューラ） | Pixel Watch のデータを取得し、日次ログに歩数・睡眠などを書く。続けて募集掲載のページと YouTube の数字を取り、PC の中だけの詳細画面を作る。動いた記録を残す | `logs/daily/`（詳細は `secure/health/`）、`domains/addon/agent/obs/listings.json`・`youtube.json`、`status/pc-sync.json`、PC の `secure/dashboard.html`（外に出ない） |
+| 6:10 | life-os-google-health | PC（タスク スケジューラ） | Pixel Watch のデータを取得し、日次ログに睡眠・就寝/起床・歩数・安静時心拍・HRV・SpO2・体重・運動を書く（2026-11-20 から健康は通常の記録）。続けて募集掲載のページと YouTube の数字を取る。動いた記録を残す | `logs/daily/`、`domains/addon/agent/obs/listings.json`・`youtube.json`、`status/pc-sync.json` |
 | 6:23 | AddOn エージェント | Claude 定期実行（クラウド） | 募集・本番・発信の点検と判断。応募への返信の下書き、期限の段階分け、打ち手の準備。月曜は3つの立場のAIで検討会。通知は最優先のときだけ（ふだんは 6:47 のブリーフにまとめる） | `domains/addon/agent/status.md`、`status/approvals.md` |
 | 6:47 | life-os 朝のブリーフ | Claude 定期実行（クラウド） | 受信箱の整理（要返信・返事待ちのラベル、返信の下書き）、カレンダー・Gmail・記録から今日のブリーフ（AddOn の最優先・警告を含む）、続けて現状まとめ | `logs/daily/今日.md`、`status/inbox.md`、Gmail のラベル「life-os/要返信」「life-os/返事待ち」、`status/now.md`、スマホの画面（Claude Docs）、通知 |
 
@@ -31,7 +31,8 @@
 | 「改善 ◯◯」 | スマホの Claude Code（life-os） | 改善の一覧（docs/backlog.md）に足す |
 | 「grok」＋Grok の結果を貼る | スマホの Claude Code（life-os） | inbox に保存。AddOn エージェントが翌朝読む |
 | LINE のトーク履歴を添付 | Claude アプリの「恋愛コーチ」プロジェクト | 相手の気持ちの読み取りと次の一手 |
-| 「secure を処理して」 | PC の Claude Code | 暗号化メモを復号して secure/ に整理（secure-log） |
+| 「記録 健康 ◯◯」（体調・通院・薬・検査値） | life-os_総合 プロジェクト／スマホの Claude Code（life-os） | `domains/health/log.md` と日次ログに記録（quick-log） |
+| 「体どう？」「何食べよう」、食事の写真 | life-os_総合 プロジェクト | 体の数字と食事から今日の提案（health-coach） |
 
 ## life-os 以外で動いている定期実行（参考）
 

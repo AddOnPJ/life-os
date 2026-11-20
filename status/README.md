@@ -4,4 +4,4 @@
 - `numbers.json` … 体と記録の数字（`scripts/status_numbers.py` の出力。画面やグラフ用）
 - `approvals.md` … エージェントが用意して、Yuichi の「OK」を待っているもの
 
-恋愛・お金・健康の詳細は入れない（PC の `secure/` だけ）。
+恋愛とお金は入れない。健康は 2026-11-20 から通常の記録。

@@ -263,10 +263,10 @@ function render(D){
   }
   barChart("sleep-chart", (D.body && D.body.daily) || [], "sleep_hours", 6, 1);
   lineChart("steps-chart", (D.body && D.body.daily) || [], "steps");
-  const keys = [["sleep_hours","睡眠","時間",1],["steps","歩数","歩",0],["active_minutes","活動時間","分",0]];
+  const keys = [["sleep_hours","睡眠","時間",1],["steps","歩数","歩",0],["active_minutes","活動時間","分",0],["resting_hr","安静時心拍","bpm",0],["hrv_ms","HRV","ms",0],["spo2_pct","SpO2","%",1],["weight_kg","体重","kg",1]].filter(([k]) => m[k] && (m[k].yesterday != null || m[k].avg7 != null || m[k].avg28 != null));
   $("body-table").innerHTML = `<tr><th></th><th>昨日</th><th>7日平均</th><th>28日平均</th></tr>` + keys.map(([k,l,u,dg]) => { const x = m[k] || {};
     return `<tr><td>${l}</td><td class="num">${fmt(x.yesterday,dg)}</td><td class="num">${fmt(x.avg7,dg)}</td><td class="num">${fmt(x.avg28,dg)}</td></tr>`; }).join("");
-  $("body-note").textContent = "運動した日 " + (D.body.exercise_days7 ?? "—") + "日／7日、食事の記録 " + (D.body.meal_days7 ?? "—") + "日／7日。" + (D.body.through ? D.body.through.slice(5).replace("-","/") + " までの数字" : "");
+  $("body-note").textContent = "運動した日 " + (D.body.exercise_days7 ?? "—") + "日／7日、食事の記録 " + (D.body.meal_days7 ?? "—") + "日／7日、寝た時刻の平均 " + (D.body.bedtime_avg7 || "—") + "。" + (D.body.through ? D.body.through.slice(5).replace("-","/") + " までの数字" : "");
 
   const ap = D.approvals || [];
   $("approvals").innerHTML = ap.length ? ap.map(a => `<li><span class="chip warn">待ち</span><span>${esc(a.text)}</span></li>`).join("") : `<li class="empty">承認待ちはありません。</li>`;

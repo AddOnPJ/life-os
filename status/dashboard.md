@@ -9,10 +9,9 @@
 1. Claude Docs のツールを読み込む（`ToolSearch` で `Claude_Docs`）。初めてなら `guide(items=["topic.index"])`
 2. 本文の目次を読む：`read(ref={"object":"node","id":"efe4e378-74d8"}, engine="prose", container={"kind":"project","id":"c1ab20ab-a64a-4a26-b4a8-71824ae40821"}, payload={"kind":"view","outline":true})`
 3. 1回の `update` で、見出し1（タイトル）以外のすべての最上位ブロックを `delete`（`"ifRev"` に読んだ rev）、続けてタイトルの後ろに `insert`（`"side":"after"`）で新しい本文の markdown を入れる
-4. 本文の形：日付の行 → 「今日やること」→「AddOn」→「承認待ちと決めてほしいこと」→「体」→「予定」→「仕組み」（リンク4つ）。中身は status/now.md と domains/addon/agent/status.md から。恋愛・お金・健康の詳細は書かない
+4. 本文の形：日付の行 → 「今日やること」→「AddOn」→「承認待ちと決めてほしいこと」→「体」→「予定」→「仕組み」（リンク4つ）。中身は status/now.md と domains/addon/agent/status.md から。恋愛とお金は書かない（健康は通常の記録なので「体」に書いてよい）
 5. 失敗しても now.md の更新は止めない。失敗したことをブリーフの要確認に1行
 
-## 3. PC の中だけの詳細画面
-- `C:\Users\ytytc\claude-work\life-os\secure\dashboard.html`（ブラウザで開いてブックマーク）
-- 詳しい健康（安静時心拍・HRV・SpO2・体重・睡眠の区切り）とお金。毎朝の PC の同期で作り直す（scripts/secure_weekly.py）。GitHub・クラウドには出ない
+## 3. PC の中だけの詳細画面（2026-11-20 で終了）
+- 以前の `secure\dashboard.html`（scripts/secure_weekly.py）は作らない。健康の数字は日次ログに入り、司令室の「体」で見る
 - 司令室（artifact）の最新版：version 1795016853-c15e 以降。ページを変えたら `python scripts/build_dashboard_page.py` → publish_files（slug 303a0b74-ec11-4e0c-962a-958db0b70a88）

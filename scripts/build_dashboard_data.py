@@ -147,7 +147,8 @@ def main() -> int:
             "alerts": numbers.get("alerts", []),
             "exercise_days7": numbers.get("exercise_days7"),
             "meal_days7": numbers.get("meal_days7"),
-            "daily": [{k: r.get(k) for k in ("date", "sleep_hours", "steps", "active_minutes", "exercise_count", "meals_count")}
+            "bedtime_avg7": numbers.get("bedtime_avg7"),
+            "daily": [{k: r.get(k) for k in ("date", "sleep_hours", "steps", "active_minutes", "resting_hr", "hrv_ms", "spo2_pct", "weight_kg", "bedtime", "exercise_count", "meals_count")}
                       for r in numbers.get("daily", [])],
         },
         "addon": {

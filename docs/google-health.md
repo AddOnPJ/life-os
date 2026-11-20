@@ -5,7 +5,7 @@ Google Health API から歩数・睡眠・心拍・運動などを取得し、li
 ## 流れ
 
 1. `scripts/google_health/sync.py fetch` が API から取得 → `secure/health/raw/` に生データ保存
-2. Claude Code が生データを集計 → 日次ログ（歩数・睡眠時間・運動）と `secure/`（心拍など細かい数値）へ
+2. `summarize.py` が生データを集計 → 日次ログの front matter と「運動・体調」へ（歩数・睡眠・就寝/起床・睡眠の内訳・安静時心拍・HRV・SpO2・体重・運動）。2026-11-20 から健康の数字は通常の記録。生データは大きいので `secure/health/raw/` に置いたまま GitHub には上げない
 3. Windows のタスクスケジューラで毎朝実行
 
 ## 1. Google Cloud の準備（PC のブラウザで1回だけ）

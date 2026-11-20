@@ -5,6 +5,9 @@ description: PC で、暗号化された機微メモ（恋愛・お金・健康�
 
 # 機微情報の記録と分析（PC 専用）
 
+> 2026-11-20 から、健康は通常の記録（`domains/health/`・日次ログ、手順は health-coach）、お金の記録は停止中。
+> このスキルを使うのは、`secure-inbox/` に以前の暗号メモ（`.age`）が残っているときだけ。health の古いメモは `domains/health/log.md` に移してよい。
+
 `secure/` は GitHub に上がらない（.gitignore 済み）。ここに書いた内容は、要約も含めて secure の外や外部サービスに出さない。
 
 ## 0. 前提

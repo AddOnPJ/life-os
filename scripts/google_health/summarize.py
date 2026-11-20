@@ -1,23 +1,27 @@
-"""sync.py が保存した Google Health の生データを、日次ログと secure に振り分ける。
+"""sync.py が保存した Google Health の生データを集計して、日次ログに書く。
 
 使い方（life-os のルートで）:
     python scripts/google_health/summarize.py --days 3
     python scripts/google_health/summarize.py --days 3 --dry-run   # 書かずに内容だけ見る
+    python scripts/google_health/summarize.py --backfill           # 保存してある生データ全部から入れ直す
 
 読むもの: secure/health/raw/YYYY-MM-DD/*.json（既定は最新の日付フォルダ。--raw-dir で指定可）
+          生データは大きいので Git に入れない（secure/ は .gitignore 済み）。中身の秘密扱いはしない
 
-書くもの:
-  logs/daily/YYYY-MM-DD.md   front matter（steps, distance_km, calories_total, active_minutes,
-                             sleep_hours, nap_minutes, exercise）と「運動・体調」セクション
-  secure/health/YYYY-MM-DD.md  心拍・安静時心拍・HRV・SpO2・体重・睡眠ステージなど（secure の外に出さない）
+書くもの: logs/daily/YYYY-MM-DD.md
+  front matter: steps, distance_km, calories_total, active_minutes, sleep_hours, nap_minutes,
+                bedtime, wake_time, sleep_deep_min, sleep_light_min, sleep_rem_min, sleep_awake_min,
+                resting_hr, hrv_ms, spo2_pct, weight_kg, exercise
+  本文:「## 運動・体調」の自動ブロック（心拍の幅・睡眠の内訳・昼寝なども）
 
 ルール:
+- 2026-11-20 から健康の数字は通常の記録（Yuichi の決定）。以前は心拍などを secure/health/ に分けていた
 - 日付は日本時間。睡眠は「起きた日」（睡眠の終了時刻の日付）の記録にする。
 - sleep_hours は主睡眠（いちばん長い睡眠）の実睡眠時間。昼寝などは nap_minutes に分ける。
 - 既に値がある項目は上書きしない。違っていれば「要確認」に書く。
   ただし前回このスクリプトが書いた値のままなら更新してよい（当日の歩数は日中に増えるため）。
-  前回値は secure/health/.summarize_state.json に持つ（secure なのでコミットされない）。
-- 日次ログに出すのは歩数・距離・消費カロリー・アクティブ時間・睡眠時間・運動だけ。
+  前回値は secure/health/.summarize_state.json に持つ（PC の中だけの作業用ファイル）。
+- 初めて新しい形で動くとき（state に format 2 が無いとき）は、自動で --backfill と同じ入れ直しをする。
 """
 
 from __future__ import annotations
@@ -31,8 +35,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = ROOT / "secure" / "health" / "raw"
-SECURE_DIR = ROOT / "secure" / "health"
-STATE_FILE = SECURE_DIR / ".summarize_state.json"
+STATE_FILE = ROOT / "secure" / "health" / ".summarize_state.json"
 DAILY_DIR = ROOT / "logs" / "daily"
 TEMPLATE = ROOT / "templates" / "daily.md"
 
@@ -106,9 +109,9 @@ def secs(s: str | None) -> int:
 # ---------- 1日分の集計 ----------
 
 def collect(raw: Path, day: dt.date, cache: dict) -> dict:
-    """day の値を { public: ログに出す, secure: secure のみ } に分ける。無い項目は入れない。"""
+    """day の値を { pub: front matter に書く数字, det: 本文の自動ブロックに書く説明 } にまとめる。無い項目は入れない。"""
     pub: dict = {}
-    sec: dict = {}
+    det: dict = {}
 
     r = cache["steps"].get(day)
     if r:
@@ -128,7 +131,7 @@ def collect(raw: Path, day: dt.date, cache: dict) -> dict:
     r = cache["heart-rate"].get(day)
     if r:
         h = r["heartRate"]
-        sec["心拍(日)"] = (f"平均 {h['beatsPerMinuteAvg']:.0f} / 最大 {h['beatsPerMinuteMax']:.0f} / "
+        det["心拍(日)"] = (f"平均 {h['beatsPerMinuteAvg']:.0f}／最大 {h['beatsPerMinuteMax']:.0f}／"
                           f"最小 {h['beatsPerMinuteMin']:.0f} bpm")
 
     # 睡眠: 終了時刻（日本時間）の日付 = 起きた日
@@ -154,11 +157,19 @@ def collect(raw: Path, day: dt.date, cache: dict) -> dict:
         if naps:
             pub["nap_minutes"] = sum(s["asleep"] for s in naps)
         st = main["stages"]
-        sec["睡眠(主)"] = (f"{main['start']:%H:%M}〜{main['end']:%H:%M}／睡眠 {main['asleep']}分・"
-                          f"中途覚醒 {main['awake']}分／深 {st.get('DEEP', 0)}・浅 {st.get('LIGHT', 0)}・"
-                          f"REM {st.get('REM', 0)}・覚醒 {st.get('AWAKE', 0)}（分）")
+        pub["bedtime"] = f'"{main["start"]:%H:%M}"'
+        pub["wake_time"] = f'"{main["end"]:%H:%M}"'
+        if st:
+            pub["sleep_deep_min"] = st.get("DEEP", 0)
+            pub["sleep_light_min"] = st.get("LIGHT", 0)
+            pub["sleep_rem_min"] = st.get("REM", 0)
+            pub["sleep_awake_min"] = st.get("AWAKE", 0)
+        det["睡眠"] = (f"{main['start']:%H:%M}〜{main['end']:%H:%M}／睡眠 {main['asleep']}分・"
+                     f"中途覚醒 {main['awake']}分"
+                     + (f"／深 {st.get('DEEP', 0)}・浅 {st.get('LIGHT', 0)}・REM {st.get('REM', 0)}・"
+                        f"覚醒 {st.get('AWAKE', 0)}（分）" if st else ""))
         for i, n in enumerate(naps, 1):
-            sec[f"睡眠(昼寝{i})"] = f"{n['start']:%H:%M}〜{n['end']:%H:%M}／睡眠 {n['asleep']}分"
+            det[f"昼寝{i}"] = f"{n['start']:%H:%M}〜{n['end']:%H:%M}／睡眠 {n['asleep']}分"
 
     # 運動: 開始時刻（日本時間）の日付
     ex = []
@@ -175,27 +186,35 @@ def collect(raw: Path, day: dt.date, cache: dict) -> dict:
     if ex:
         pub["exercise"] = ex
 
-    # 細かい数値（secure のみ）
+    # 心拍・HRV・SpO2・体重
     for p in cache["daily-resting-heart-rate"]:
         d = p["dailyRestingHeartRate"]
-        if date_of(d["date"]) == day:
-            sec["安静時心拍"] = f"{d['beatsPerMinute']} bpm"
+        if date_of(d["date"]) == day and d.get("beatsPerMinute") is not None:
+            pub["resting_hr"] = int(round(float(d["beatsPerMinute"])))
     for p in cache["daily-heart-rate-variability"]:
         d = p["dailyHeartRateVariability"]
-        if date_of(d["date"]) == day:
-            sec["HRV"] = (f"平均 {d.get('averageHeartRateVariabilityMilliseconds')} ms／"
-                          f"深い睡眠の RMSSD {d.get('deepSleepRootMeanSquareOfSuccessiveDifferencesMilliseconds')} ms／"
-                          f"ノンレム心拍 {d.get('nonRemHeartRateBeatsPerMinute')} bpm")
+        if date_of(d["date"]) != day:
+            continue
+        if d.get("averageHeartRateVariabilityMilliseconds") is not None:
+            pub["hrv_ms"] = round(float(d["averageHeartRateVariabilityMilliseconds"]), 1)
+        extra = []
+        if d.get("deepSleepRootMeanSquareOfSuccessiveDifferencesMilliseconds") is not None:
+            extra.append(f"深い睡眠の RMSSD {d['deepSleepRootMeanSquareOfSuccessiveDifferencesMilliseconds']} ms")
+        if d.get("nonRemHeartRateBeatsPerMinute") is not None:
+            extra.append(f"ノンレム心拍 {d['nonRemHeartRateBeatsPerMinute']} bpm")
+        if extra:
+            det["HRV の内訳"] = "／".join(extra)
     for p in cache["daily-oxygen-saturation"]:
         d = p["dailyOxygenSaturation"]
-        if date_of(d["date"]) == day:
-            sec["SpO2"] = (f"平均 {d.get('averagePercentage')}%（{d.get('lowerBoundPercentage')}"
-                           f"〜{d.get('upperBoundPercentage')}%）")
+        if date_of(d["date"]) == day and d.get("averagePercentage") is not None:
+            pub["spo2_pct"] = round(float(d["averagePercentage"]), 1)
+            if d.get("lowerBoundPercentage") is not None:
+                det["SpO2 の幅"] = f"{d.get('lowerBoundPercentage')}〜{d.get('upperBoundPercentage')}%"
     w = [p["weight"] for p in cache["weight"] if date_of(p["weight"]["sampleTime"]["civilTime"]["date"]) == day]
     if w:
         w.sort(key=lambda x: x["sampleTime"]["physicalTime"])
-        sec["体重"] = f"{w[-1]['weightGrams'] / 1000:.1f} kg"
-    return {"pub": pub, "sec": sec}
+        pub["weight_kg"] = round(w[-1]["weightGrams"] / 1000, 1)
+    return {"pub": pub, "det": det}
 
 
 # ---------- front matter / 本文の編集 ----------
@@ -296,7 +315,7 @@ def add_confirm(body: list[str], lines: list[str]) -> list[str]:
 
 # ---------- 日次ログの更新 ----------
 
-def update_daily(day: dt.date, pub: dict, has_secure: bool, state: dict, dry: bool) -> list[str]:
+def update_daily(day: dt.date, pub: dict, det: dict, state: dict, dry: bool) -> list[str]:
     f = DAILY_DIR / f"{day.isoformat()}.md"
     if f.exists():
         text = f.read_text(encoding="utf-8")
@@ -320,7 +339,10 @@ def update_daily(day: dt.date, pub: dict, has_secure: bool, state: dict, dry: bo
             report.append(f"{key}: 既存 {fmt_num(cur)} ≠ {fmt_num(val)} → 要確認")
 
     labels = {"steps": "歩数", "distance_km": "距離km", "calories_total": "総消費kcal",
-              "active_minutes": "アクティブ分", "sleep_hours": "睡眠時間", "nap_minutes": "昼寝分"}
+              "active_minutes": "アクティブ分", "sleep_hours": "睡眠時間", "nap_minutes": "昼寝分",
+              "bedtime": "就寝", "wake_time": "起床", "sleep_deep_min": "深い睡眠分",
+              "sleep_light_min": "浅い睡眠分", "sleep_rem_min": "REM分", "sleep_awake_min": "中途覚醒分",
+              "resting_hr": "安静時心拍", "hrv_ms": "HRV", "spo2_pct": "SpO2", "weight_kg": "体重"}
     for key, label in labels.items():
         if key in pub:
             put_scalar(key, pub[key], label)
@@ -352,11 +374,27 @@ def update_daily(day: dt.date, pub: dict, has_secure: bool, state: dict, dry: bo
         lv = pub["_active_levels"]
         block.append(f"- アクティブ {pub['active_minutes']}分（軽 {lv.get('LIGHT', 0)}／中 {lv.get('MODERATE', 0)}／高 {lv.get('VIGOROUS', 0)}）")
     if "sleep_hours" in pub:
-        block.append(f"- 睡眠 {pub['sleep_hours']} 時間" + (f"（昼寝 {pub['nap_minutes']}分）" if "nap_minutes" in pub else ""))
+        block.append(f"- 睡眠 {pub['sleep_hours']} 時間" + (f"（昼寝 {pub['nap_minutes']}分）" if "nap_minutes" in pub else "")
+                     + (f"：{det['睡眠']}" if "睡眠" in det else ""))
+    for k in [k for k in det if k.startswith("昼寝")]:
+        block.append(f"- {k} {det[k]}")
     if ex:
         block.append("- 運動: " + "、".join(f"{e['start']:%H:%M} {e['type']} {e['minutes']}分" for e in ex))
-    if has_secure:
-        block.append("- 心拍・HRV・SpO2・体重などの細かい数値: secure に記録")
+    hr = []
+    if "resting_hr" in pub:
+        hr.append(f"安静時心拍 {pub['resting_hr']} bpm")
+    if "hrv_ms" in pub:
+        hr.append(f"HRV {pub['hrv_ms']} ms")
+    if "spo2_pct" in pub:
+        hr.append(f"SpO2 {pub['spo2_pct']}%" + (f"（{det['SpO2 の幅']}）" if "SpO2 の幅" in det else ""))
+    if hr:
+        block.append("- " + "／".join(hr))
+    if "HRV の内訳" in det:
+        block.append(f"- HRV の内訳: {det['HRV の内訳']}")
+    if "心拍(日)" in det:
+        block.append(f"- 心拍（1日）: {det['心拍(日)']}")
+    if "weight_kg" in pub:
+        block.append(f"- 体重 {pub['weight_kg']} kg")
     if block and "steps" in pub:   # rollup が取れていない日（取得日数の外）は既存ブロックを残す
         body = set_section_block(body, "## 運動・体調", block)
     body = add_confirm(body, confirms)
@@ -373,66 +411,54 @@ def update_daily(day: dt.date, pub: dict, has_secure: bool, state: dict, dry: bo
     return report
 
 
-# ---------- secure の更新 ----------
-
-def update_secure(day: dt.date, sec: dict, dry: bool) -> int:
-    if not sec:
-        return 0
-    f = SECURE_DIR / f"{day.isoformat()}.md"
-    text = f.read_text(encoding="utf-8") if f.exists() else ""
-    merged: dict = {}
-    m = re.search(re.escape(MARK_S) + r"(.*?)" + re.escape(MARK_E), text, flags=re.S)
-    if m:  # 取得日数の外で今回取れなかった項目は、前回の値を残す
-        for ln in m.group(1).strip().split("\n"):
-            k, _, v = ln.removeprefix("- ").partition(": ")
-            if k:
-                merged[k] = v
-    merged.update(sec)
-    new = "\n".join([MARK_S, *[f"- {k}: {v}" for k, v in merged.items()], MARK_E])
-    if m:
-        text = text[:m.start()] + new + text[m.end():]
-    elif text:
-        text = text.rstrip("\n") + f"\n\n## Google Health\n{new}\n"
-    else:
-        text = f"---\ndate: {day.isoformat()}\n---\n\n## Google Health\n{new}\n"
-    if not dry:
-        f.parent.mkdir(parents=True, exist_ok=True)
-        f.write_text(text, encoding="utf-8", newline="\n")
-    return len(merged)
-
-
 # ---------- main ----------
 
-def main() -> None:
-    sys.stdout.reconfigure(encoding="utf-8")
-    ap = argparse.ArgumentParser(description="Google Health 生データ → 日次ログ / secure")
-    ap.add_argument("--days", type=int, default=3)
-    ap.add_argument("--raw-dir")
-    ap.add_argument("--dry-run", action="store_true")
-    args = ap.parse_args()
-
-    raw = pick_raw_dir(args.raw_dir)
-    print(f"生データ: {raw.relative_to(ROOT) if raw.is_relative_to(ROOT) else raw}")
+def load_cache(raw: Path) -> dict:
     cache = {t: rollup_by_day(raw, t) for t in ("steps", "distance", "total-calories", "active-minutes", "heart-rate")}
     for t in ("sleep", "exercise", "daily-resting-heart-rate", "daily-heart-rate-variability",
               "daily-oxygen-saturation", "weight"):
         cache[t] = list_points(raw, t)
+    return cache
+
+
+def run(raw: Path, end: dt.date, days: int, state: dict, dry: bool) -> None:
+    print(f"生データ: {raw.relative_to(ROOT) if raw.is_relative_to(ROOT) else raw}")
+    cache = load_cache(raw)
+    for n in range(days - 1, -1, -1):
+        day = end - dt.timedelta(days=n)
+        r = collect(raw, day, cache)
+        if not r["pub"]:
+            print(f"\n{day}: データなし")
+            continue
+        print(f"\n{day}")
+        for line in update_daily(day, r["pub"], r["det"], state, dry):
+            print("  " + line)
+
+
+def main() -> None:
+    sys.stdout.reconfigure(encoding="utf-8")
+    ap = argparse.ArgumentParser(description="Google Health 生データ → 日次ログ")
+    ap.add_argument("--days", type=int, default=3)
+    ap.add_argument("--raw-dir")
+    ap.add_argument("--backfill", action="store_true", help="保存してある生データの日付フォルダを古い順に全部使って入れ直す")
+    ap.add_argument("--dry-run", action="store_true")
+    args = ap.parse_args()
 
     state = json.loads(STATE_FILE.read_text(encoding="utf-8")) if STATE_FILE.exists() else {}
     today = dt.datetime.now(JST).date()
-    for n in range(args.days - 1, -1, -1):
-        day = today - dt.timedelta(days=n)
-        r = collect(raw, day, cache)
-        if not r["pub"] and not r["sec"]:
-            print(f"\n{day}: データなし")
-            continue
-        n_sec = update_secure(day, r["sec"], args.dry_run)
-        print(f"\n{day}")
-        for line in update_daily(day, r["pub"], n_sec > 0, state, args.dry_run):
-            print("  " + line)
-        print(f"  secure: {n_sec} 項目" + ("（dry-run）" if args.dry_run else ""))
+    backfill = args.backfill or state.get("_format") != 2
+    if backfill and RAW_DIR.exists() and not args.raw_dir:
+        print("入れ直し: 保存してある生データを古い順に全部使う")
+        for d in sorted(p for p in RAW_DIR.iterdir() if p.is_dir()):
+            try:
+                end = dt.date.fromisoformat(d.name)
+            except ValueError:
+                continue
+            run(d, end, 10, state, args.dry_run)
+    run(pick_raw_dir(args.raw_dir), today, args.days, state, args.dry_run)
 
     if not args.dry_run:
+        state["_format"] = 2
         STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
         STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
 
