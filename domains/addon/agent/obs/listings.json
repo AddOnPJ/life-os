@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-20 23:14",
+ "checked_at": "2026-11-21 06:10",
  "from": "PC",
  "pages": {
   "jmty": {
@@ -96,22 +96,22 @@
  "ranks": {
   "ensemblefan_va": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=va",
-   "rank": 23,
+   "rank": 22,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "ensemblefan_vc": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=vc",
-   "rank": 23,
+   "rank": 22,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "ensemblefan_ob": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=ob",
-   "rank": 8,
+   "rank": 9,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "ensemblefan_fg": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=fg",
-   "rank": 10,
+   "rank": 11,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "jmty_suisougaku_osaka": {
