@@ -75,11 +75,11 @@ tactics:
     owner: Yuichi
     status: waiting_decision
   - id: T-age
-    title: 募集年齢の上限（45歳）を外す（楽器を再開する人を逃さない）
+    title: 募集年齢の上限（45歳）を外す（楽器を再開する人を逃さない）。2026-11-21 決定（D1）、ジモティーから消すのは A4
     priority: 2
     cost: 0
     owner: Yuichi
-    status: waiting_decision
+    status: doing
   - id: T-every-practice
     title: 見学会の日以外の練習日も見学できるようにする
     priority: 3

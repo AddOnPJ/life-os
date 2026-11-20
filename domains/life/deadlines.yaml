@@ -31,3 +31,27 @@ deadlines:
     category: サブスク
     repeat: none
     status: open
+  - id: L-sec-rakuten-sec-20261118
+    title: 楽天証券：パスワード変更・2段階認証・ログイン履歴の確認（11/18 の個人情報漏えいの可能性のお知らせ）
+    due: 2026-11-23
+    category: 安全
+    repeat: none
+    levels: {警告: -2, 最優先: 0}
+    note: メールのリンクは使わず、公式アプリか、自分でブックマークした公式サイトから確認する
+    status: open
+  - id: L-sec-wester-20261115
+    title: JR西日本 WESTER：パスワード変更・2段階認証・ログイン履歴の確認（11/15 の別端末ログインのお知らせ）
+    due: 2026-11-23
+    category: 安全
+    repeat: none
+    levels: {警告: -2, 最優先: 0}
+    note: 自分のログインなら「済み」でよい。メールのリンクは使わない
+    status: open
+  - id: L-sec-instagram-20261111
+    title: Instagram：パスワード変更・2段階認証・ログイン履歴の確認（11/11 の見慣れないログインのお知らせ）
+    due: 2026-11-23
+    category: 安全
+    repeat: none
+    levels: {警告: -2, 最優先: 0}
+    note: AddOn（addon_ensemble）か個人のアカウントかは要確認。メールのリンクは使わない
+    status: open

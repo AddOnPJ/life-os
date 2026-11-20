@@ -1,4 +1,4 @@
-﻿# 毎朝 6:10（Windows タスクスケジューラ。初回の実行で 6:30 から自動で変更）: Google Health 取得 → 日次ログ反映 → 募集掲載の確認 → push
+﻿# 毎朝 6:10（Windows タスクスケジューラ。2026-11-20 に 6:10 へ変更済み）: Google Health 取得 → 日次ログ反映 → 募集掲載の確認 → push
 # ログは secure 配下に出す（コミットされない）。
 $ErrorActionPreference = "Stop"
 Set-Location (Resolve-Path (Join-Path $PSScriptRoot "..\.."))
@@ -20,18 +20,16 @@ try {
     # 先に取り込む（スマホ・クラウドの記録とぶつからないように）
     Invoke-Step "git pull --rebase" { git pull --rebase --autostash }
 
-    # このタスク自身の実行時刻を 6:10 にそろえる（6:23 の AddOn エージェントより前に終わらせるため）
+    # このタスクの実行時刻を確かめるだけ（2026-11-20 に Yuichi が管理者の PowerShell で 6:10 に変更済み。
+    # ふつうの権限では変更できず毎回「アクセスが拒否されました」になっていたので、変更はしない）
     $taskName = "life-os-google-health"
     $wantAt = "06:10"
-    $reschedule = "変更なし"
+    $reschedule = "確認できず"
     try {
         $task = Get-ScheduledTask -TaskName $taskName -ErrorAction Stop
         $cur = ([datetime]$task.Triggers[0].StartBoundary).ToString("HH:mm")
-        if ($cur -ne $wantAt) {
-            Set-ScheduledTask -TaskName $taskName -Trigger (New-ScheduledTaskTrigger -Daily -At $wantAt) -ErrorAction Stop | Out-Null
-            $reschedule = "$cur から $wantAt に変更"
-        }
-    } catch { $reschedule = "変更できず: " + $_.Exception.Message }
+        $reschedule = $(if ($cur -eq $wantAt) { $cur } else { "$cur（$wantAt ではない）" })
+    } catch { $reschedule = "確認できず" }
     Write-Host "実行時刻: $reschedule"
     Invoke-Step "sync.py fetch" { python scripts/google_health/sync.py fetch --days 2 }
     Invoke-Step "summarize.py" { python scripts/google_health/summarize.py --days 3 }
@@ -41,7 +39,7 @@ try {
     if (-not $listingOk) { Write-Host "listing_check.py が失敗（続行）" }
     # YouTube の数字（.env に YOUTUBE_API_KEY があるときだけ。失敗しても続行）
     python scripts/youtube_stats.py
-    $youtubeOk = ($LASTEXITCODE -eq 0)
+    $youtubeState = switch ($LASTEXITCODE) { 0 { "ok" } 3 { "鍵なし" } default { "失敗" } }
     # 2026-11-20 から健康の数字は日次ログに入り、司令室で見る。secure/dashboard.html（secure_weekly.py）は作らない
 
     # PC の同期が動いたことをクラウドに知らせる（secure の中身は書かない）
@@ -50,7 +48,7 @@ try {
         ok = $true
         health = "ok"
         listing = $(if ($listingOk) { "ok" } else { "失敗" })
-        youtube = $(if ($youtubeOk) { "ok" } else { "失敗" })
+        youtube = $youtubeState
         schedule = $reschedule
     }
     New-Item -ItemType Directory -Force "status" | Out-Null

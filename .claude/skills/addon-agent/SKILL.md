@@ -36,6 +36,8 @@ python scripts/addon_agent.py --json domains/addon/agent/obs/calc.json
 | ジモティーのお気に入り数 | listings.json の favorites（実験 EX1 の指標） | obs/日付.json |
 | X の調査（Grok Bot） | Google ドライブ `00_AI_Hub/exchange/to-claude/`（ID は `docs/exchange.md`）の直近48時間のファイルのうち、`exchange-log.md` にないもの。加えて Yuichi が「grok」と貼って送った `inbox/` のもの | `exchange-log.md` に1行、使えるものは runs/ と tactics・drafts へ |
 | 本番の準備 | `domains/addon/events/` の今日〜21日後 | obligations.yaml に未登録の期限があれば足す |
+| 発信（SNS） | X・Instagram（@addon_ensemble）の最後の投稿日。X は Grok の調査（`to-claude/`）、Instagram は Yuichi の記録（inbox・日次ログ）か、取れなければ「要確認」。どちらも分からない日が7日続いたら、Grok への依頼（下）に「@addon_ensemble の X の最終投稿日」を入れる | obs/日付.json の `sns_last_post: {x: 日付, instagram: 日付か要確認}` |
+| 本番前日パックの予約 | `domains/addon/events/` の今日〜21日後の本番が、`docs/automations.md` の「本番前日パック」の表にあるか | 無ければ status.md の注意に「◯/◯ 本番の前日パックが未予約（会話で頼むと予約される）」 |
 
 取得に失敗したときは「取得失敗」と書き、前回の値で判断しない。WebFetch が許可待ちで使えないときは、待たずに PC の listings.json だけで判断する。2日続けて失敗したら注意に出す。
 
@@ -46,6 +48,10 @@ python scripts/addon_agent.py --json domains/addon/agent/obs/calc.json
 3. **完了の確認**：Yuichi が日次ログや inbox に「済み」「直した」と書いたもの、Gmail の送信済みで確かめられたものは、obligations.yaml の status を done にする。見学会が終わったら次の見学会の期限を足す
 4. **計画より遅れていたら**：tactics.yaml の todo を priority 順に1つ選び、実行に必要な下書き（掲載文・投稿文・依頼文）を `domains/addon/drafts/` に作って承認待ちに積む。1日に積むのは最大2件
 5. **実験**：判定日を過ぎたら、基準（開始前に固定したもの）で判定案を作り、承認待ちに積む
+6. **発信の止まり（S27）**：X か Instagram の最後の投稿から14日以上たっていたら status.md の【警告】に「◯◯日投稿なし」。さらに、今週（月〜日）の投稿カレンダー `domains/addon/drafts/sns/YYYY-Www.md` が無ければ作り、承認待ちに「今週の投稿3本（Yuichi が貼る）」を1件積む（週1件まで）。月曜の検討会では、止まっていなくても翌週分を作る
+   - 中身：投稿3本。各「日時（平日21時前後か土日）・X/Instagram・本文（そのまま貼れる）・使う写真や動画の案・ねらい（見学会の告知／演奏の様子／メンバーの声など）」
+   - 材料：近い本番・見学会（recruitment.md）・Grok の調査・過去の告知セット。見学会の日付と申し込み方法（music@addon-pj.com）を3本のうち1本以上に入れる
+   - 守ること：「急募」・欠員の事実を書かない。メンバーの顔や名前は、本人の了承が確認できているものだけ（分からなければ「写真は全体の後ろ姿など」と書く）
 
 ### Grok Bot への依頼（翌朝の調査に入れてほしいこと）
 今日の判断で X の調査が役に立つこと（例：見学会の告知に反応しそうな人の探し方、特定パートの「再開」したい人の投稿、競合団体の動き）があれば、`to-grok/` に `YYYY-MM-DD_HHMM_claude-to-grok_request.md` を作る（形は `docs/exchange.md`）。1日1件まで。なければ作らない。
