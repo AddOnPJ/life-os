@@ -35,6 +35,7 @@ Yuichi は、スマホの Claude Code（life-os）に「改善 ◯◯」と送�
 - 2026-11-19 S7 PC の中だけの詳細画面（secure/dashboard.html）と週のまとめ（secure/weekly/）を作った。毎朝の同期で更新。詳しい健康（安静時心拍・HRV・SpO2・体重・睡眠の区切り）とお金（secure/money があれば）
 - 2026-11-19 S16 YouTube の数字を PC が毎朝取り、司令室に出す仕組みを作った（scripts/youtube_stats.py）。鍵の作成は Yuichi（承認待ち A3）
 - 2026-11-19 S9 AI 検索向けの下書き（構造化データ・よくある質問・llms.txt）を domains/addon/drafts/ai-visibility/ に作った。サイトへの反映は Yuichi（承認待ち A1）
+- 2026-11-20 PC の同期の時刻を 6:10 に変更（自動では「アクセスが拒否されました」で失敗していたため、Yuichi が管理者の PowerShell で schtasks /Change を実行）。AddOn エージェント（6:23）より前に掲載の数字がそろう
 - 2026-11-18 S20 PC の同期が自分の実行時刻を 6:10 に変える処理を足した（手作業なし）。あわせて PC の同期が動いたかを status/pc-sync.json に残し、朝の現状まとめが止まりを検知する
 - 2026-11-18 S1 スマホで見る画面を作った（Claude Docs「life-os いまの状態」https://claude.ai/artifact/Qv563GNdcmyiL5MnNqRL2U ）。毎朝 6:47 に書き直す（status/dashboard.md）
 - 2026-11-18 S4 PC が毎朝 6:30 に掲載ページ（ジモティー・アンサンブルファン・サイトの募集ページ）を取り、要点を obs/listings.json に残す（scripts/listing_check.py）。初回の動作確認は 11/19 朝
