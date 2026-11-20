@@ -1,0 +1,18 @@
+{
+ "date": "2026-11-21",
+ "time": "06:35",
+ "listings_json": {"status": "ok", "checked_at": "2026-11-21 06:10"},
+ "ensemblefan_va": {"rank": 22, "status": "推定", "source": "listings.json"},
+ "ensemblefan_vc": {"rank": 22, "status": "推定", "source": "listings.json"},
+ "ensemblefan_ob": {"rank": 9, "status": "推定", "source": "listings.json"},
+ "ensemblefan_fg": {"rank": 11, "status": "推定", "source": "listings.json"},
+ "jmty_suisougaku_osaka": {"rank": 17, "status": "推定", "source": "listings.json"},
+ "jmty_favorites": 29,
+ "jmty_body": "メール1件が本文に残っている（OB-jmty-mail 未完）。ボーカルの記載あり",
+ "site_recruit": "「急募」「ボーカル」が残っている。サックス・フルート・群青の動画なし（OB サイト修正 未完）",
+ "gmail_applications_7d": 0,
+ "gmail_memo": "直近7日：アンサンブルファンの更新通知2件（応募ではない）。ジモティー・コンサートスクウェアの通知なし",
+ "venue_reply": "未着（11/18 送信のあと、会場からの返信なし。6:35 時点）",
+ "x_lead": "@addon_anii の募集投稿にフルートについての質問の返信 1件（11/20 19:50、地域未確認、未返信）。応募の定義に当たるかは要確認のため件数に数えない",
+ "grok": "2026-11-21_0603_grok-to-claude_addon-research.md を読んだ"
+}
