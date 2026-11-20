@@ -3,6 +3,14 @@
 使い方（life-os のルートで）:
     python scripts/google_health/sync.py auth          # 初回と、トークンが切れたとき
     python scripts/google_health/sync.py fetch --days 3
+    python scripts/google_health/sync.py check          # トークンが生きているかだけ確かめる
+
+取りこぼしの埋め方（2026-11-20〜）:
+- 前回うまく取れた日を secure/health/.sync_state.json に残し、次の fetch はその日から今日までを取る
+  （--days より長ければそちらを優先）。初めてのときは FIRST_DAYS 日分さかのぼる
+- dailyRollUp は種別ごとに1回で取れる日数に上限があるので、長い期間は区切って取りつなぐ
+- 1件ずつの種別は、取りたい期間の最初の日より古いデータが出るまでページをめくる（上限 LIST_PAGE_CAP）
+- 取った期間は生データのフォルダの _meta.json に書き、summarize.py がその期間を日次ログに反映する
 
 保存先（すべて secure/ 配下＝GitHub に上がらない）:
     secure/google_health/client_secret.json   … Google Cloud で作った OAuth クライアント
@@ -33,6 +41,9 @@ CRED_DIR = ROOT / "secure" / "google_health"
 CLIENT_FILE = CRED_DIR / "client_secret.json"
 TOKEN_FILE = CRED_DIR / "token.json"
 RAW_DIR = ROOT / "secure" / "health" / "raw"
+STATE_FILE = ROOT / "secure" / "health" / ".sync_state.json"
+FIRST_DAYS = 35        # 初回にさかのぼる日数（28日平均がすぐ出るように）
+MAX_BACK_DAYS = 90     # 1回でさかのぼる最大日数
 
 API = "https://health.googleapis.com/v4"
 REDIRECT_URI = "https://www.google.com"
@@ -60,7 +71,8 @@ LIST_TYPES = [
     "daily-oxygen-saturation",
     "weight",
 ]
-LIST_MAX_PAGES = 2
+LIST_MAX_PAGES = 2       # 短い期間（3日以内）のとき
+LIST_PAGE_CAP = 40       # 長い期間のときの上限
 
 JST = dt.timezone(dt.timedelta(hours=9))
 
@@ -155,32 +167,77 @@ def save_raw(day: dt.date, name: str, data: dict) -> Path:
     return out
 
 
+def point_date(p: dict) -> dt.date | None:
+    """1件のデータの日付（日本時間）。形がわからなければ None。"""
+    if not p:
+        return None
+    v = next(iter(p.values())) if len(p) == 1 else p
+    if not isinstance(v, dict):
+        return None
+    try:
+        if "interval" in v:
+            t = v["interval"].get("endTime") or v["interval"].get("startTime")
+            return dt.datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(JST).date()
+        if "date" in v and isinstance(v["date"], dict):
+            c = v["date"]
+            return dt.date(c["year"], c["month"], c["day"])
+        if "sampleTime" in v:
+            c = v["sampleTime"]["civilTime"]["date"]
+            return dt.date(c["year"], c["month"], c["day"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    return None
+
+
+def load_state() -> dict:
+    return json.loads(STATE_FILE.read_text(encoding="utf-8")) if STATE_FILE.exists() else {}
+
+
+def fetch_days(today: dt.date, asked: int) -> int:
+    last = load_state().get("last_ok")
+    if not last:
+        return max(asked, FIRST_DAYS)
+    gap = (today - dt.date.fromisoformat(last)).days + 2   # 前回の日も取り直す（途中までだったため）
+    return min(max(asked, gap), MAX_BACK_DAYS)
+
+
+def cmd_check(_: argparse.Namespace) -> None:
+    access_token()
+    tok = json.loads(TOKEN_FILE.read_text(encoding="utf-8"))
+    print("トークンは有効です。保存:", tok.get("saved_at", "不明"))
+
+
 def cmd_fetch(args: argparse.Namespace) -> None:
     tok = access_token()
     auth = {"Authorization": f"Bearer {tok}", "Accept": "application/json"}
     today = dt.datetime.now(JST).date()
+    days = fetch_days(today, args.days)
+    start = today - dt.timedelta(days=days - 1)
+    print(f"期間: {start} 〜 {today}（{days}日）")
     errors = []
 
     for dtype, max_days in ROLLUP_TYPES.items():
-        days = min(args.days, max_days)
-        body = {
-            "range": {"start": civil(today - dt.timedelta(days=days - 1)),
-                      "end": civil(today + dt.timedelta(days=1))},
-            "windowSizeDays": 1,
-        }
-        url = f"{API}/users/me/dataTypes/{dtype}/dataPoints:dailyRollUp"
+        points, s0 = [], start
         try:
-            res = http("POST", url, data=json.dumps(body).encode(),
-                       headers={**auth, "Content-Type": "application/json"})
-            print("OK  ", save_raw(today, f"rollup_{dtype}", res))
+            while s0 <= today:
+                e0 = min(today, s0 + dt.timedelta(days=max_days - 1))
+                body = {"range": {"start": civil(s0), "end": civil(e0 + dt.timedelta(days=1))},
+                        "windowSizeDays": 1}
+                url = f"{API}/users/me/dataTypes/{dtype}/dataPoints:dailyRollUp"
+                res = http("POST", url, data=json.dumps(body).encode(),
+                           headers={**auth, "Content-Type": "application/json"})
+                points += res.get("rollupDataPoints", [])
+                s0 = e0 + dt.timedelta(days=1)
+            print("OK  ", save_raw(today, f"rollup_{dtype}", {"rollupDataPoints": points}))
         except RuntimeError as e:
             errors.append(str(e))
             print("NG  ", dtype)
 
+    cap = LIST_MAX_PAGES if days <= 3 else LIST_PAGE_CAP
     for dtype in LIST_TYPES:
         pages, token = [], None
         try:
-            for _ in range(LIST_MAX_PAGES):
+            for _ in range(cap):
                 q = {"pageToken": token} if token else {}
                 url = f"{API}/users/me/dataTypes/{dtype}/dataPoints"
                 if q:
@@ -190,21 +247,29 @@ def cmd_fetch(args: argparse.Namespace) -> None:
                 token = res.get("nextPageToken")
                 if not token:
                     break
+                ds = [d for d in (point_date(p) for p in res.get("dataPoints", [])) if d]
+                if ds and min(ds) < start:   # 取りたい期間より古いところまで来た
+                    break
             print("OK  ", save_raw(today, f"list_{dtype}", {"pages": pages}))
         except RuntimeError as e:
             errors.append(str(e))
             print("NG  ", dtype)
 
+    save_raw(today, "_meta", {"start": start.isoformat(), "end": today.isoformat(),
+                              "fetched_at": dt.datetime.now(JST).isoformat()})
     if errors:
         log = save_raw(today, "_errors", {"errors": errors})
         print(f"\n失敗 {len(errors)} 件。内容: {log}")
         sys.exit(1)
+    STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    STATE_FILE.write_text(json.dumps({"last_ok": today.isoformat()}, ensure_ascii=False), encoding="utf-8")
 
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Google Health API → life-os")
     sub = p.add_subparsers(required=True)
     sub.add_parser("auth").set_defaults(func=cmd_auth)
+    sub.add_parser("check").set_defaults(func=cmd_check)
     f = sub.add_parser("fetch")
     f.add_argument("--days", type=int, default=3)
     f.set_defaults(func=cmd_fetch)

@@ -74,3 +74,10 @@ scripts/google_health/sync.py fetch --days 3 を実行し、結果を確認し�
 2. 「認証情報」→「認証情報を作成」→「API キー」。できたキーの「キーを制限」で、API の制限を「YouTube Data API v3」だけにする
 3. PC の `C:\Users\ytytc\claude-work\life-os\.env` に1行足す（ファイルがなければメモ帳で作る）：`YOUTUBE_API_KEY=作ったキー`
 4. 翌朝の同期から、司令室の「YouTube」に登録者数と曲ごとの再生数が出る（使う枠は1日 5 ユニット程度。無料枠は 10,000）
+
+## 取りこぼしを埋める（2026-11-20 追記）
+- `sync.py fetch` は前回うまく取れた日（`secure/health/.sync_state.json`）から今日までをまとめて取る。PC が何日か止まっていても、次に動いたときに埋まる（最大90日）
+- 初めてこの形で動くときは35日分さかのぼる（28日平均がすぐ出るように）
+- 心拍などの「1回で14日まで」の種別は区切って取りつなぐ。睡眠などの1件ずつの種別は、期間の最初の日より古いデータが出るまでページをめくる
+- 取った期間は生データのフォルダの `_meta.json` に残り、`summarize.py` がその期間を日次ログに反映する
+- 認証が生きているかだけ確かめる：`python scripts/google_health/sync.py check`

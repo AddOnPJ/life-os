@@ -21,6 +21,7 @@
 - 既に値がある項目は上書きしない。違っていれば「要確認」に書く。
   ただし前回このスクリプトが書いた値のままなら更新してよい（当日の歩数は日中に増えるため）。
   前回値は secure/health/.summarize_state.json に持つ（PC の中だけの作業用ファイル）。
+- sync.py が長い期間を取った日（_meta.json）は、その期間を全部反映する。
 - 初めて新しい形で動くとき（state に format 2 が無いとき）は、自動で --backfill と同じ入れ直しをする。
 """
 
@@ -421,8 +422,18 @@ def load_cache(raw: Path) -> dict:
     return cache
 
 
+def meta_days(raw: Path, end: dt.date, days: int) -> int:
+    """sync.py が取った期間（_meta.json）が days より長ければ、その日数を返す。"""
+    m = load(raw, "_meta")
+    if m and m.get("start"):
+        span = (end - dt.date.fromisoformat(m["start"])).days + 1
+        return max(days, span)
+    return days
+
+
 def run(raw: Path, end: dt.date, days: int, state: dict, dry: bool) -> None:
-    print(f"生データ: {raw.relative_to(ROOT) if raw.is_relative_to(ROOT) else raw}")
+    days = meta_days(raw, end, days)
+    print(f"生データ: {raw.relative_to(ROOT) if raw.is_relative_to(ROOT) else raw}（{days}日分）")
     cache = load_cache(raw)
     for n in range(days - 1, -1, -1):
         day = end - dt.timedelta(days=n)
