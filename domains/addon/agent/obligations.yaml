@@ -7,7 +7,7 @@ obligations:
     due: 2026-11-20
     owner: Yuichi
     done_when: 会場の返信が Gmail にある、または Yuichi が「電話した」と返す
-    status: open
+    status: done  # 2026-11-20 10:41 info@kobeherb.com から「承知いたしました」（11/21 点検で Gmail 確認）
   - id: OB-1129-herb-site
     title: ハーブ園サイト「森のホール イベント情報」が新しい時間（開場13:15・開演13:30）に直っているか確認
     due: 2026-11-21

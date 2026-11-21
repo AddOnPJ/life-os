@@ -37,6 +37,8 @@ python scripts/addon_agent.py --json domains/addon/agent/obs/calc.json
 | X の調査（Grok Bot） | Google ドライブ `00_AI_Hub/exchange/to-claude/`（ID は `docs/exchange.md`）の直近48時間のファイルのうち、`exchange-log.md` にないもの。加えて Yuichi が「grok」と貼って送った `inbox/` のもの | `exchange-log.md` に1行、使えるものは runs/ と tactics・drafts へ |
 | 本番の準備 | `domains/addon/events/` の今日〜21日後 | obligations.yaml に未登録の期限があれば足す |
 
+返事待ち（会場・依頼先など）の返信は、スレッドの検索結果の先頭だけで判断しない（返信が別スレッドになる・プレビューに古いメッセージしか出ないことがある）。`from:相手のアドレス after:送信日` で探し、当たったら get_thread で中身を読む。見つかったら obligations.yaml の該当を done にする。
+
 取得に失敗したときは「取得失敗」と書き、前回の値で判断しない。WebFetch が許可待ちで使えないときは、待たずに PC の listings.json だけで判断する。2日続けて失敗したら注意に出す。
 
 ## 3. 判断して進める
