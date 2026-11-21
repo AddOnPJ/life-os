@@ -1,12 +1,12 @@
 {
- "checked_at": "2026-11-21 06:10",
+ "checked_at": "2026-11-22 06:10",
  "from": "PC",
  "pages": {
   "jmty": {
    "url": "https://jmty.jp/osaka/com-ban/article-pgt61",
    "ok": true,
-   "chars": 10971,
-   "fingerprint": "1e6cf782a78d884b",
+   "chars": 10952,
+   "fingerprint": "cf929c49097b730d",
    "updated_text": "更新 2026年11月18",
    "favorites": 29,
    "genre_candidates": [
@@ -96,12 +96,12 @@
  "ranks": {
   "ensemblefan_va": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=va",
-   "rank": 22,
+   "rank": 24,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "ensemblefan_vc": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=vc",
-   "rank": 22,
+   "rank": 23,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "ensemblefan_ob": {
