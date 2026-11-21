@@ -46,6 +46,11 @@ obligations:
     due: 2026-11-26
     owner: Yuichi
     status: open
+  - id: OB-1220-visitor-SS
+    title: 12/20 見学者 S.S（コントラバス・楽器なし）の受け入れ準備（場所の案内を前日までに送る、易しいパート譜と同じパートの担当者）
+    due: 2026-12-17
+    owner: Yuichi
+    status: open
   - id: OB-1213-prep
     title: 12/13 見学会の準備（見学者がいれば、易しいパート譜と同じパートの担当者を3日前までに連絡）
     due: 2026-12-10

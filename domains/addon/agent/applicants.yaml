@@ -3,7 +3,18 @@
 # stage: 問い合わせ / 返信済み / 見学予約 / 見学済み / 入団 / 見送り / 辞退
 # source: ジモティー / アンサンブルファン / コンサートスクウェア / Instagram / X / YouTube / サイト / 紹介 / 演奏会 / 教室 / 大学 / 不明
 # source_conf: 確認済み（本人が答えた）/ 推定 / 不明
-applicants: []
+applicants:
+  - id: 1a1fd02a10261212
+    initial: S.S
+    part: コントラバス
+    received: 2026-11-21
+    source: アンサンブルファン
+    source_conf: 確認済み
+    stage: 問い合わせ
+    visit: 2026-12-20  # 本人の希望（未確定）
+    replied:
+    joined:
+    note: 中高の吹奏楽6年、約10年ブランク。楽器を修理に出す予定で見学時は持参できない可能性。返信の下書きあり（11/22）
 # 例:
 # - id: 19a2b3c4d5e6f7a8
 #   initial: K.T

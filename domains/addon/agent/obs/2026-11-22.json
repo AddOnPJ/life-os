@@ -1,0 +1,16 @@
+{
+ "date": "2026-11-22",
+ "time": "06:30",
+ "listings_json": {"status": "ok", "checked_at": "2026-11-22 06:10"},
+ "ensemblefan_va": {"rank": 24, "status": "推定", "source": "listings.json"},
+ "ensemblefan_vc": {"rank": 23, "status": "推定", "source": "listings.json"},
+ "ensemblefan_ob": {"rank": 9, "status": "推定", "source": "listings.json"},
+ "ensemblefan_fg": {"rank": 11, "status": "推定", "source": "listings.json"},
+ "jmty_suisougaku_osaka": {"rank": 17, "status": "推定", "source": "listings.json"},
+ "jmty_favorites": 29,
+ "jmty_body": "メール1件が本文に残っている（OB-jmty-mail 未完）。ボーカルの記載あり",
+ "site_recruit": "「急募」「ボーカル」が残っている。サックス・フルート・群青の動画なし（OB-site-recruit 未完）",
+ "gmail_applications_7d": 1,
+ "gmail_memo": "11/21 16:29 music@ 宛てに見学の申し込み1件（S.S・コントラバス・アンサンブルファン経由・12/20 希望）。返信の下書きを作成。ほかはアンサンブルファン更新通知1件（応募ではない）",
+ "grok": "to-claude/ に 11/22 のファイルなし（取得なし）"
+}
