@@ -37,7 +37,7 @@ tactics:
     priority: 2
     cost: 0
     owner: Yuichi（下書きはエージェント）
-    status: todo   # 2026-11-18 Yuichi 決定。掲載文の下書きを承認待ちに出す
+    status: todo   # 2026-11-18 Yuichi 決定。掲載文の下書きを承認待ちに出す（2026-W48 検討会：本番週の負担を考え 12/1 以降に）
   - id: T-ai-visibility
     title: AI 検索（ChatGPT・Gemini・Claude・Perplexity など）で「関西 アンサンブル 団員募集」「茨木 ヴィオラ 楽団」などを聞かれたときに AddOn が出るようにする（サイトの構造化データ・募集ページのQ&A・llms.txt・掲載先の情報の統一）。月1回、実際に各AIに聞いて出るかを記録する
     priority: 2
