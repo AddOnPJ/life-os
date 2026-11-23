@@ -4,8 +4,7 @@
 - S.S さん「見学会参加の希望」→ 11/22 に music@addon-pj.com から返信済み。相手の返事なし（music@ の送信はこの受信箱に出ないため、ラベルは付けていない）
 **返事待ち 0件**
 **警告**
-- Google Play：Google One（AI Ultra）の更新で登録カードが使えず、予備のカードで支払われた（11/23）。登録カードを確認
 - addon-pj.com：Google Workspace「ストレージ プールの上限に近づいています」83%（11/22 再通知）。上限を超えると14日の猶予のあと読み取り専用
 - addon-pj.com：GoDaddy「移管完了・支払い方法を追加して」（11/20）から5日目。済んだか要確認
 - Google アカウント：一部のデータを Myprotein と共有（11/21）。心当たりがなければ確認
-**読むだけ** 7件（アンサンブルファン「募集を更新しました」11/24 6:47、FastSpring のレシート、NotePerformer のダウンロード案内、カード会社の利用のお知らせ ほか）／**不要** 5件（WSJ、TikTok 通知、GoDaddy 広告、Meta 広告、Google ブログ）
+**読むだけ** 8件（Google Play の支払い通知 11/23＝解決済み（11/24 Yuichi）、アンサンブルファン「募集を更新しました」11/24 6:47、FastSpring のレシート、NotePerformer のダウンロード案内、カード会社の利用のお知らせ ほか）／**不要** 5件（WSJ、TikTok 通知、GoDaddy 広告、Meta 広告、Google ブログ）
