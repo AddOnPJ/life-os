@@ -1,0 +1,17 @@
+{
+ "date": "2026-11-24",
+ "time": "06:30",
+ "listings_json": {"status": "ok", "checked_at": "2026-11-24 06:10"},
+ "ensemblefan_va": {"rank": 28, "status": "推定", "source": "listings.json"},
+ "ensemblefan_vc": {"rank": 26, "status": "推定", "source": "listings.json"},
+ "ensemblefan_ob": {"rank": 13, "status": "推定", "source": "listings.json"},
+ "ensemblefan_fg": {"rank": 15, "status": "推定", "source": "listings.json"},
+ "jmty_suisougaku_osaka": {"rank": 17, "status": "推定", "source": "listings.json"},
+ "jmty_favorites": 29,
+ "jmty_body": "メール1件・「ボーカル」が本文に残っている（OB-jmty-mail 未完）",
+ "site_recruit": "「急募」「ボーカル」が残っている。サックス・フルート・群青の動画なし（OB-site-recruit 未完）",
+ "gmail_applications_7d": 1,
+ "gmail_memo": "新しい応募なし。S.S からの返事なし（11/22 以降）",
+ "herb_site": "未確認（クラウドから取得できないため今日は試していない）",
+ "grok": "2026-11-24_0606_grok-to-claude_addon-research.md を取得（3日ぶり）"
+}
