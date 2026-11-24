@@ -1,13 +1,13 @@
 {
- "checked_at": "2026-11-24 06:10",
+ "checked_at": "2026-11-25 06:10",
  "from": "PC",
  "pages": {
   "jmty": {
    "url": "https://jmty.jp/osaka/com-ban/article-pgt61",
    "ok": true,
-   "chars": 10993,
-   "fingerprint": "c43573ba25116076",
-   "updated_text": "更新 2026年11月18",
+   "chars": 10987,
+   "fingerprint": "f980eadfb31fb9e9",
+   "updated_text": "更新 2026年11月24",
    "favorites": 29,
    "genre_candidates": [
     "吹奏楽",
@@ -34,6 +34,7 @@
     "SNS": true
    },
    "avoid_found": [
+    "急募",
     "ボーカル"
    ],
    "age_range": "18-45"
@@ -42,8 +43,8 @@
    "url": "https://allegro.ensemble.fan/conbrio/gakudan/732",
    "ok": true,
    "chars": 3850,
-   "fingerprint": "3eeb8f4190c5417b",
-   "updated_text": "更新日 2026/11/18",
+   "fingerprint": "a2d61cd3af0550d8",
+   "updated_text": "更新日 2026/11/24",
    "dates_found": [
     "2026-12-13",
     "2026-12-20",
@@ -96,22 +97,22 @@
  "ranks": {
   "ensemblefan_va": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=va",
-   "rank": 28,
+   "rank": 19,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "ensemblefan_vc": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=vc",
-   "rank": 26,
+   "rank": 18,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "ensemblefan_ob": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=ob",
-   "rank": 13,
+   "rank": 8,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "ensemblefan_fg": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=fg",
-   "rank": 15,
+   "rank": 11,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "jmty_suisougaku_osaka": {
