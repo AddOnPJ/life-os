@@ -1,0 +1,15 @@
+{
+ "date": "2026-11-26",
+ "time": "06:35",
+ "listings_json": {"status": "今日の分は未着（6:23 時点で最新は 2026-11-25 06:10。48時間以内）", "checked_at": "2026-11-25 06:10"},
+ "ensemblefan_va": {"rank": 19, "status": "推定・11/25 6:10 の値", "source": "listings.json"},
+ "ensemblefan_vc": {"rank": 18, "status": "推定・11/25 6:10 の値", "source": "listings.json"},
+ "ensemblefan_ob": {"rank": 8, "status": "推定・11/25 6:10 の値", "source": "listings.json"},
+ "ensemblefan_fg": {"rank": 11, "status": "推定・11/25 6:10 の値", "source": "listings.json"},
+ "jmty_suisougaku_osaka": {"rank": 17, "status": "推定・11/25 6:10 の値", "source": "listings.json"},
+ "jmty_favorites": 29,
+ "gmail_applications_7d": 1,
+ "gmail_memo": "新しい応募なし（11/25 以降）。S.S からの返事なし（from 検索 after:2026/11/22 で0件）→ 確認メールの下書きを作成（A10）",
+ "herb_site": "未確認（クラウドから取得できない）",
+ "grok": "2026-11-26_0603_grok-to-claude_addon-research.md を取得"
+}
