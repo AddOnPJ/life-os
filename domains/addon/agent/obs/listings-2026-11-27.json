@@ -1,0 +1,124 @@
+{
+ "checked_at": "2026-11-27 06:12",
+ "from": "PC",
+ "pages": {
+  "jmty": {
+   "url": "https://jmty.jp/osaka/com-ban/article-pgt61",
+   "ok": true,
+   "chars": 10979,
+   "fingerprint": "dcd0ab6f97bb45a5",
+   "updated_text": "更新 2026年11月24",
+   "favorites": 29,
+   "genre_candidates": [
+    "吹奏楽",
+    "その他"
+   ],
+   "dates_found": [
+    "2026-12-13",
+    "2026-12-20",
+    "2027-01-24"
+   ],
+   "past_dates": [],
+   "emails_in_body": 1,
+   "has": {
+    "ヴァイオリン": true,
+    "ヴィオラ": true,
+    "チェロ": true,
+    "コントラバス": true,
+    "クラリネット": true,
+    "オーボエ": true,
+    "ファゴット": true,
+    "サックス": true,
+    "フルート": true,
+    "IXj1YW6BqZw": true,
+    "SNS": true
+   },
+   "avoid_found": [
+    "急募",
+    "ボーカル"
+   ],
+   "age_range": "18-45"
+  },
+  "ensemblefan": {
+   "url": "https://allegro.ensemble.fan/conbrio/gakudan/732",
+   "ok": true,
+   "chars": 3850,
+   "fingerprint": "a2d61cd3af0550d8",
+   "updated_text": "更新日 2026/11/24",
+   "dates_found": [
+    "2026-12-13",
+    "2026-12-20",
+    "2027-01-24"
+   ],
+   "past_dates": [],
+   "emails_in_body": 1,
+   "has": {
+    "ヴァイオリン": true,
+    "ヴィオラ": true,
+    "チェロ": true,
+    "コントラバス": true,
+    "クラリネット": true,
+    "オーボエ": true,
+    "ファゴット": true,
+    "サックス": true,
+    "フルート": true,
+    "IXj1YW6BqZw": true,
+    "SNS": true
+   },
+   "avoid_found": []
+  },
+  "site_recruit": {
+   "url": "https://addon-pj.com/recruit/",
+   "ok": true,
+   "chars": 1105,
+   "fingerprint": "89edc75df599339a",
+   "dates_found": [],
+   "past_dates": [],
+   "emails_in_body": 1,
+   "has": {
+    "ヴァイオリン": true,
+    "ヴィオラ": true,
+    "チェロ": true,
+    "コントラバス": true,
+    "クラリネット": true,
+    "オーボエ": true,
+    "ファゴット": true,
+    "サックス": false,
+    "フルート": false,
+    "IXj1YW6BqZw": false,
+    "SNS": true
+   },
+   "avoid_found": [
+    "急募",
+    "ボーカル"
+   ]
+  }
+ },
+ "ranks": {
+  "ensemblefan_va": {
+   "url": "https://allegro.ensemble.fan/conbrio/search_list?part=va",
+   "rank": 24,
+   "note": "推定（AddOn より前の日付の数＋1）"
+  },
+  "ensemblefan_vc": {
+   "url": "https://allegro.ensemble.fan/conbrio/search_list?part=vc",
+   "rank": 21,
+   "note": "推定（AddOn より前の日付の数＋1）"
+  },
+  "ensemblefan_ob": {
+   "url": "https://allegro.ensemble.fan/conbrio/search_list?part=ob",
+   "rank": 11,
+   "note": "推定（AddOn より前の日付の数＋1）"
+  },
+  "ensemblefan_fg": {
+   "url": "https://allegro.ensemble.fan/conbrio/search_list?part=fg",
+   "rank": 16,
+   "note": "推定（AddOn より前の日付の数＋1）"
+  },
+  "jmty_suisougaku_osaka": {
+   "url": "https://jmty.jp/osaka/com-ban/g-2708",
+   "rank": 17,
+   "note": "推定（AddOn より前の日付の数＋1）"
+  }
+ }
+}
