@@ -1,55 +1,55 @@
 {
- "generated_for": "2026-11-26",
- "through": "2026-11-25",
+ "generated_for": "2026-11-27",
+ "through": "2026-11-26",
  "metrics": {
   "sleep_hours": {
    "label": "睡眠",
    "unit": "h",
    "digits": 1,
-   "yesterday": 4.0,
-   "avg7": 5.1000000000000005,
+   "yesterday": 2.7,
+   "avg7": 4.46,
    "n7": 5,
-   "avg28": 4.74,
+   "avg28": 4.656,
    "n28": 25
   },
   "steps": {
    "label": "歩数",
    "unit": "",
    "digits": 0,
-   "yesterday": 349.0,
-   "avg7": 2290.1428571428573,
+   "yesterday": 7201.0,
+   "avg7": 3489.285714285714,
    "n7": 7,
-   "avg28": 6049.428571428572,
+   "avg28": 6302.714285714285,
    "n28": 28
   },
   "active_minutes": {
    "label": "活動時間",
    "unit": "分",
    "digits": 0,
-   "yesterday": 16.0,
-   "avg7": 75.4,
+   "yesterday": 125.0,
+   "avg7": 95.8,
    "n7": 5,
-   "avg28": 125.42307692307692,
+   "avg28": 129.1153846153846,
    "n28": 26
   },
   "resting_hr": {
    "label": "安静時心拍",
    "unit": "bpm",
    "digits": 0,
-   "yesterday": 84.0,
-   "avg7": 81.2,
+   "yesterday": 85.0,
+   "avg7": 82.6,
    "n7": 5,
-   "avg28": 81.68,
+   "avg28": 81.96,
    "n28": 25
   },
   "hrv_ms": {
    "label": "HRV",
    "unit": "ms",
    "digits": 0,
-   "yesterday": 14.1,
-   "avg7": 13.575,
+   "yesterday": 11.4,
+   "avg7": 12.525,
    "n7": 4,
-   "avg28": 13.6,
+   "avg28": 13.408695652173913,
    "n28": 23
   },
   "spo2_pct": {
@@ -57,10 +57,10 @@
    "unit": "%",
    "digits": 1,
    "yesterday": null,
-   "avg7": null,
-   "n7": 2,
-   "avg28": 94.95625,
-   "n28": 16
+   "avg7": 95.86666666666666,
+   "n7": 3,
+   "avg28": 94.99444444444444,
+   "n28": 18
   },
   "weight_kg": {
    "label": "体重",
@@ -73,30 +73,17 @@
    "n28": 8
   }
  },
- "exercise_days7": 2,
+ "exercise_days7": 3,
  "meal_days7": 0,
  "log_days7": 7,
- "bedtime_avg7": "1:22",
- "sleep_short_streak": 2,
- "no_exercise_streak": 1,
+ "bedtime_avg7": "1:42",
+ "sleep_short_streak": 3,
+ "no_exercise_streak": 0,
  "alerts": [
-  "歩数の7日平均（2,290）が28日平均（6,049）の70%未満"
+  "睡眠6時間未満が3日続いている",
+  "歩数の7日平均（3,489）が28日平均（6,303）の70%未満"
  ],
  "daily": [
-  {
-   "date": "2026-10-29",
-   "exists": true,
-   "sleep_hours": 4.8,
-   "steps": 7551.0,
-   "active_minutes": 137.0,
-   "resting_hr": 78.0,
-   "hrv_ms": 15.8,
-   "spo2_pct": null,
-   "weight_kg": null,
-   "bedtime": "00:59",
-   "exercise_count": 5,
-   "meals_count": 0
-  },
   {
    "date": "2026-10-30",
    "exists": true,
@@ -455,7 +442,7 @@
    "active_minutes": 169.0,
    "resting_hr": 83.0,
    "hrv_ms": null,
-   "spo2_pct": null,
+   "spo2_pct": 95.3,
    "weight_kg": null,
    "bedtime": "03:10",
    "exercise_count": 1,
@@ -465,14 +452,28 @@
    "date": "2026-11-25",
    "exists": true,
    "sleep_hours": 4.0,
-   "steps": 349.0,
-   "active_minutes": 16.0,
+   "steps": 7791.0,
+   "active_minutes": 124.0,
    "resting_hr": 84.0,
    "hrv_ms": 14.1,
-   "spo2_pct": null,
+   "spo2_pct": 95.3,
    "weight_kg": null,
    "bedtime": "01:21",
-   "exercise_count": 0,
+   "exercise_count": 1,
+   "meals_count": 0
+  },
+  {
+   "date": "2026-11-26",
+   "exists": true,
+   "sleep_hours": 2.7,
+   "steps": 7201.0,
+   "active_minutes": 125.0,
+   "resting_hr": 85.0,
+   "hrv_ms": 11.4,
+   "spo2_pct": null,
+   "weight_kg": null,
+   "bedtime": "02:23",
+   "exercise_count": 1,
    "meals_count": 0
   }
  ]
