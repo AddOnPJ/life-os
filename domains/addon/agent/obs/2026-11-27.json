@@ -1,0 +1,17 @@
+{
+ "date": "2026-11-27",
+ "time": "06:40",
+ "listings_json": {"status": "取得済み", "checked_at": "2026-11-27 06:12"},
+ "ensemblefan_va": {"rank": 24, "status": "推定", "source": "listings.json"},
+ "ensemblefan_vc": {"rank": 21, "status": "推定", "source": "listings.json"},
+ "ensemblefan_ob": {"rank": 11, "status": "推定", "source": "listings.json"},
+ "ensemblefan_fg": {"rank": 16, "status": "推定", "source": "listings.json"},
+ "jmty_suisougaku_osaka": {"rank": 17, "status": "推定", "source": "listings.json"},
+ "jmty_favorites": 29,
+ "jmty_body": "メール1件・「急募」「ボーカル」が残っている（更新 11/24）",
+ "site_recruit": "「急募」「ボーカル」が残り、サックス・フルート・群青の動画なし",
+ "gmail_applications_7d": 2,
+ "gmail_memo": "新しい応募1件：Y.T（アルトサックス・経験3年・12/13 見学希望）11/26 15:29 サイトのフォームから。返信の下書きを作成（A11）。S.S からの返事なし（after:2026/11/22 で0件）",
+ "herb_site": "未確認（クラウドから取得できない）",
+ "grok": "2026-11-27_0609_grok-to-claude_addon-research.md を取得"
+}

@@ -15,6 +15,17 @@ applicants:
     replied: 2026-11-22  # Yuichi が music@ から送信（11/22 連絡）
     joined:
     note: 中高の吹奏楽6年、約10年ブランク。楽器を修理に出す予定で見学時は持参できない可能性。11/22 返信済み。見学日の確定は返事待ち
+  - id: 1a2168b266d43abe
+    initial: Y.T
+    part: アルトサックス
+    received: 2026-11-26
+    source: サイト
+    source_conf: 推定  # サイトの問い合わせフォームから。どこで知ったかは未確認
+    stage: 問い合わせ
+    visit: 2026-12-13  # 本人の希望（10:30〜、未確定）
+    replied:
+    joined:
+    note: 経験3年。映画音楽・ポップスが好き。11/27 返信の下書きを作成（A11）
 # 例:
 # - id: 19a2b3c4d5e6f7a8
 #   initial: K.T
