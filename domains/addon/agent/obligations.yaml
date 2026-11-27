@@ -51,10 +51,15 @@ obligations:
     due: 2026-11-27
     owner: Yuichi
     done_when: Gmail の送信済みに Y.T 宛ての返信がある
-    status: open
+    status: done  # Yuichi が music@ から返信済み（11/27 12:02 の Y.T の返事に引用あり。11/28 点検で確認）
   - id: OB-1220-visitor-SS
     title: 12/20 見学者 S.S（コントラバス・楽器なし）の受け入れ準備（場所の案内を前日までに送る、易しいパート譜と同じパートの担当者）
     due: 2026-12-17
+    owner: Yuichi
+    status: open
+  - id: OB-1213-visitor-YT
+    title: 12/13 見学者 Y.T（アルトサックス）の受け入れ準備（易しいパート譜と同じパートの担当者。9:45 の説明会に来られるかは本人が調整中）
+    due: 2026-12-10
     owner: Yuichi
     status: open
   - id: OB-1213-prep
