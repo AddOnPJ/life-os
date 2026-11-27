@@ -1,12 +1,12 @@
 {
- "checked_at": "2026-11-27 06:12",
+ "checked_at": "2026-11-28 06:10",
  "from": "PC",
  "pages": {
   "jmty": {
    "url": "https://jmty.jp/osaka/com-ban/article-pgt61",
    "ok": true,
-   "chars": 10979,
-   "fingerprint": "dcd0ab6f97bb45a5",
+   "chars": 10947,
+   "fingerprint": "0eb1ef715a96072a",
    "updated_text": "更新 2026年11月24",
    "favorites": 29,
    "genre_candidates": [
@@ -34,7 +34,6 @@
     "SNS": true
    },
    "avoid_found": [
-    "急募",
     "ボーカル"
    ],
    "age_range": "18-45"
@@ -97,12 +96,12 @@
  "ranks": {
   "ensemblefan_va": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=va",
-   "rank": 24,
+   "rank": 25,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "ensemblefan_vc": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=vc",
-   "rank": 21,
+   "rank": 22,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "ensemblefan_ob": {
@@ -112,7 +111,7 @@
   },
   "ensemblefan_fg": {
    "url": "https://allegro.ensemble.fan/conbrio/search_list?part=fg",
-   "rank": 16,
+   "rank": 17,
    "note": "推定（AddOn より前の日付の数＋1）"
   },
   "jmty_suisougaku_osaka": {
