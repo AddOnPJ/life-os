@@ -1,11 +1,11 @@
 {
- "date": "2026-11-27",
+ "date": "2026-11-28",
  "items": [
   {
    "id": "L-adobe",
    "title": "Adobe Creative Cloud をブラックフライデーで再契約するか決める（期限切れ中）",
    "due": "2026-11-27",
-   "days": 0,
+   "days": -1,
    "category": "サブスク",
    "level": "最優先",
    "note": "セールの期間と条件は要確認"
@@ -14,7 +14,7 @@
    "id": "L-subscription-dates",
    "title": "サブスクの更新日を埋める（Google AI Ultra・Workspace・X Premium・NewsPicks・WSJ・日経・WRESTLE UNIVERSE・Claude Max）。エージェントが Gmail の領収書から候補を出す",
    "due": "2026-11-30",
-   "days": 3,
+   "days": 2,
    "category": "サブスク",
    "level": "警告",
    "note": ""
@@ -23,7 +23,7 @@
    "id": "L-workspace-storage",
    "title": "addon-pj.com の Workspace ストレージ（11/16 時点 83%）。上限を超えると14日後に読み取り専用。整理か容量追加を決める",
    "due": "2026-12-15",
-   "days": 18,
+   "days": 17,
    "category": "サブスク",
    "level": null,
    "note": "使用率が週1%ずつ増えている（11/16 通知）。週次振り返りで確認"
