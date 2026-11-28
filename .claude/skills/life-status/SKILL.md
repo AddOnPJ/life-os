@@ -19,7 +19,7 @@ CLAUDE.md のルールに従う（推測を断定しない・装飾しない）�
 | 今日のブリーフ | `logs/daily/今日.md` の「## 今日のブリーフ」（気づき・メール・持ち越し） |
 | 人 | 直近14日の日次ログの「## 人・連絡」、`domains/people/` |
 | AddOn | `domains/addon/agent/status.md`（AddOn エージェントの最新）。なければ `domains/addon/events/`、`tasks.md` |
-| 週のフォーカス | `reviews/weekly/` の最新 |
+| 週のフォーカス | `reviews/weekly/` の最新（「→ 選んだもの」が空なら候補1を「仮」として書く） |
 | 承認待ち | `status/approvals.md` の「待ち」 |
 | 体調・通院・薬 | `domains/health/log.md` の直近14日（あれば1〜2行） |
 | 食事の目標 | `domains/food/profile.md` |

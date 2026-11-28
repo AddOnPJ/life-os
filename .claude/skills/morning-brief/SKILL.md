@@ -16,7 +16,7 @@ CLAUDE.md のルール（推測を断定しない・装飾しない・secure を
 | 日次ログ | `logs/daily/` | 直近7日 |
 | AddOn のタスク | `domains/addon/tasks.md` の `- [ ]` 行 | すべて |
 | 本番の準備 | `domains/addon/events/*.md` | 今日〜21日後の本番 |
-| 週のフォーカス | `reviews/weekly/` の最新ファイルの「来週のフォーカス」 | 1件 |
+| 週のフォーカス | `reviews/weekly/` の最新ファイルの「来週のフォーカス」。「→ 選んだもの」が空なら候補1を「仮（未選択のため候補1）」として使い、未選択であることは要確認に出さない | 1件 |
 | 未処理メモ | `inbox/` 直下のファイル数 | — |
 | 体の数字 | `python scripts/status_numbers.py`（睡眠・寝た時刻・歩数・安静時心拍・HRV・SpO2・体重の7日・28日平均） | 直近28日 |
 | 食事 | 日次ログの `meals` と「## 食事」、`domains/food/profile.md` | 直近3日 |
